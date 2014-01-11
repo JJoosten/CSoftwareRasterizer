@@ -11,6 +11,8 @@
 	#error No other performance counter is implemented
 #endif
 
+
+
 Stopwatch StopwatchCreate( void)
 {
 	Stopwatch stopwatch;
@@ -18,6 +20,8 @@ Stopwatch StopwatchCreate( void)
 	
 #ifdef _WIN32
 	QueryPerformanceFrequency( (LARGE_INTEGER*)&stopwatch.Frequency);
+#else
+	// add support for linux and mac
 #endif
 
 	return stopwatch;
@@ -32,6 +36,8 @@ void StopwatchStart( Stopwatch* stopwatch)
 {
 #ifdef _WIN32
 	QueryPerformanceCounter( (LARGE_INTEGER*)&stopwatch->StartTime);
+#else
+	// add support for linux and mac
 #endif
 }
 
@@ -40,6 +46,8 @@ void StopwatchStop( Stopwatch* stopwatch)
 #ifdef _WIN32
 	QueryPerformanceCounter( (LARGE_INTEGER*)&stopwatch->EndTime);
 	stopwatch->IntervalInSeconds = (double)(stopwatch->EndTime - stopwatch->StartTime) / stopwatch->Frequency;
+#else
+	// add support for linux and mac
 #endif
 }
 

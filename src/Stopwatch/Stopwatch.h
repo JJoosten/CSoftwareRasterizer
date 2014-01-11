@@ -11,6 +11,7 @@ typedef struct sStopwatch
 #endif
 } Stopwatch;
 
+
 Stopwatch StopwatchCreate( void);
 void StopwatchDestroy( Stopwatch* stopwatch);
 void StopwatchStart( Stopwatch* stopwatch);

@@ -22,6 +22,21 @@
     <Filter Include="src\Stopwatch">
       <UniqueIdentifier>{7a6cbc95-b0f7-4184-8fb2-99974a3a7873}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Input">
+      <UniqueIdentifier>{8ba0c9d3-211e-4d48-9307-c50aaf1e6ff3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Camera">
+      <UniqueIdentifier>{c39c385c-2ff8-48a8-bbd8-6107e1b8fa6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Memory">
+      <UniqueIdentifier>{f4162796-1b69-458a-8608-6760c32978ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\OpenGL">
+      <UniqueIdentifier>{13699dca-b0b1-4977-9936-b422ac3a134d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\FrameBuffer">
+      <UniqueIdentifier>{70e6a664-afde-4283-b3b4-9d9db1499470}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.c">
@@ -44,6 +59,12 @@
     </ClCompile>
     <ClCompile Include="src\Stopwatch\Stopwatch.c">
       <Filter>src\Stopwatch</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OpenGL\OGLSurface.c">
+      <Filter>src\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FrameBuffer\FrameBuffer.c">
+      <Filter>src\FrameBuffer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -73,6 +94,12 @@
     </ClInclude>
     <ClInclude Include="src\Stopwatch\Stopwatch.h">
       <Filter>src\Stopwatch</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OpenGL\OGLSurface.h">
+      <Filter>src\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FrameBuffer\FrameBuffer.h">
+      <Filter>src\FrameBuffer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

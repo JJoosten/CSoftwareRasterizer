@@ -11,8 +11,7 @@ Renderer* RendererCreate( const unsigned int width, const unsigned int height)
 
 	memset( renderer, 0, sizeof(Renderer));
 
-	renderer->FrameBuffer[0] = TextureCreate( width, height);
-	renderer->FrameBuffer[1] = TextureCreate( width, height);
+	renderer->FrameBuffer = FrameBufferCreate( width, height);
 	renderer->DepthBuffer = TextureCreate( width, height);
 
 	return renderer;
@@ -21,18 +20,10 @@ Renderer* RendererCreate( const unsigned int width, const unsigned int height)
 void RendererDestroy( Renderer* renderer)
 {
 	assert( renderer && "RendererDestroy renderer == NULL");
-	assert( renderer->FrameBuffer[0] && "RendererDestroy renderer->FrameBuffer[0] == NULL");
-	assert( renderer->FrameBuffer[1] && "RendererDestroy renderer->FrameBuffer[1] == NULL");
+	assert( renderer->FrameBuffer && "RendererDestroy renderer->FrameBuffer == NULL");
 	assert( renderer->DepthBuffer && "RendererDestroy renderer->DepthBuffer == NULL");
 
-	TextureDestroy(renderer->FrameBuffer[0]);
-	TextureDestroy(renderer->FrameBuffer[1]);
+	FrameBufferDestroy(renderer->FrameBuffer);
 	TextureDestroy(renderer->DepthBuffer);
 	free(renderer);
-}
-
-void RendererFlipBuffer( Renderer* renderer)
-{
-	++renderer->CurrentFrameBuffer;
-	renderer->CurrentFrameBuffer &= 1;
 }

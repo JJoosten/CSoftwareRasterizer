@@ -7,6 +7,9 @@
 
 Texture* TextureCreate( const unsigned int width, const unsigned int height)
 {
+	unsigned int x = 0;
+	unsigned int y = 0;
+
 	Texture* texture = malloc( sizeof(Texture));
 	
 	assert(texture && "TextureCreate texture is NULL");
@@ -16,6 +19,14 @@ Texture* TextureCreate( const unsigned int width, const unsigned int height)
 	texture->Texels = malloc( sizeof(unsigned int) * width * height);
 
 	assert(texture->Texels && "TextureCreate texture->Texels is NULL, probably not enough memory in RAM");
+
+	for( y; y < texture->Height; ++y)
+	{
+		for( x; x < texture->Width; ++x)
+		{
+			texture->Texels[y * texture->Width + x] = 0xFF0000FF;
+		} 
+	}
 
 	return texture;
 }
