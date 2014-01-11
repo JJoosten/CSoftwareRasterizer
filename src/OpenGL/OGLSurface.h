@@ -15,12 +15,12 @@ typedef struct sOGLSurface
 	unsigned int* PixelData;
 } OGLSurface;
 
-bool OGLInit( const unsigned int screenWidth, const unsigned int screenHeight);
+bool OGL_Init( const unsigned int screenWidth, const unsigned int screenHeight);
 
-OGLSurface OGLSurfaceCreate( const FrameBuffer* const frameBuffer);
-void OGLSurfaceDestroy( OGLSurface* surface);
-void OGLSurfaceMapToFrameBuffer( OGLSurface* surface, FrameBuffer* frameBuffer);
-void OGLSurfaceDraw( OGLSurface* surface);
+OGLSurface* OGLSurface_Create( const FrameBuffer* const frameBuffer);
+void OGLSurface_Destroy( OGLSurface* surface);
+void OGLSurface_MapToFrameBuffer( OGLSurface* surface, FrameBuffer* frameBuffer);
+void OGLSurface_Draw( OGLSurface* surface);
 
 
 #endif // CSR_OGLSURFACE_H

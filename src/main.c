@@ -33,6 +33,8 @@ void handleWindowEvents( sfWindow* window)
 			break;
 			case sfEvtKeyPressed:
 				// TODO: capture keyboard keys
+				g_isWindowOpen = !sfKeyboard_isKeyPressed(sfKeyEscape);
+				
 			break;
 			case sfEvtKeyReleased:
 				// TODO: capture keyboard keys
@@ -50,21 +52,21 @@ int main(int argc, char *argv[])
 
 	int glewSuccesInit = glewInit();
 
-	bool openGLInit = OGLInit( SCREEN_WIDTH, SCREEN_HEIGHT);
+	bool openGLInit = OGL_Init( SCREEN_WIDTH, SCREEN_HEIGHT);
 
-	Renderer* renderer = RendererCreate( SCREEN_WIDTH, SCREEN_HEIGHT);
+	Renderer* renderer = Renderer_Create( SCREEN_WIDTH, SCREEN_HEIGHT);
 	
-	Game game = GameCreate();
+	Game* game = Game_Create();
 
-	Stopwatch stopwatch = StopwatchCreate();
+	Stopwatch stopwatch = Stopwatch_Init();
 	
-	OGLSurface surface = OGLSurfaceCreate( renderer->FrameBuffer);
+	OGLSurface* surface = OGLSurface_Create( renderer->FrameBuffer);
 
 	// setup buffers
-	OGLSurfaceMapToFrameBuffer( &surface, renderer->FrameBuffer);
+	OGLSurface_MapToFrameBuffer( surface, renderer->FrameBuffer);
 
 	// start stopwatch for first frametime of < ammount
-	StopwatchStart( &stopwatch);
+	Stopwatch_Start( &stopwatch);
 	
 	// game loop
 	while( g_isWindowOpen)
@@ -72,29 +74,28 @@ int main(int argc, char *argv[])
 		// variables
 		double deltaTimeSec = 0;
 	
-		FrameBufferClear( renderer->FrameBuffer, 0xFF0000FF);
+		FrameBuffer_ClearToBlack( renderer->FrameBuffer);
 	
 		// setup timers
-		StopwatchStop( &stopwatch);
-		StopwatchStart( &stopwatch);
-		deltaTimeSec = StopwatchGetIntervalInSeconds( &stopwatch);
+		Stopwatch_Stop( &stopwatch);
+		Stopwatch_Start( &stopwatch);
+		deltaTimeSec = Stopwatch_GetIntervalInSeconds( &stopwatch);
 
 		handleWindowEvents( window);
 
-		GameUpdate( &game, deltaTimeSec);
+		Game_Update( game, deltaTimeSec);
 
-		GameRender( &game, deltaTimeSec);
+		Game_Render( game, deltaTimeSec);
 		
-		OGLSurfaceDraw( &surface);
-		OGLSurfaceMapToFrameBuffer( &surface, renderer->FrameBuffer);
+		OGLSurface_Draw( surface);
+		OGLSurface_MapToFrameBuffer( surface, renderer->FrameBuffer);
 
 		sfWindow_display( window);
 	}
 	
-	StopwatchDestroy( &stopwatch);
-	GameDestroy( &game);
-	OGLSurfaceDestroy( &surface);
-	RendererDestroy( renderer);
+	Game_Destroy( game);
+	OGLSurface_Destroy( surface);
+	Renderer_Destroy( renderer);
 	sfWindow_destroy(window);
 	
 	return 0;

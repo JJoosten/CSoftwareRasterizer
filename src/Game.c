@@ -1,37 +1,38 @@
 #include "Game.h"
-#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 
-Game GameCreate( void)
+Game* Game_Create( void)
 {
-	Game game;
-	memset(&game, 0, sizeof(Game));
+	Game* game = malloc( sizeof(Game));
+	memset( game, 0, sizeof(Game));
 
-	game.DiffuseTexture = TextureLoad("assets/textures/checkerboard.png");
+	game->DiffuseTexture = Texture_Load("assets/textures/checkerboard.png");
 
-	game.Camera = CameraCreate();
+	game->Camera = Camera_Create();
 
 	return game;
 }
 
 
-void GameDestroy( Game* game)
+void Game_Destroy( Game* game)
 {
-	printf("GameDestroy \n");
+	printf("Game_Destroy \n");
 
-	CameraDestroy( &game->Camera);
+	Camera_Destroy( game->Camera);
 }
 
 
-void GameUpdate( Game* game, const double deltaTimeSec)
+void Game_Update( Game* game, const double deltaTimeSec)
 {
-	printf("GameUpdate %f \n", deltaTimeSec);
+	printf("Game_Update %f \n", deltaTimeSec);
 
 }
 
-void GameRender( Game* game, const double deltaTimeSec)
+void Game_Render( Game* game, const double deltaTimeSec)
 {	
-	printf("GameRender %f \n", deltaTimeSec);
+	printf("Game_Render %f \n", deltaTimeSec);
 
 }

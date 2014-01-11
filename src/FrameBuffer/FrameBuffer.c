@@ -2,31 +2,32 @@
 #include "../Utility/Validate.h"
 #include <stdlib.h>
 #include <assert.h>
+#include <string.h>
 
 
-FrameBuffer* FrameBufferCreate( const unsigned int width, const unsigned int height)
+FrameBuffer* FrameBuffer_Create( const unsigned int width, const unsigned int height)
 {
 	FrameBuffer* frameBuffer = malloc( sizeof(FrameBuffer));
 	
-	assert(frameBuffer && "TextureCreate texture is NULL");
+	assert(frameBuffer && "FrameBuffer_Create texture is NULL");
 
 	frameBuffer->Width = width;
 	frameBuffer->Height = height;
 
-	assert(frameBuffer->Pixels && "TextureCreate texture->Texels is NULL, probably not enough memory in RAM");
+	assert(frameBuffer->Pixels && "FrameBuffer_Create texture->Texels is NULL, probably not enough memory in RAM");
 
 	return frameBuffer;
 }
 
-void FrameBufferDestroy( FrameBuffer* frameBuffer)
+void FrameBuffer_Destroy( FrameBuffer* frameBuffer)
 {
-	assert( frameBuffer && "TextureDestroy texture is NULL");
-	assert( frameBuffer->Pixels && "TextureDestroy texture->Data is NULL");
+	assert( frameBuffer && "FrameBuffer_Destroy texture is NULL");
+	assert( frameBuffer->Pixels && "FrameBuffer_Destroy texture->Data is NULL");
 
 	free(frameBuffer);
 }
 
-void FrameBufferClear( FrameBuffer* frameBuffer, const unsigned int clearColor)
+void FrameBuffer_Clear( FrameBuffer* frameBuffer, const unsigned int clearColor)
 {
 	unsigned int y = 0;
 	for( y; y < frameBuffer->Height; ++y)
@@ -37,4 +38,9 @@ void FrameBufferClear( FrameBuffer* frameBuffer, const unsigned int clearColor)
 			frameBuffer->Pixels[y * frameBuffer->Width + x] = clearColor;
 		}
 	}
+}
+
+void FrameBuffer_ClearToBlack( FrameBuffer* frameBuffer)
+{
+	memset( frameBuffer->Pixels, 0, 4 * frameBuffer->Width * frameBuffer->Height);
 }

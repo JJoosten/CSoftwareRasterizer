@@ -1,15 +1,16 @@
 #include "Camera.h"
 #include <string.h>
+#include <stdlib.h>
 
-Camera CameraCreate( void)
+Camera* Camera_Create( void)
 {
-	Camera camera;
-	memset( &camera, 0, sizeof(Camera));
+	Camera* camera = malloc( sizeof(Camera));
+	memset( camera, 0, sizeof(Camera));
 
 	return camera;
 }
 
-void CameraDestroy( Camera* camera)
+void Camera_Destroy( Camera* camera)
 {
-
+	free(camera);
 }

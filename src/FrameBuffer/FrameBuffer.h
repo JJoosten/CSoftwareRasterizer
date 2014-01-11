@@ -10,9 +10,11 @@ typedef struct sFrameBuffer
 	unsigned int* Pixels;
 } FrameBuffer;
 
-FrameBuffer* FrameBufferCreate( const unsigned int width, const unsigned int height);
-void FrameBufferDestroy( FrameBuffer* texture);
-void FrameBufferClear( FrameBuffer* frameBuffer, const unsigned int clearColor);
+FrameBuffer* FrameBuffer_Create( const unsigned int width, const unsigned int height);
+void FrameBuffer_Destroy( FrameBuffer* texture);
+void FrameBuffer_Clear( FrameBuffer* frameBuffer, const unsigned int clearColor);
+void FrameBuffer_ClearToBlack( FrameBuffer* frameBuffer);
+
 
 
 #endif // TEXTURE_H

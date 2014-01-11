@@ -1,8 +1,9 @@
 #include "Mat4.h"
 #include <string.h>
 #include <math.h>
+#include <assert.h>
 
-Mat4 Mat4Zero( void)
+Mat4 Mat4_LoadZero( void)
 {
 	Mat4 mat;
 	memset( &mat, 0, sizeof(float) * 16);
@@ -10,7 +11,7 @@ Mat4 Mat4Zero( void)
 	return mat;
 }
 
-Mat4 Mat4Identity( void)
+Mat4 Mat4_LoadIdentity( void)
 {
 	Mat4 mat;
 	memset( &mat, 0, sizeof(float) * 16);
@@ -21,7 +22,7 @@ Mat4 Mat4Identity( void)
 	return mat;
 }
 
-Mat4 Mat4Ortho( const float left, const float right, const float top, const float bottom, const float near, const float far)
+Mat4 Mat4_LoadOrtho( const float left, const float right, const float top, const float bottom, const float near, const float far)
 {
 	Mat4 mat;
 	mat.ColumnMajor[0] = 2.0f / (right - left); mat.ColumnMajor[4] = 0.0f;					mat.ColumnMajor[ 8] = 0.0f;					mat.ColumnMajor[12] = -((right + left) / (right - left));
@@ -31,7 +32,7 @@ Mat4 Mat4Ortho( const float left, const float right, const float top, const floa
 	return mat;
 }
 
-Mat4 Mat4Perspective( const float fovInDegrees, const float aspectRatio, const float near, const float far)
+Mat4 Mat4_LoadPerspective( const float fovInDegrees, const float aspectRatio, const float near, const float far)
 {
 	const float f = 1.0f / tanf( 0.0174532925 * fovInDegrees / 2.0f);
 
@@ -43,18 +44,22 @@ Mat4 Mat4Perspective( const float fovInDegrees, const float aspectRatio, const f
 	return mat;
 }
 
-Mat4 Mat4LookAt( const Vec3* const target, const Vec3* const eye, const Vec3* const up)
+Mat4 Mat4_LoadLookAt( const Vec3* const target, const Vec3* const eye, const Vec3* const up)
 {
 	Mat4 mat;
 	Vec3 direction, localLeft, localUp;
 
-	Vec3Cross( &direction, target, eye);
-	Vec3Normalize( &direction, &direction);
+	assert( target && "Mat4_LookAt target == NULL");
+	assert( target && "Mat4_LookAt eye == NULL");
+	assert( target && "Mat4_LookAt up == NULL");
+
+	Vec3_Cross( &direction, target, eye);
+	Vec3_Normalize( &direction, &direction);
 	
-	Vec3Cross( &localLeft, &direction, up);
-	Vec3Normalize( &localLeft, &localLeft);
+	Vec3_Cross( &localLeft, &direction, up);
+	Vec3_Normalize( &localLeft, &localLeft);
 	
-	Vec3Cross( &localUp, &localLeft, &direction);
+	Vec3_Cross( &localUp, &localLeft, &direction);
 
 	mat.ColumnMajor[0] = localLeft.X;	mat.ColumnMajor[4] = localLeft.Y;	mat.ColumnMajor[ 8] = localLeft.Z;	mat.ColumnMajor[12] = -eye->X;
 	mat.ColumnMajor[1] = localUp.X;		mat.ColumnMajor[5] = localUp.Y;		mat.ColumnMajor[ 9] = localUp.Z;	mat.ColumnMajor[13] = -eye->Y;

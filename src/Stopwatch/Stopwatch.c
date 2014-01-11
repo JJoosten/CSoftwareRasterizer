@@ -13,7 +13,7 @@
 
 
 
-Stopwatch StopwatchCreate( void)
+Stopwatch Stopwatch_Init( void)
 {
 	Stopwatch stopwatch;
 	memset( &stopwatch, 0, sizeof(Stopwatch));
@@ -27,12 +27,7 @@ Stopwatch StopwatchCreate( void)
 	return stopwatch;
 }
 
-void StopwatchDestroy( Stopwatch* stopwatch)
-{
-	memset( stopwatch, 0, sizeof(Stopwatch));
-}
-
-void StopwatchStart( Stopwatch* stopwatch)
+void Stopwatch_Start( Stopwatch* stopwatch)
 {
 #ifdef _WIN32
 	QueryPerformanceCounter( (LARGE_INTEGER*)&stopwatch->StartTime);
@@ -41,7 +36,7 @@ void StopwatchStart( Stopwatch* stopwatch)
 #endif
 }
 
-void StopwatchStop( Stopwatch* stopwatch)
+void Stopwatch_Stop( Stopwatch* stopwatch)
 {
 #ifdef _WIN32
 	QueryPerformanceCounter( (LARGE_INTEGER*)&stopwatch->EndTime);
@@ -51,7 +46,14 @@ void StopwatchStop( Stopwatch* stopwatch)
 #endif
 }
 
-double StopwatchGetIntervalInSeconds( Stopwatch* stopwatch)
+void Stopwatch_Reset( Stopwatch* stopwatch)
+{
+	stopwatch->StartTime = 0;
+	stopwatch->EndTime = 0;
+	stopwatch->IntervalInSeconds = 0;
+}
+
+double Stopwatch_GetIntervalInSeconds( Stopwatch* stopwatch)
 {
 	return stopwatch->IntervalInSeconds;
 }

@@ -10,9 +10,9 @@ typedef struct sTexture
 	unsigned int* Texels;
 } Texture;
 
-Texture* TextureCreate( const unsigned int width, const unsigned int height);
-Texture* TextureLoad( const char* const textureFile);
-void TextureDestroy( Texture* texture);
+Texture* Texture_Create( const unsigned int width, const unsigned int height);
+Texture* Texture_Load( const char* const textureFile);
+void Texture_Destroy( Texture* texture);
 
 
 #endif // TEXTURE_H

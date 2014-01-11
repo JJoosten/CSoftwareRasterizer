@@ -11,8 +11,8 @@ typedef struct sRenderer
 	Texture* DepthBuffer;
 } Renderer;
 
-Renderer* RendererCreate( const unsigned int width, const unsigned int height);
-void RendererDestroy( Renderer* renderer);
+Renderer* Renderer_Create( const unsigned int width, const unsigned int height);
+void Renderer_Destroy( Renderer* renderer);
 
 // void RendererSetSampler( const unsigned int samplerIndex, const Texture* const texture, );
 

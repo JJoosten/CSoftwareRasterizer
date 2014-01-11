@@ -1,16 +1,20 @@
 #ifndef CSR_CAMERA_H
 #define CSR_CAMERA_H
 
+#include "../Math/Mat4.h"
+
 typedef struct sCamera
 {
-	
+	Mat4 ProjectionMatrix;
+	Mat4 ViewMatrix;
+	Vec3 Position;
 	float YawInDegrees;
 	float PitchInDegrees;
 	float RollInDegrees;
 } Camera;
 
-Camera CameraCreate( void);
-void CameraDestroy( Camera* camera);
+Camera* Camera_Create( void);
+void Camera_Destroy( Camera* camera);
 
 
 #endif // CSR_CAMERA_H

@@ -12,10 +12,10 @@ typedef struct sStopwatch
 } Stopwatch;
 
 
-Stopwatch StopwatchCreate( void);
-void StopwatchDestroy( Stopwatch* stopwatch);
-void StopwatchStart( Stopwatch* stopwatch);
-void StopwatchStop( Stopwatch* stopwatch);
-double StopwatchGetIntervalInSeconds( Stopwatch* stopwatch);
+Stopwatch Stopwatch_Init( void);
+void Stopwatch_Start( Stopwatch* stopwatch);
+void Stopwatch_Stop( Stopwatch* stopwatch);
+void Stopwatch_Reset( Stopwatch* stopwatch);
+double Stopwatch_GetIntervalInSeconds( Stopwatch* stopwatch);
 
 #endif // CSR_STOPWATCH_H

@@ -7,13 +7,13 @@
 
 typedef struct sGame
 {
-	Camera Camera;
+	Camera* Camera;
 	Texture* DiffuseTexture;
 } Game;
 
-Game GameCreate( void);
-void GameDestroy( Game* game);
-void GameUpdate( Game* game, const double deltaTimeSec);
-void GameRender( Game* game, const double deltaTimeSec);
+Game* Game_Create( void);
+void Game_Destroy( Game* game);
+void Game_Update( Game* game, const double deltaTimeSec);
+void Game_Render( Game* game, const double deltaTimeSec);
 
 #endif // GAME_H
