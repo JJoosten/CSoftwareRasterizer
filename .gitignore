@@ -1,18 +1,41 @@
-# Object files
-*.o
-*.ko
+#OS junk files
+[Tt]humbs.db
+*.DS_Store
 
-# Libraries
-*.lib
-*.a
+#Visual Studio files
+/_ReSharper*/
+*.pdb
+*.user
+*.aps
+*.pch
+*.vspscc
+*.vssscc
+*_i.c
+*_p.c
+*.ncb
+*.suo
+*.tlb
+*.tlh
+*.bak
+*.[Cc]ache
+*.ilk
+*.log
+*.sbr
+ipch/
+obj/
+*.swatch*
 
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
+#Visual Studio
+[Bb]uild/
+[Bb]in/
+[Ll]eak*/
+*.sdf
+*.opensdf
 
-# Executables
-*.exe
-*.out
-*.app
+
+#Subversion files
+.svn
+.svn/
+
+#others
+*.onetoc2

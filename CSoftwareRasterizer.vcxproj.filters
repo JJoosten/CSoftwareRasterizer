@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{706392f5-a56c-4076-8626-69c5590d4d07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Renderer">
+      <UniqueIdentifier>{4e0399c9-6fd8-49a3-87d4-493681868548}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Texture">
+      <UniqueIdentifier>{276e38e2-b75b-4e70-86c6-832cc3d0e457}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Timer">
+      <UniqueIdentifier>{7a6cbc95-b0f7-4184-8fb2-99974a3a7873}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libs">
+      <UniqueIdentifier>{4a81ee06-f6d4-48ae-94db-a9bba70304ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libs\stb_image">
+      <UniqueIdentifier>{c43ec429-96d2-451e-9033-3205652dcaff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Utility">
+      <UniqueIdentifier>{50f60a07-fd3f-48c9-9dc9-8dfcad167271}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\main.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Texture\Texture.c">
+      <Filter>src\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Renderer\Renderer.c">
+      <Filter>src\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="libs\stb_image\stb_image.c">
+      <Filter>libs\stb_image</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Utility\Validate.c">
+      <Filter>src\Utility</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Texture\Texture.h">
+      <Filter>src\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer\Renderer.h">
+      <Filter>src\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Defines.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="libs\stb_image\stb_image.h">
+      <Filter>libs\stb_image</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utility\Validate.h">
+      <Filter>src\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Typedefs.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Settings.h">
+      <Filter>src</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
