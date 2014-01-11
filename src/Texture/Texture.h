@@ -3,14 +3,12 @@
 
 #include "../Defines.h"
 
-#define Texture struct sTexture
-
-Texture
+typedef struct sTexture
 {
 	unsigned int Width;
 	unsigned int Height;
 	unsigned int* Texels;
-};
+} Texture;
 
 Texture* TextureCreate( const unsigned int width, const unsigned int height);
 Texture* TextureLoad( const char* const textureFile);

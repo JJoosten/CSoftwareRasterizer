@@ -85,6 +85,7 @@
     <ClCompile Include="src\Game.c" />
     <ClCompile Include="src\main.c" />
     <ClCompile Include="src\Renderer\Renderer.c" />
+    <ClCompile Include="src\Stopwatch\Stopwatch.c" />
     <ClCompile Include="src\Texture\Texture.c" />
     <ClCompile Include="src\Utility\Validate.c" />
   </ItemGroup>
@@ -94,6 +95,7 @@
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\Renderer\Renderer.h" />
     <ClInclude Include="src\Settings.h" />
+    <ClInclude Include="src\Stopwatch\Stopwatch.h" />
     <ClInclude Include="src\Texture\Texture.h" />
     <ClInclude Include="src\Typedefs.h" />
     <ClInclude Include="src\Utility\Validate.h" />

@@ -10,9 +10,6 @@
     <Filter Include="src\Texture">
       <UniqueIdentifier>{276e38e2-b75b-4e70-86c6-832cc3d0e457}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Timer">
-      <UniqueIdentifier>{7a6cbc95-b0f7-4184-8fb2-99974a3a7873}</UniqueIdentifier>
-    </Filter>
     <Filter Include="libs">
       <UniqueIdentifier>{4a81ee06-f6d4-48ae-94db-a9bba70304ca}</UniqueIdentifier>
     </Filter>
@@ -21,6 +18,9 @@
     </Filter>
     <Filter Include="src\Utility">
       <UniqueIdentifier>{50f60a07-fd3f-48c9-9dc9-8dfcad167271}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Stopwatch">
+      <UniqueIdentifier>{7a6cbc95-b0f7-4184-8fb2-99974a3a7873}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -41,6 +41,9 @@
     </ClCompile>
     <ClCompile Include="src\Utility\Validate.c">
       <Filter>src\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Stopwatch\Stopwatch.c">
+      <Filter>src\Stopwatch</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -67,6 +70,9 @@
     </ClInclude>
     <ClInclude Include="src\Settings.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Stopwatch\Stopwatch.h">
+      <Filter>src\Stopwatch</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

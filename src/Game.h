@@ -4,12 +4,10 @@
 #include "Defines.h"
 #include "Texture/Texture.h"
 
-#define Game struct sGame
-
-Game
+typedef struct sGame
 {
 	Texture* DiffuseTexture;
-};
+} Game;
 
 Game GameCreate( void);
 void GameDestroy( Game* game);

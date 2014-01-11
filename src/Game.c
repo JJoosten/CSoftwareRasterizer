@@ -23,12 +23,12 @@ void GameDestroy( Game* game)
 
 void GameUpdate( Game* game, const double deltaTimeSec)
 {
-	printf("GameUpdate \n");
+	printf("GameUpdate %f \n", deltaTimeSec);
 
 }
 
 void GameRender( Game* game, const double deltaTimeSec)
 {	
-	printf("GameRender \n");
+	printf("GameRender %f \n", deltaTimeSec);
 
 }

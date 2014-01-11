@@ -1,17 +1,14 @@
 #ifndef CSR_RENDERER_H
 #define CSR_RENDERER_H
 
-#include "../Defines.h"
 #include "../Texture/Texture.h"
 
-#define Renderer struct sRenderer
-
-Renderer
+typedef struct sRenderer
 {
 	unsigned char CurrentFrameBuffer;
 	Texture* FrameBuffer[2];
 	Texture* DepthBuffer;
-};
+} Renderer;
 
 Renderer* RendererCreate( const unsigned int width, const unsigned int height);
 void RendererDestroy( Renderer* renderer);
