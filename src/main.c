@@ -26,10 +26,10 @@ void handleWindowEvents( sfWindow* window)
 				g_isWindowOpen = false;
 			break;
 			case sfEvtGainedFocus:
-				// TODO: speed up rendering
+				sfWindow_setFramerateLimit(window, 0);
 			break;
 			case sfEvtLostFocus:
-				// TODO: slow down rendering
+				sfWindow_setFramerateLimit(window, 24);
 			break;
 			case sfEvtKeyPressed:
 				// TODO: capture keyboard keys
@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
 
 	// setup buffers
 	OGLSurfaceMapToFrameBuffer( &surface, renderer->FrameBuffer);
-	
+
 	// start stopwatch for first frametime of < ammount
 	StopwatchStart( &stopwatch);
 	

@@ -10,6 +10,8 @@ Game GameCreate( void)
 
 	game.DiffuseTexture = TextureLoad("assets/textures/checkerboard.png");
 
+	game.Camera = CameraCreate();
+
 	return game;
 }
 
@@ -18,6 +20,7 @@ void GameDestroy( Game* game)
 {
 	printf("GameDestroy \n");
 
+	CameraDestroy( &game->Camera);
 }
 
 

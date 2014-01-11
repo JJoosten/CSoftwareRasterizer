@@ -37,6 +37,9 @@
     <Filter Include="src\FrameBuffer">
       <UniqueIdentifier>{70e6a664-afde-4283-b3b4-9d9db1499470}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Math">
+      <UniqueIdentifier>{da783744-2d95-44f4-9326-16b2e1b7ddc8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.c">
@@ -65,6 +68,15 @@
     </ClCompile>
     <ClCompile Include="src\FrameBuffer\FrameBuffer.c">
       <Filter>src\FrameBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Camera\Camera.c">
+      <Filter>src\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Math\Mat4.c">
+      <Filter>src\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Math\Vec3.c">
+      <Filter>src\Math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -100,6 +112,15 @@
     </ClInclude>
     <ClInclude Include="src\FrameBuffer\FrameBuffer.h">
       <Filter>src\FrameBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Camera\Camera.h">
+      <Filter>src\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Math\Vec3.h">
+      <Filter>src\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Math\Mat4.h">
+      <Filter>src\Math</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

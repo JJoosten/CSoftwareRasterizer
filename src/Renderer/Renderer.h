@@ -4,6 +4,7 @@
 #include "../FrameBuffer/FrameBuffer.h"
 #include "../Texture/Texture.h"
 
+
 typedef struct sRenderer
 {
 	FrameBuffer* FrameBuffer;
@@ -12,5 +13,9 @@ typedef struct sRenderer
 
 Renderer* RendererCreate( const unsigned int width, const unsigned int height);
 void RendererDestroy( Renderer* renderer);
+
+// void RendererSetSampler( const unsigned int samplerIndex, const Texture* const texture, );
+
+
 
 #endif // RENDERER_H

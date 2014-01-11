@@ -3,9 +3,11 @@
 
 #include "Defines.h"
 #include "Texture/Texture.h"
+#include "Camera/Camera.h"
 
 typedef struct sGame
 {
+	Camera Camera;
 	Texture* DiffuseTexture;
 } Game;
 

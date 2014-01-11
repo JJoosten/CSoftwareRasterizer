@@ -54,10 +54,10 @@
       <FloatingPointModel>Fast</FloatingPointModel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessKeepComments>true</PreprocessKeepComments>
-      <CompileAs>CompileAsC</CompileAs>
       <PreprocessorDefinitions>GLEW_STATIC ;_MBCS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(ProjectDir)/libs/CSFML-2.1-$(Platform)/CSFML-2.1/include;$(ProjectDir)/libs/openGL/include;$(ProjectDir)/libs/glew-1.10.0/include</AdditionalIncludeDirectories>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <CompileAs>CompileAsC</CompileAs>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -104,9 +104,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="libs\stb_image\stb_image.c" />
+    <ClCompile Include="src\Camera\Camera.c" />
     <ClCompile Include="src\FrameBuffer\FrameBuffer.c" />
     <ClCompile Include="src\Game.c" />
     <ClCompile Include="src\main.c" />
+    <ClCompile Include="src\Math\Mat4.c" />
+    <ClCompile Include="src\Math\Vec3.c" />
     <ClCompile Include="src\OpenGL\OGLSurface.c" />
     <ClCompile Include="src\Renderer\Renderer.c" />
     <ClCompile Include="src\Stopwatch\Stopwatch.c" />
@@ -115,9 +118,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libs\stb_image\stb_image.h" />
+    <ClInclude Include="src\Camera\Camera.h" />
     <ClInclude Include="src\Defines.h" />
     <ClInclude Include="src\FrameBuffer\FrameBuffer.h" />
     <ClInclude Include="src\Game.h" />
+    <ClInclude Include="src\Math\Mat4.h" />
+    <ClInclude Include="src\Math\Vec3.h" />
     <ClInclude Include="src\OpenGL\OGLSurface.h" />
     <ClInclude Include="src\Renderer\Renderer.h" />
     <ClInclude Include="src\Settings.h" />
