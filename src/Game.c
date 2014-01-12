@@ -1,4 +1,6 @@
 #include "Game.h"
+#include "Settings.h"
+#include "Math/Mat4.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -6,12 +8,16 @@
 
 Game* Game_Create( void)
 {
+	Mat4 tmpProjectionMatrix;
+	
 	Game* game = malloc( sizeof(Game));
+	
 	memset( game, 0, sizeof(Game));
 
 	game->DiffuseTexture = Texture_Load("assets/textures/checkerboard.png");
-
-	game->Camera = Camera_Create();
+	
+	Mat4_LoadPerspective( &tmpProjectionMatrix, 70.0f, (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.1f, 100.0f);
+	game->Camera = Camera_Create( &tmpProjectionMatrix);
 
 	return game;
 }

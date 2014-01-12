@@ -3,68 +3,103 @@
 #include <math.h>
 #include <assert.h>
 
-Vec3 Vec3_LoadZero( void)
-{
-	Vec3 vec = { 0, 0, 0 }; 
-	return vec;
-}
 
-Vec3 Vec3_LoadXYZ( const float x, const float y, const float z)
+Vec3* Vec3_LoadZero( Vec3* out)
 {
-	Vec3 vec = { x, y, z};
-	return vec;
-}
-
-Vec3 Vec3_LoadScalar( const float x)
-{
-	Vec3 vec = { x, x, x };
-	return vec;
-}
-
-Vec3 Vec3_LoadArray( const float* const xyz)
-{
-	Vec3 vec;
-	assert( xyz && "Vec3_LoadArray xyz == NULL");
-	vec.X = xyz[0];
-	vec.Y = xyz[1];
-	vec.Z = xyz[2];
-	return vec;
-}
-
-Vec3 Vec3_LoadForward( void)
-{
-	Vec3 vec = { 0, 0, -1 };
-	return vec;
-}
-
-Vec3 Vec3_LoadLeft( void)
-{
-	Vec3 vec = { -1, 0, 0 };
-	return vec;
-}
-
-Vec3 Vec3_LoadUp( void)
-{
-	Vec3 vec = { 0, 1, 0 };
-	return vec;
-}
-
-Vec3 Vec3_Copy( const Vec3* const a)
-{
-	Vec3 vec;
-	assert( a && "Vec3_Copy a == NULL");
-	vec = Vec3_LoadArray(a->XYZ);
-	return vec;
-}
-
-
-Vec3* Vec3_Zero( Vec3* out)
-{
-	assert( out && "Vec3_Zero out == NULL");
+	assert( out && "Vec3_LoadZero out == NULL");
 
 	out->X = 0;
 	out->Y = 0;
 	out->Z = 0;
+
+	return out;
+}
+
+Vec3* Vec3_LoadOne( Vec3* out)
+{
+	assert( out && "Vec3_LoadOne out == NULL");
+
+	out->X = 1;
+	out->Y = 1;
+	out->Z = 1;
+
+	return out;
+}
+
+Vec3* Vec3_LoadXYZ( Vec3* out, const float x, const float y, const float z)
+{
+	assert( out && "Vec3_LoadXYZ out == NULL");
+
+	out->X = x;
+	out->Y = y;
+	out->Z = z;
+
+	return out;
+}
+
+Vec3* Vec3_LoadScalar( Vec3* out, const float x)
+{
+	assert( out && "Vec3_LoadScalar out == NULL");
+
+	out->X = x;
+	out->Y = x;
+	out->Z = x;
+
+	return out;
+}
+
+Vec3* Vec3_LoadArray( Vec3* out, const float* const xyz)
+{
+	assert( out && "Vec3_LoadArray out == NULL");
+	assert( xyz && "Vec3_LoadArray xyz == NULL");
+	
+	out->X = xyz[0];
+	out->Y = xyz[1];
+	out->Z = xyz[2];
+
+	return out;
+}
+
+Vec3* Vec3_LoadForward( Vec3* out)
+{
+	assert( out && "Vec3_LoadForward out == NULL");
+
+	out->X = 0;
+	out->Y = 0;
+	out->Z = -1;
+
+	return out;
+}
+
+Vec3* Vec3_LoadLeft( Vec3* out)
+{
+	assert( out && "Vec3_LoadLeft out == NULL");
+
+	out->X = -1;
+	out->Y = 0;
+	out->Z = 0;
+
+	return out;
+}
+
+Vec3* Vec3_LoadUp( Vec3* out)
+{
+	assert( out && "Vec3_LoadUp out == NULL");
+
+	out->X = 0;
+	out->Y = 1;
+	out->Z = 0;
+
+	return out;
+}
+
+
+Vec3* Vec3_Copy( Vec3* out, const Vec3* const a)
+{
+	assert( out && "Vec3_Copy a == NULL");
+	assert( a && "Vec3_Copy a == NULL");
+
+	out = Vec3_LoadArray( out, a->XYZ);
 
 	return out;
 }

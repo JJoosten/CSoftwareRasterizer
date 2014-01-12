@@ -14,17 +14,17 @@ typedef struct sVec3
 	};
 } Vec3;
 
-Vec3 Vec3_LoadZero( void);
-Vec3 Vec3_LoadXYZ( const float x, const float y, const float z);
-Vec3 Vec3_LoadScalar( const float x);
-Vec3 Vec3_LoadArray( const float* const xyz);
-Vec3 Vec3_LoadForward( void);
-Vec3 Vec3_LoadLeft( void);
-Vec3 Vec3_LoadUp( void);
 
-Vec3 Vec3_Copy( const Vec3* const a);
+Vec3* Vec3_LoadZero( Vec3* out);
+Vec3* Vec3_LoadOne( Vec3* out);
+Vec3* Vec3_LoadXYZ( Vec3* out, const float x, const float y, const float z);
+Vec3* Vec3_LoadScalar( Vec3* out, const float x);
+Vec3* Vec3_LoadArray( Vec3* out, const float* const xyz);
+Vec3* Vec3_LoadForward( Vec3* out);
+Vec3* Vec3_LoadLeft( Vec3* out);
+Vec3* Vec3_LoadUp( Vec3* out);
 
-Vec3* Vec3_Zero( Vec3* out);
+Vec3* Vec3_Copy( Vec3* out, const Vec3* const a);
 
 Vec3* Vec3_Add( Vec3* out, const Vec3* const a, const Vec3* const b);
 Vec3* Vec3_Sub( Vec3* out, const Vec3* const a, const Vec3* const b);

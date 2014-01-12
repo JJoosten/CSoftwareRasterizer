@@ -9,11 +9,6 @@ typedef struct sMat4
 	float ColumnMajor[16];
 } Mat4;
 
-Mat4 Mat4_CreateZero( void);
-Mat4 Mat4_CreateIdentity( void);
-Mat4 Mat4_CreateOrtho( const float left, const float right, const float top, const float bottom, const float near, const float far);
-Mat4 Mat4_CreatePerspective( const float fovInDegrees, const float aspectRatio, const float near, const float far);
-Mat4 Mat4_CreateLookAt( const Vec3* const target, const Vec3* const eye, const Vec3* const up);
 
 Mat4* Mat4_LoadMat4( Mat4* out, const Mat4* a);
 Mat4* Mat4_LoadIdentity( Mat4* out);

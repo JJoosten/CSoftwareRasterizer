@@ -13,7 +13,7 @@ typedef struct sCamera
 	float RollInDegrees;
 } Camera;
 
-Camera* Camera_Create( void);
+Camera* Camera_Create( const Mat4* const projectionMatrix);
 void Camera_Destroy( Camera* camera);
 
 
