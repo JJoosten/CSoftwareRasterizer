@@ -20,14 +20,6 @@ Texture* Texture_Create( const unsigned int width, const unsigned int height)
 
 	assert(texture->Texels && "Texture_Create texture->Texels is NULL, probably not enough memory in RAM");
 
-	for( y; y < texture->Height; ++y)
-	{
-		for( x; x < texture->Width; ++x)
-		{
-			texture->Texels[y * texture->Width + x] = 0xFF0000FF;
-		} 
-	}
-
 	return texture;
 }
 
