@@ -33,7 +33,7 @@ Mat4* Mat4_TranslateTo( Mat4* inOut, const Vec3* const translation);
 Mat4* Mat4_RotateXTo( Mat4* inOut, const float rotationInDegrees);
 Mat4* Mat4_RotateYTo( Mat4* inOut, const float rotationInDegrees);
 Mat4* Mat4_RotateZTo( Mat4* inOut, const float rotationInDegrees);
-Mat4* Mat4_RotateOverAxisTo( Mat4* inOut, const Vec3* const rotationAxis, const float rotationInDegrees);
+Mat4* Mat4_RotateOverAxisTo( Mat4* inOut, const Vec3* const rotationAxisNormalized, const float rotationInDegrees);
 
 Mat4* Mat4_ScaleUniform( Mat4* inOut, const float scale);
 Mat4* Mat4_ScaleNonUniform( Mat4* inOut, const Vec3* const scale);

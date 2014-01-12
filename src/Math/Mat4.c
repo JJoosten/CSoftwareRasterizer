@@ -465,37 +465,76 @@ Mat4* Mat4_TranslateTo( Mat4* inOut, const Vec3* const translation)
 
 Mat4* Mat4_RotateXTo( Mat4* inOut, const float rotationInDegrees)
 {
+	const float radians = rotationInDegrees * 0.0174532925f;
+	
 	assert( inOut && "Mat4_RotateXTo out == NULL");
 	
-	// TODO:
+	inOut->ColumnMajor[ 5] =  cosf(radians);
+	inOut->ColumnMajor[ 6] = -sinf(radians);
+	inOut->ColumnMajor[ 9] =  sinf(radians);
+	inOut->ColumnMajor[10] =  cosf(radians);
 
 	return inOut;
 }
 
 Mat4* Mat4_RotateYTo( Mat4* inOut, const float rotationInDegrees)
 {
+	const float radians = rotationInDegrees * 0.0174532925f;
+	
 	assert( inOut && "Mat4_RotateYTo out == NULL");
 	
-	// TODO:
+	inOut->ColumnMajor[ 0] =  cosf(radians);
+	inOut->ColumnMajor[ 2] =  sinf(radians);
+	inOut->ColumnMajor[ 8] = -sinf(radians);
+	inOut->ColumnMajor[10] =  cosf(radians);
 
 	return inOut;
 }
 
 Mat4* Mat4_RotateZTo( Mat4* inOut, const float rotationInDegrees)
 {
+	const float radians = rotationInDegrees * 0.0174532925f;
+	
 	assert( inOut && "Mat4_RotateZTo out == NULL");
 	
-	// TODO:
+	inOut->ColumnMajor[0] =  cosf(radians);
+	inOut->ColumnMajor[1] = -sinf(radians);
+	inOut->ColumnMajor[4] =  sinf(radians);
+	inOut->ColumnMajor[5] =  cosf(radians);
 
 	return inOut;
 }
 
-Mat4* Mat4_RotateOverAxisTo( Mat4* inOut, const Vec3* const rotationAxis, const float rotationInDegrees)
+Mat4* Mat4_RotateOverAxisTo( Mat4* inOut, const Vec3* const rotationAxisNormalized, const float rotationInDegrees)
 {
-	assert( inOut && "Mat4_RotateOverAxisTo out == NULL");
-	assert( rotationAxis && "Mat4_RotateOverAxisTo rotationAxis == NULL");
+	const float radians = rotationInDegrees * 0.0174532925f;
+	
+	const float cosine = cosf( radians);
+	const float oneMinCos = 1.0f - cosine;
+	const float sine = sinf( radians);
 
-	// TODO:
+	const float xz = rotationAxisNormalized->X * rotationAxisNormalized->Z * oneMinCos;
+	const float xy = rotationAxisNormalized->X * rotationAxisNormalized->Y * oneMinCos;
+	const float yz = rotationAxisNormalized->Y * rotationAxisNormalized->Z * oneMinCos;
+
+	const float normalXSine = rotationAxisNormalized->X * sine;
+	const float normalYSine = rotationAxisNormalized->X * sine;
+	const float normalZSine = rotationAxisNormalized->Y * sine;
+	
+	assert( inOut && "Mat4_RotateOverAxisTo out == NULL");
+	assert( rotationAxisNormalized && "Mat4_RotateOverAxisTo rotationAxis == NULL");
+	
+	inOut->ColumnMajor[ 0] = (rotationAxisNormalized->X * rotationAxisNormalized->X) * oneMinCos + cosine;
+	inOut->ColumnMajor[ 1] = xy + normalZSine;
+	inOut->ColumnMajor[ 2] = xz - normalYSine;
+
+	inOut->ColumnMajor[ 4] = xy - normalZSine;
+	inOut->ColumnMajor[ 5] = (rotationAxisNormalized->Y * rotationAxisNormalized->Y) * oneMinCos + cosine;
+	inOut->ColumnMajor[ 6] = yz + normalXSine;
+
+	inOut->ColumnMajor[ 0] = xz + normalYSine;
+	inOut->ColumnMajor[ 1] = yz - normalXSine;
+	inOut->ColumnMajor[ 2] = (rotationAxisNormalized->Z * rotationAxisNormalized->Z) * oneMinCos + cosine;
 
 	return inOut;
 }
@@ -526,14 +565,24 @@ Mat4* Mat4_ScaleNonUniform( Mat4* inOut, const Vec3* const scale)
 
 
 // vec3 extension
-Vec3* Vec3_MulMat4( Vec3* out, float* outW, const Vec3* inVec, const Mat4* const a)
+Vec3* Vec3_MulMat4( Vec3* out, float* inOutW, const Vec3* inVec, const Mat4* const a)
 {
 	assert( out && "Vec3_MulMat4 outVec == NULL");
-	assert( outW && "Vec3_MulMat4 outW == NULL");
+	assert( inOutW && "Vec3_MulMat4 outW == NULL");
 	assert( inVec && "Vec3_MulMat4 inVec == NULL");
 	assert( a && "Vec3_MulMat4 a == NULL");
 	
-	// TODO:
+	const float x = inVec->X;
+	const float y = inVec->Y;
+	const float z = inVec->Z;
+	const float w = *inOutW;
+	
+	out->X = a->ColumnMajor[0] * x + a->ColumnMajor[4] * y + a->ColumnMajor[ 8] * z + a->ColumnMajor[12] * w;
+	out->Y = a->ColumnMajor[1] * x + a->ColumnMajor[5] * y + a->ColumnMajor[ 9] * z + a->ColumnMajor[13] * w;
+	out->Z = a->ColumnMajor[2] * x + a->ColumnMajor[6] * y + a->ColumnMajor[10] * z + a->ColumnMajor[14] * w;
+	
+	// note that this is not totally mathematically correct, but because we know that we dont store data in 3, 7 and 11 we can ignore those (they would add up to 0)
+	*inOutW = a->ColumnMajor[15] * w;
 	
 	return out;
 }
