@@ -31,8 +31,19 @@ void Game_Update( Game* game, const double deltaTimeSec)
 
 }
 
-void Game_Render( Game* game, const double deltaTimeSec)
+void Game_Render( Game* game, Renderer* const renderer, const double deltaTimeSec)
 {	
+	// copy the test texture into the frame buffer
+	unsigned int y = 0;
+	for( y; y < game->DiffuseTexture->Height; ++y)
+	{
+		unsigned int x = 0;
+		for( x; x < game->DiffuseTexture->Width; ++x)
+		{
+			renderer->FrameBuffer->Pixels[y * renderer->FrameBuffer->Width + x] =  game->DiffuseTexture->Texels[y * game->DiffuseTexture->Width + x];
+		}
+	}
+
 	printf("Game_Render %f \n", deltaTimeSec);
 
 }

@@ -169,10 +169,12 @@ Vec3* Vec3_Normalize( Vec3* out, const Vec3* const a)
 
 float Vec3_Length( const Vec3* const a)
 {
+	assert( a && "Vec3_Normalize a == NULL");
 	return (float)sqrt( Vec3_Dot( a, a));
 }
 
 float Vec3_LengthSqr( const Vec3* const a)
 {
+	assert( a && "Vec3_Normalize a == NULL");
 	return Vec3_Dot( a, a);
 }

@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
 
 		Game_Update( game, deltaTimeSec);
 
-		Game_Render( game, deltaTimeSec);
+		Game_Render( game, renderer, deltaTimeSec);
 		
 		OGLSurface_Draw( surface);
 		OGLSurface_MapToFrameBuffer( surface, renderer->FrameBuffer);

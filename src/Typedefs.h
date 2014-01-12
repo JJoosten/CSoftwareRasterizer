@@ -1,6 +1,8 @@
 #ifndef CSR_TYPEDEFS_H
 #define CSR_TYPEDEFS_H
 
-typedef unsigned char bool;
+#ifndef __cplusplus
+	typedef unsigned char bool;
+#endif
 
 #endif // CSR_TYPEDEFS_H
