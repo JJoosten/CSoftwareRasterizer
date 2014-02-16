@@ -20,7 +20,7 @@ Camera* Camera_Create( const Mat4* const projectionMatrix)
 	return camera;
 }
 
-void Camera_Destroy( Camera* camera)
+void Camera_Destroy( Camera* const camera)
 {
 	free(camera);
 }

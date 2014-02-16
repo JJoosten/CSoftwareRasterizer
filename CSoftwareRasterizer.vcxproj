@@ -107,8 +107,10 @@
     <ClCompile Include="src\Camera\Camera.c" />
     <ClCompile Include="src\FrameBuffer\FrameBuffer.c" />
     <ClCompile Include="src\Game.c" />
+    <ClCompile Include="src\Input\Keyboard.cpp" />
     <ClCompile Include="src\main.c" />
     <ClCompile Include="src\Math\Mat4.c" />
+    <ClCompile Include="src\Math\Vec2.c" />
     <ClCompile Include="src\Math\Vec3.c" />
     <ClCompile Include="src\OpenGL\OGLSurface.c" />
     <ClCompile Include="src\Renderer\Renderer.c" />
@@ -122,7 +124,10 @@
     <ClInclude Include="src\Defines.h" />
     <ClInclude Include="src\FrameBuffer\FrameBuffer.h" />
     <ClInclude Include="src\Game.h" />
+    <ClInclude Include="src\Input\Keyboard.h" />
+    <ClInclude Include="src\Input\KeyboardKeys.h" />
     <ClInclude Include="src\Math\Mat4.h" />
+    <ClInclude Include="src\Math\Vec2.h" />
     <ClInclude Include="src\Math\Vec3.h" />
     <ClInclude Include="src\OpenGL\OGLSurface.h" />
     <ClInclude Include="src\Renderer\Renderer.h" />
@@ -131,6 +136,14 @@
     <ClInclude Include="src\Texture\Texture.h" />
     <ClInclude Include="src\Typedefs.h" />
     <ClInclude Include="src\Utility\Validate.h" />
+    <ClInclude Include="src\VertexData\IndexBuffer.h" />
+    <ClInclude Include="src\VertexData\Mesh.h" />
+    <ClInclude Include="src\VertexData\Triangle.h" />
+    <ClInclude Include="src\VertexData\VertexBuffer.h" />
+    <ClInclude Include="src\VertexData\Vertex.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Notes.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

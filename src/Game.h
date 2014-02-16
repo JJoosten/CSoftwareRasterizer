@@ -5,16 +5,18 @@
 #include "Texture/Texture.h"
 #include "Camera/Camera.h"
 #include "Renderer/Renderer.h"
+#include "Input/Keyboard.h"
 
-typedef struct sGame
+typedef struct
 {
 	Camera* Camera;
 	Texture* DiffuseTexture;
+	Keyboard* Keyboard;
 } Game;
 
-Game* Game_Create( void);
-void Game_Destroy( Game* game);
-void Game_Update( Game* game, const double deltaTimeSec);
-void Game_Render( Game* game, Renderer* const renderer, const double deltaTimeSec);
+Game* Game_Create( Keyboard* const keyboard);
+void Game_Destroy( Game* const game);
+void Game_Update( Game* const game, const double deltaTimeSec);
+void Game_Render( Game* const game, Renderer* const renderer, const double deltaTimeSec);
 
 #endif // GAME_H

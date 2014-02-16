@@ -4,7 +4,7 @@
 #include <assert.h>
 
 
-Vec3* Vec3_LoadZero( Vec3* out)
+Vec3* Vec3_LoadZero( Vec3* const out)
 {
 	assert( out && "Vec3_LoadZero out == NULL");
 
@@ -15,7 +15,7 @@ Vec3* Vec3_LoadZero( Vec3* out)
 	return out;
 }
 
-Vec3* Vec3_LoadOne( Vec3* out)
+Vec3* Vec3_LoadOne( Vec3* const out)
 {
 	assert( out && "Vec3_LoadOne out == NULL");
 
@@ -26,7 +26,7 @@ Vec3* Vec3_LoadOne( Vec3* out)
 	return out;
 }
 
-Vec3* Vec3_LoadXYZ( Vec3* out, const float x, const float y, const float z)
+Vec3* Vec3_LoadXYZ( Vec3* const out, const float x, const float y, const float z)
 {
 	assert( out && "Vec3_LoadXYZ out == NULL");
 
@@ -37,7 +37,7 @@ Vec3* Vec3_LoadXYZ( Vec3* out, const float x, const float y, const float z)
 	return out;
 }
 
-Vec3* Vec3_LoadScalar( Vec3* out, const float x)
+Vec3* Vec3_LoadScalar( Vec3* const out, const float x)
 {
 	assert( out && "Vec3_LoadScalar out == NULL");
 
@@ -48,7 +48,7 @@ Vec3* Vec3_LoadScalar( Vec3* out, const float x)
 	return out;
 }
 
-Vec3* Vec3_LoadArray( Vec3* out, const float* const xyz)
+Vec3* Vec3_LoadArray( Vec3* const out, const float* const xyz)
 {
 	assert( out && "Vec3_LoadArray out == NULL");
 	assert( xyz && "Vec3_LoadArray xyz == NULL");
@@ -60,7 +60,7 @@ Vec3* Vec3_LoadArray( Vec3* out, const float* const xyz)
 	return out;
 }
 
-Vec3* Vec3_LoadForward( Vec3* out)
+Vec3* Vec3_LoadForward( Vec3* const out)
 {
 	assert( out && "Vec3_LoadForward out == NULL");
 
@@ -71,7 +71,7 @@ Vec3* Vec3_LoadForward( Vec3* out)
 	return out;
 }
 
-Vec3* Vec3_LoadLeft( Vec3* out)
+Vec3* Vec3_LoadLeft( Vec3* const out)
 {
 	assert( out && "Vec3_LoadLeft out == NULL");
 
@@ -82,7 +82,7 @@ Vec3* Vec3_LoadLeft( Vec3* out)
 	return out;
 }
 
-Vec3* Vec3_LoadUp( Vec3* out)
+Vec3* Vec3_LoadUp( Vec3* const out)
 {
 	assert( out && "Vec3_LoadUp out == NULL");
 
@@ -94,18 +94,18 @@ Vec3* Vec3_LoadUp( Vec3* out)
 }
 
 
-Vec3* Vec3_Copy( Vec3* out, const Vec3* const a)
+Vec3* Vec3_Copy( Vec3* const out, const Vec3* const a)
 {
 	assert( out && "Vec3_Copy a == NULL");
 	assert( a && "Vec3_Copy a == NULL");
 
-	out = Vec3_LoadArray( out, a->XYZ);
+	Vec3_LoadArray( out, a->XYZ);
 
 	return out;
 }
 
 
-Vec3* Vec3_Add( Vec3* out, const Vec3* const a, const Vec3* const b)
+Vec3* Vec3_Add( Vec3* const out, const Vec3* const a, const Vec3* const b)
 {
 	assert( out && "Vec3_Add out == NULL");
 	assert( a && "Vec3_Add a == NULL");
@@ -118,7 +118,7 @@ Vec3* Vec3_Add( Vec3* out, const Vec3* const a, const Vec3* const b)
 	return out;
 }
 
-Vec3* Vec3_Sub( Vec3* out, const Vec3* const a, const Vec3* const b)
+Vec3* Vec3_Sub( Vec3* const out, const Vec3* const a, const Vec3* const b)
 {
 	assert( out && "Vec3_Sub out == NULL");
 	assert( a && "Vec3_Sub a == NULL");
@@ -131,7 +131,7 @@ Vec3* Vec3_Sub( Vec3* out, const Vec3* const a, const Vec3* const b)
 	return out;
 }
 
-Vec3* Vec3_Mul( Vec3* out, const Vec3* const a, const Vec3* const b)
+Vec3* Vec3_Mul( Vec3* const out, const Vec3* const a, const Vec3* const b)
 {
 	assert( out && "Vec3_Mul out == NULL");
 	assert( a && "Vec3_Mul a == NULL");
@@ -144,7 +144,7 @@ Vec3* Vec3_Mul( Vec3* out, const Vec3* const a, const Vec3* const b)
 	return out;
 }
 
-Vec3* Vec3_Scale( Vec3* out, const Vec3* const a, const float b)
+Vec3* Vec3_Scale( Vec3* const out, const Vec3* const a, const float b)
 {
 	assert( out && "Vec3_Scale out == NULL");
 	assert( a && "Vec3_Scale a == NULL");
@@ -165,7 +165,7 @@ float Vec3_Dot( const Vec3* const a, const Vec3* const b)
 	return a->X * b->X + a->Y * b->Y + a->Z * b->Z;
 }
 
-Vec3* Vec3_Cross( Vec3* out, const Vec3* const a, const Vec3* const b)
+Vec3* Vec3_Cross( Vec3* const out, const Vec3* const a, const Vec3* const b)
 {
 	float x;
 	float y;
@@ -186,7 +186,7 @@ Vec3* Vec3_Cross( Vec3* out, const Vec3* const a, const Vec3* const b)
 	return out;
 }
 
-Vec3* Vec3_Normalize( Vec3* out, const Vec3* const a)
+Vec3* Vec3_Normalize( Vec3* const out, const Vec3* const a)
 {
 	const float lengthSqrt = Vec3_LengthSqr(a);
 	
@@ -196,7 +196,7 @@ Vec3* Vec3_Normalize( Vec3* out, const Vec3* const a)
 	if( lengthSqrt > 0.0f)
 	{
 		const float oneOverLength = 1.0f / sqrtf(lengthSqrt);
-		out = Vec3_Scale( out, a, oneOverLength);
+		Vec3_Scale( out, a, oneOverLength);
 	}
 
 	return out;

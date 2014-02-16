@@ -40,7 +40,7 @@ Texture* Texture_Load( const char* const textureFile)
 	return texture;
 }
 
-void Texture_Destroy( Texture* texture)
+void Texture_Destroy( Texture* const texture)
 {
 	assert( texture && "Texture_Destroy texture is NULL");
 	assert( texture->Texels && "Texture_Destroy texture->Data is NULL");

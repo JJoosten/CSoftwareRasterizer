@@ -13,21 +13,18 @@
 
 
 
-Stopwatch Stopwatch_Init( void)
+void Stopwatch_Init( Stopwatch* const stopwatch)
 {
-	Stopwatch stopwatch;
-	memset( &stopwatch, 0, sizeof(Stopwatch));
+	memset( stopwatch, 0, sizeof(Stopwatch));
 	
 #ifdef _WIN32
-	QueryPerformanceFrequency( (LARGE_INTEGER*)&stopwatch.Frequency);
+	QueryPerformanceFrequency( (LARGE_INTEGER*)&stopwatch->Frequency);
 #else
 	// add support for linux and mac
 #endif
-
-	return stopwatch;
 }
 
-void Stopwatch_Start( Stopwatch* stopwatch)
+void Stopwatch_Start( Stopwatch* const stopwatch)
 {
 #ifdef _WIN32
 	QueryPerformanceCounter( (LARGE_INTEGER*)&stopwatch->StartTime);
@@ -36,7 +33,7 @@ void Stopwatch_Start( Stopwatch* stopwatch)
 #endif
 }
 
-void Stopwatch_Stop( Stopwatch* stopwatch)
+void Stopwatch_Stop( Stopwatch* const stopwatch)
 {
 #ifdef _WIN32
 	QueryPerformanceCounter( (LARGE_INTEGER*)&stopwatch->EndTime);
@@ -46,14 +43,14 @@ void Stopwatch_Stop( Stopwatch* stopwatch)
 #endif
 }
 
-void Stopwatch_Reset( Stopwatch* stopwatch)
+void Stopwatch_Reset( Stopwatch* const stopwatch)
 {
 	stopwatch->StartTime = 0;
 	stopwatch->EndTime = 0;
 	stopwatch->IntervalInSeconds = 0;
 }
 
-double Stopwatch_GetIntervalInSeconds( Stopwatch* stopwatch)
+double Stopwatch_GetIntervalInSeconds( Stopwatch* const stopwatch)
 {
 	return stopwatch->IntervalInSeconds;
 }

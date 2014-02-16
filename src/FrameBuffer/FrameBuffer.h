@@ -3,7 +3,7 @@
 
 #include "../Defines.h"
 
-typedef struct sFrameBuffer
+typedef struct
 {
 	unsigned int Width;
 	unsigned int Height;
@@ -11,9 +11,9 @@ typedef struct sFrameBuffer
 } FrameBuffer;
 
 FrameBuffer* FrameBuffer_Create( const unsigned int width, const unsigned int height);
-void FrameBuffer_Destroy( FrameBuffer* texture);
-void FrameBuffer_Clear( FrameBuffer* frameBuffer, const unsigned int clearColor);
-void FrameBuffer_ClearToBlack( FrameBuffer* frameBuffer);
+void FrameBuffer_Destroy( FrameBuffer* const texture);
+void FrameBuffer_Clear( FrameBuffer* const frameBuffer, const unsigned int clearColor);
+void FrameBuffer_ClearToBlack( FrameBuffer* const frameBuffer);
 
 
 

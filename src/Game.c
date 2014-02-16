@@ -6,13 +6,15 @@
 #include <stdio.h>
 
 
-Game* Game_Create( void)
+Game* Game_Create( Keyboard* const keyboard)
 {
 	Mat4 tmpProjectionMatrix;
 	
 	Game* game = malloc( sizeof(Game));
 	
 	memset( game, 0, sizeof(Game));
+
+	game->Keyboard = keyboard;
 
 	game->DiffuseTexture = Texture_Load("assets/textures/checkerboard.png");
 	
@@ -23,7 +25,7 @@ Game* Game_Create( void)
 }
 
 
-void Game_Destroy( Game* game)
+void Game_Destroy( Game* const game)
 {
 	printf("Game_Destroy \n");
 
@@ -31,16 +33,20 @@ void Game_Destroy( Game* game)
 }
 
 
-void Game_Update( Game* game, const double deltaTimeSec)
+void Game_Update( Game* const game, const double deltaTimeSec)
 {
 	printf("Game_Update %f \n", deltaTimeSec);
 
 }
 
-void Game_Render( Game* game, Renderer* const renderer, const double deltaTimeSec)
+void Game_Render( Game* const game, Renderer* const renderer, const double deltaTimeSec)
 {	
-	// copy the test texture into the frame buffer
 	unsigned int y = 0;
+
+	// clear frame to black
+	FrameBuffer_ClearToBlack( renderer->FrameBuffer);
+		
+	// copy the test texture into the frame buffer
 	for( y; y < game->DiffuseTexture->Height; ++y)
 	{
 		unsigned int x = 0;

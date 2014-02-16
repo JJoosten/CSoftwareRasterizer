@@ -5,13 +5,14 @@
 #include "Renderer/Renderer.h"
 #include "OpenGL/OGLSurface.h"
 #include "Stopwatch/Stopwatch.h"
+#include "Input/Keyboard.h"
 #include <SFML/Window.h>
 
 // global variables
 bool g_isWindowOpen = true;
 
 
-void handleWindowEvents( sfWindow* window)
+void handleWindowEvents( sfWindow* window, Keyboard* keyboard)
 {
 	// variables
 	sfEvent windowEvent;
@@ -32,12 +33,28 @@ void handleWindowEvents( sfWindow* window)
 				sfWindow_setFramerateLimit(window, 24);
 			break;
 			case sfEvtKeyPressed:
-				// TODO: capture keyboard keys
-				g_isWindowOpen = !sfKeyboard_isKeyPressed(sfKeyEscape);
-				
+			{
+				unsigned int i = 0; 
+				for( i; i < CSR_KEYBOARD_MAX_KEYS; ++i)
+				{
+					if( sfKeyboard_isKeyPressed(i))
+					{
+						Keyboard_SetKeyDown(keyboard, i);
+					}
+				}
+			}
 			break;
 			case sfEvtKeyReleased:
-				// TODO: capture keyboard keys
+			{
+				unsigned int i = 0; 
+				for( i; i < CSR_KEYBOARD_MAX_KEYS; ++i)
+				{
+					if( !sfKeyboard_isKeyPressed(i))
+					{
+						Keyboard_SetKeyUp(keyboard, i);
+					}
+				}
+			}
 			break;
 		}
 	}
@@ -56,11 +73,17 @@ int main(int argc, char *argv[])
 
 	Renderer* renderer = Renderer_Create( SCREEN_WIDTH, SCREEN_HEIGHT);
 	
-	Game* game = Game_Create();
+	Keyboard keyboard;
 
-	Stopwatch stopwatch = Stopwatch_Init();
+	Game* game = Game_Create( &keyboard);
 	
 	OGLSurface* surface = OGLSurface_Create( renderer->FrameBuffer);
+
+	Stopwatch stopwatch;
+	
+	Keyboard_Initialize( &keyboard);
+
+	Stopwatch_Init( &stopwatch);
 
 	// setup buffers
 	OGLSurface_MapToFrameBuffer( surface, renderer->FrameBuffer);
@@ -74,14 +97,15 @@ int main(int argc, char *argv[])
 		// variables
 		double deltaTimeSec = 0;
 	
-		FrameBuffer_ClearToBlack( renderer->FrameBuffer);
-	
 		// setup timers
 		Stopwatch_Stop( &stopwatch);
 		Stopwatch_Start( &stopwatch);
 		deltaTimeSec = Stopwatch_GetIntervalInSeconds( &stopwatch);
 
-		handleWindowEvents( window);
+		// update input
+		Keyboard_Update( &keyboard);
+
+		handleWindowEvents( window, &keyboard);
 
 		Game_Update( game, deltaTimeSec);
 
@@ -91,6 +115,8 @@ int main(int argc, char *argv[])
 		OGLSurface_MapToFrameBuffer( surface, renderer->FrameBuffer);
 
 		sfWindow_display( window);
+
+		g_isWindowOpen = !Keyboard_IsKeyPressed( &keyboard, csrKeyEscape);
 	}
 	
 	Game_Destroy( game);

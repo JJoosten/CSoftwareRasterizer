@@ -40,6 +40,9 @@
     <Filter Include="src\Math">
       <UniqueIdentifier>{da783744-2d95-44f4-9326-16b2e1b7ddc8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\VertexData">
+      <UniqueIdentifier>{2737de08-744e-4f4d-bf2c-2c62665ea935}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.c">
@@ -76,6 +79,12 @@
       <Filter>src\Math</Filter>
     </ClCompile>
     <ClCompile Include="src\Math\Vec3.c">
+      <Filter>src\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Input\Keyboard.cpp">
+      <Filter>src\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Math\Vec2.c">
       <Filter>src\Math</Filter>
     </ClCompile>
   </ItemGroup>
@@ -122,5 +131,32 @@
     <ClInclude Include="src\Math\Mat4.h">
       <Filter>src\Math</Filter>
     </ClInclude>
+    <ClInclude Include="src\Input\Keyboard.h">
+      <Filter>src\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Input\KeyboardKeys.h">
+      <Filter>src\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Math\Vec2.h">
+      <Filter>src\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\VertexData\VertexBuffer.h">
+      <Filter>src\VertexData</Filter>
+    </ClInclude>
+    <ClInclude Include="src\VertexData\Vertex.h">
+      <Filter>src\VertexData</Filter>
+    </ClInclude>
+    <ClInclude Include="src\VertexData\IndexBuffer.h">
+      <Filter>src\VertexData</Filter>
+    </ClInclude>
+    <ClInclude Include="src\VertexData\Mesh.h">
+      <Filter>src\VertexData</Filter>
+    </ClInclude>
+    <ClInclude Include="src\VertexData\Triangle.h">
+      <Filter>src\VertexData</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Notes.txt" />
   </ItemGroup>
 </Project>

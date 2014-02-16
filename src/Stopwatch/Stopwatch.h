@@ -1,7 +1,7 @@
 #ifndef CSR_STOPWATCH_H
 #define CSR_STOPWATCH_H
 
-typedef struct sStopwatch
+typedef struct
 {
 	unsigned long long StartTime;
 	unsigned long long EndTime;
@@ -12,10 +12,10 @@ typedef struct sStopwatch
 } Stopwatch;
 
 
-Stopwatch Stopwatch_Init( void);
-void Stopwatch_Start( Stopwatch* stopwatch);
-void Stopwatch_Stop( Stopwatch* stopwatch);
-void Stopwatch_Reset( Stopwatch* stopwatch);
-double Stopwatch_GetIntervalInSeconds( Stopwatch* stopwatch);
+void Stopwatch_Init( Stopwatch* const stopwatch);
+void Stopwatch_Start( Stopwatch* const stopwatch);
+void Stopwatch_Stop( Stopwatch* const stopwatch);
+void Stopwatch_Reset( Stopwatch* const stopwatch);
+double Stopwatch_GetIntervalInSeconds( Stopwatch* const stopwatch);
 
 #endif // CSR_STOPWATCH_H

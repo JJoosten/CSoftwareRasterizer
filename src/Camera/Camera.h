@@ -3,7 +3,7 @@
 
 #include "../Math/Mat4.h"
 
-typedef struct sCamera
+typedef struct
 {
 	Mat4 ProjectionMatrix;
 	Mat4 ViewMatrix;
@@ -14,7 +14,7 @@ typedef struct sCamera
 } Camera;
 
 Camera* Camera_Create( const Mat4* const projectionMatrix);
-void Camera_Destroy( Camera* camera);
+void Camera_Destroy( Camera* const camera);
 
 
 #endif // CSR_CAMERA_H

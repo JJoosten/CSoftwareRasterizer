@@ -4,14 +4,14 @@
 #include <assert.h>
 
 
-Mat4* Mat4_LoadMat4( Mat4* out, const Mat4* a)
+Mat4* Mat4_LoadMat4( Mat4* const out, const Mat4* const a)
 {
 	assert( out && "Mat4_LoadMat4 out == NULL");
 	assert( a && "Mat4_LoadMat4 a == NULL");
 	return Mat4_Copy(out, a);
 }
 
-Mat4* Mat4_LoadIdentity( Mat4* out)
+Mat4* Mat4_LoadIdentity( Mat4* const out)
 {
 	assert( out && "Mat4_LoadPerspective out == NULL");
 	memset( out, 0, sizeof(float) * 16);
@@ -23,7 +23,7 @@ Mat4* Mat4_LoadIdentity( Mat4* out)
 	return out;
 }
 
-Mat4* Mat4_LoadOrtho( Mat4* out, const float left, const float right, const float top, const float bottom, const float near, const float far)
+Mat4* Mat4_LoadOrtho( Mat4* const out, const float left, const float right, const float top, const float bottom, const float near, const float far)
 {
 	assert( out && "Mat4_LoadPerspective out == NULL");
 
@@ -35,7 +35,7 @@ Mat4* Mat4_LoadOrtho( Mat4* out, const float left, const float right, const floa
 	return out;
 }
 
-Mat4* Mat4_LoadPerspective( Mat4* out, const float fovInDegrees, const float aspectRatio, const float near, const float far)
+Mat4* Mat4_LoadPerspective( Mat4* const out, const float fovInDegrees, const float aspectRatio, const float near, const float far)
 {
 	const float f = 1.0f / tanf( 0.0174532925 * fovInDegrees / 2.0f);
 	
@@ -48,7 +48,7 @@ Mat4* Mat4_LoadPerspective( Mat4* out, const float fovInDegrees, const float asp
 	return out;
 }
 
-Mat4* Mat4_LoadLookAt( Mat4* out, const Vec3* const target, const Vec3* const eye, const Vec3* const up)
+Mat4* Mat4_LoadLookAt( Mat4* const out, const Vec3* const target, const Vec3* const eye, const Vec3* const up)
 {
 	Vec3 direction, localLeft, localUp;
 
@@ -74,7 +74,7 @@ Mat4* Mat4_LoadLookAt( Mat4* out, const Vec3* const target, const Vec3* const ey
 }
 
 
-Mat4* Mat4_Copy( Mat4* out, const Mat4* a)
+Mat4* Mat4_Copy( Mat4* const out, const Mat4* a)
 {
 	assert( out && "Mat4_Copy out == NULL");
 	assert( a && "Mat4_Copy a == NULL");
@@ -83,7 +83,7 @@ Mat4* Mat4_Copy( Mat4* out, const Mat4* a)
 }
 
 
-Mat4* Mat4_Transpose( Mat4* out, const Mat4* const a)
+Mat4* Mat4_Transpose( Mat4* const out, const Mat4* const a)
 {
 	float tempVal;
 	
@@ -135,7 +135,7 @@ Mat4* Mat4_Transpose( Mat4* out, const Mat4* const a)
 	return out;
 }
 
-Mat4* Mat4_Inverse( Mat4* out, const Mat4* const a)
+Mat4* Mat4_Inverse( Mat4* const out, const Mat4* const a)
 {
 	// calculate adjucate matrix
 	float determinant3x3[16];
@@ -276,7 +276,7 @@ Mat4* Mat4_Inverse( Mat4* out, const Mat4* const a)
 	return out;
 }
 
-Mat4* Mat4_Multiply( Mat4* out, const Mat4* const a, const Mat4* const b)
+Mat4* Mat4_Multiply( Mat4* const out, const Mat4* const a, const Mat4* const b)
 {
 	// column major		convinience view on storage in mem
 	// 00 04 08 12		00 01 02 03
@@ -371,7 +371,7 @@ Mat4* Mat4_Multiply( Mat4* out, const Mat4* const a, const Mat4* const b)
 }
 
 
-Mat4* Mat4_Translate( Mat4* inOut, const Vec3* const translation)
+Mat4* Mat4_Translate( Mat4* const inOut, const Vec3* const translation)
 {
 	assert( inOut && "Mat4_Translate out == NULL");
 	assert( translation && "Mat4_Translate translation == NULL");
@@ -383,7 +383,7 @@ Mat4* Mat4_Translate( Mat4* inOut, const Vec3* const translation)
 	return inOut;
 }
 
-Mat4* Mat4_TranslateTo( Mat4* inOut, const Vec3* const translation)
+Mat4* Mat4_TranslateTo( Mat4* const inOut, const Vec3* const translation)
 {
 	assert( inOut && "Mat4_TranslateTo out == NULL");
 	assert( translation && "Mat4_TranslateTo translation == NULL");
@@ -396,7 +396,7 @@ Mat4* Mat4_TranslateTo( Mat4* inOut, const Vec3* const translation)
 }
 
 
-Mat4* Mat4_RotateXTo( Mat4* inOut, const float rotationInDegrees)
+Mat4* Mat4_RotateXTo( Mat4* const inOut, const float rotationInDegrees)
 {
 	const float radians = rotationInDegrees * 0.0174532925f;
 	
@@ -410,7 +410,7 @@ Mat4* Mat4_RotateXTo( Mat4* inOut, const float rotationInDegrees)
 	return inOut;
 }
 
-Mat4* Mat4_RotateYTo( Mat4* inOut, const float rotationInDegrees)
+Mat4* Mat4_RotateYTo( Mat4* const inOut, const float rotationInDegrees)
 {
 	const float radians = rotationInDegrees * 0.0174532925f;
 	
@@ -424,7 +424,7 @@ Mat4* Mat4_RotateYTo( Mat4* inOut, const float rotationInDegrees)
 	return inOut;
 }
 
-Mat4* Mat4_RotateZTo( Mat4* inOut, const float rotationInDegrees)
+Mat4* Mat4_RotateZTo( Mat4* const inOut, const float rotationInDegrees)
 {
 	const float radians = rotationInDegrees * 0.0174532925f;
 	
@@ -438,7 +438,7 @@ Mat4* Mat4_RotateZTo( Mat4* inOut, const float rotationInDegrees)
 	return inOut;
 }
 
-Mat4* Mat4_RotateOverAxisTo( Mat4* inOut, const Vec3* const rotationAxisNormalized, const float rotationInDegrees)
+Mat4* Mat4_RotateOverAxisTo( Mat4* const inOut, const Vec3* const rotationAxisNormalized, const float rotationInDegrees)
 {
 	const float radians = rotationInDegrees * 0.0174532925f;
 	
@@ -473,7 +473,7 @@ Mat4* Mat4_RotateOverAxisTo( Mat4* inOut, const Vec3* const rotationAxisNormaliz
 }
 
 
-Mat4* Mat4_ScaleUniform( Mat4* inOut, const float scale)
+Mat4* Mat4_ScaleUniform( Mat4* const inOut, const float scale)
 {
 	assert( inOut && "Mat4_ScaleUniform out == NULL");
 	
@@ -484,7 +484,7 @@ Mat4* Mat4_ScaleUniform( Mat4* inOut, const float scale)
 	return inOut;
 }
 
-Mat4* Mat4_ScaleNonUniform( Mat4* inOut, const Vec3* const scale)
+Mat4* Mat4_ScaleNonUniform( Mat4* const inOut, const Vec3* const scale)
 {
 	assert( inOut && "Mat4_ScaleNonUniform out == NULL");
 	assert( scale && "Mat4_ScaleNonUniform scale == NULL");
@@ -498,7 +498,7 @@ Mat4* Mat4_ScaleNonUniform( Mat4* inOut, const Vec3* const scale)
 
 
 // vec3 extension
-Vec3* Vec3_MulMat4( Vec3* out, float* inOutW, const Vec3* inVec, const Mat4* const a)
+Vec3* Vec3_MulMat4( Vec3* const out, float* inOutW, const Vec3* inVec, const Mat4* const a)
 {
 	float x; 
 	float y; 

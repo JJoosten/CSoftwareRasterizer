@@ -73,19 +73,19 @@ OGLSurface* OGLSurface_Create( const FrameBuffer* const framebuffer)
 	return surface;
 }
 
-void OGLSurface_Destroy( OGLSurface* surface)
+void OGLSurface_Destroy( OGLSurface* const surface)
 {
 	glDeleteTextures( 2, surface->TextureID);
 	glDeleteBuffers( 2, surface->PixelBufferID); 
 	free(surface);
 }
 
-void OGLSurface_MapToFrameBuffer( OGLSurface* surface, FrameBuffer* frameBuffer)
+void OGLSurface_MapToFrameBuffer( OGLSurface* const surface, FrameBuffer* const frameBuffer)
 {
 	frameBuffer->Pixels = surface->PixelData;
 }
 
-void OGLSurface_Draw( OGLSurface* surface)
+void OGLSurface_Draw( OGLSurface* const surface)
 {
 	transferSurfaceToTexture( surface);
 
