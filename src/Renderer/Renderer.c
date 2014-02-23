@@ -49,7 +49,7 @@ void Renderer_DrawMesh( Renderer* const renderer, const Mesh* const mesh)
 	{
 		const unsigned int triangleVerticesOffset = i * 3;
 
-		Triangle triangle;
+		RasterTriangle triangle;
 		if( mesh->IndexBuffer != NULL)
 		{
 			// if index buffer -> triangle assembly
@@ -57,15 +57,15 @@ void Renderer_DrawMesh( Renderer* const renderer, const Mesh* const mesh)
 			const unsigned int index1 = mesh->IndexBuffer->Indices[triangleVerticesOffset + 0];
 			const unsigned int index2 = mesh->IndexBuffer->Indices[triangleVerticesOffset + 1];
 			const unsigned int index3 = mesh->IndexBuffer->Indices[triangleVerticesOffset + 2];
-			triangle.V1 = mesh->VertexBuffer->Vertices[index1];
-			triangle.V2 = mesh->VertexBuffer->Vertices[index2];
-			triangle.V3 = mesh->VertexBuffer->Vertices[index3];
+			RasterVertex_LoadVertex( &triangle.V1, &mesh->VertexBuffer->Vertices[index1]);
+			RasterVertex_LoadVertex( &triangle.V2, &mesh->VertexBuffer->Vertices[index2]);
+			RasterVertex_LoadVertex( &triangle.V3, &mesh->VertexBuffer->Vertices[index3]);
 		}
 		else
 		{
-			triangle.V1 = mesh->VertexBuffer->Vertices[triangleVerticesOffset + 0];
-			triangle.V2 = mesh->VertexBuffer->Vertices[triangleVerticesOffset + 1];
-			triangle.V3 = mesh->VertexBuffer->Vertices[triangleVerticesOffset + 2];
+			RasterVertex_LoadVertex( &triangle.V1, &mesh->VertexBuffer->Vertices[triangleVerticesOffset + 0]);
+			RasterVertex_LoadVertex( &triangle.V2, &mesh->VertexBuffer->Vertices[triangleVerticesOffset + 1]);
+			RasterVertex_LoadVertex( &triangle.V3, &mesh->VertexBuffer->Vertices[triangleVerticesOffset + 2]);
 		}
 
 		// transform triangle vertices (vertex shader stage)
@@ -74,7 +74,7 @@ void Renderer_DrawMesh( Renderer* const renderer, const Mesh* const mesh)
 		// backface culling
 
 
-		// clipping Sutherland-hodgman (can be done in 
+		// clipping Sutherland-hodgman 
 
 
 		// draw triangle(s) potentially a trianglefan due to clipping (fragment shader stage)

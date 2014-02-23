@@ -10,4 +10,12 @@ typedef struct
 	Vertex V3;
 } Triangle;
 
+
+typedef struct
+{
+	RasterVertex V1;
+	RasterVertex V2;
+	RasterVertex V3;
+} RasterTriangle;
+
 #endif //CSR_TRIANGLE_H

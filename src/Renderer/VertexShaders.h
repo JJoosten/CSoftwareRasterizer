@@ -11,9 +11,9 @@ typedef struct
 
 
 // function description
-typedef void (*VertexShaderFunction)( Triangle* const triangle_IN_OUT, const VertexShaderUniforms* const uniforms);
+typedef void (*VertexShaderFunction)( RasterTriangle* const triangle_IN_OUT, const VertexShaderUniforms* const uniforms);
 
 
-void DefaultVertexShader( Triangle* const triangle, const VertexShaderUniforms* const uniforms);
+void DefaultVertexShader( RasterTriangle* const triangle_IN_OUT, const VertexShaderUniforms* const uniforms);
 
 #endif // CSR_VERTEX_SHADER_H

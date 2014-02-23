@@ -1,6 +1,6 @@
 #include "Rasterizer.h"
 
-void RasterizeTriangle( Renderer* const renderer, const Triangle* const triangle)
+void RasterizeTriangle( Renderer* const renderer, const RasterTriangle* const triangle)
 {
 	// go over triangle edges
 

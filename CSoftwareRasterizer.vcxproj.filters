@@ -93,6 +93,12 @@
     <ClCompile Include="src\Renderer\Rasterizer.c">
       <Filter>src\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Math\Vec4.c">
+      <Filter>src\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VertexData\Vertex.c">
+      <Filter>src\VertexData</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Texture\Texture.h">
@@ -166,6 +172,9 @@
     </ClInclude>
     <ClInclude Include="src\Renderer\VertexShaders.h">
       <Filter>src\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Math\Vec4.h">
+      <Filter>src\Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

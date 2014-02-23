@@ -11,8 +11,12 @@ typedef struct
 		{
 			float X, Y, Z;
 		};
+		struct 
+		{
+			float R, G, B;
+		};
 	};
-} Vec3;
+} Vec3, RGB;
 
 
 Vec3* Vec3_LoadZero( Vec3* const out);

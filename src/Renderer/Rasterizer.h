@@ -4,7 +4,7 @@
 #include "Renderer.h"
 #include "../VertexData/Triangle.h"
 
-void RasterizeTriangle( Renderer* const renderer, const Triangle* const triangle);
+void RasterizeTriangle( Renderer* const renderer, const RasterTriangle* const triangle);
 
 
 #endif // CSR_RASTERIZER_H

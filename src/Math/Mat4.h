@@ -1,7 +1,7 @@
 #ifndef CSR_MAT4_H
 #define CSR_MAT4_H
 
-#include "Vec3.h"
+#include "Vec4.h" // includes vec3
 #include "../Typedefs.h"
 
 typedef struct
@@ -35,6 +35,10 @@ Mat4* Mat4_ScaleNonUniform( Mat4* const inOut, const Vec3* const scale);
 
 // vec3 extension
 Vec3* Vec3_MulMat4( Vec3* const out, float* outW, const Vec3* inVec, const Mat4* const a);
+
+// vec4 extension
+Vec4* Vec4_MulMat4( Vec4* const out, const Vec4* inVec, const Mat4* const a);
+
 
 
 #endif //CSR_MAT4_H

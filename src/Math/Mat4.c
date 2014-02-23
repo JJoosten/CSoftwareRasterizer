@@ -524,3 +524,31 @@ Vec3* Vec3_MulMat4( Vec3* const out, float* inOutW, const Vec3* inVec, const Mat
 	
 	return out;
 }
+
+
+// vec4 extension
+Vec4* Vec4_MulMat4( Vec4* const out, const Vec4* inVec, const Mat4* const a)
+{
+	float x; 
+	float y; 
+	float z; 
+	float w; 
+
+	assert( out && "Vec4_MulMat4 outVec == NULL");
+	assert( inVec && "Vec4_MulMat4 inVec == NULL");
+	assert( a && "Vec4_MulMat4 a == NULL");
+	
+	x = inVec->X;
+	y = inVec->Y;
+	z = inVec->Z;
+	w = inVec->W;
+	
+	out->X = a->ColumnMajor[0] * x + a->ColumnMajor[4] * y + a->ColumnMajor[ 8] * z + a->ColumnMajor[12] * w;
+	out->Y = a->ColumnMajor[1] * x + a->ColumnMajor[5] * y + a->ColumnMajor[ 9] * z + a->ColumnMajor[13] * w;
+	out->Z = a->ColumnMajor[2] * x + a->ColumnMajor[6] * y + a->ColumnMajor[10] * z + a->ColumnMajor[14] * w;
+	out->W = a->ColumnMajor[3] * x + a->ColumnMajor[7] * y + a->ColumnMajor[11] * z + a->ColumnMajor[15] * w;
+	
+	// TODO: note that this is not totally mathematically correct, but because we know that we dont store data in 3, 7 and 11 we can ignore those (they would add up to 0)
+	
+	return out;
+}
