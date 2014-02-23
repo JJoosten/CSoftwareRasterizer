@@ -1,8 +1,12 @@
 #include "Renderer.h"
-#include "../VertexData/Triangle.h"
+#include "Rasterizer.h" // includes Triangle.h
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+
+// global default settings
+VertexShaderUniforms g_defaultUniforms;
+
 
 Renderer* Renderer_Create( const unsigned int width, const unsigned int height)
 {
@@ -12,8 +16,13 @@ Renderer* Renderer_Create( const unsigned int width, const unsigned int height)
 
 	memset( renderer, 0, sizeof(Renderer));
 
+	// set the default uniform matrix to identity matrix
+	Mat4_LoadIdentity( &g_defaultUniforms.WorldToViewToProjectionMatrix);
+
 	renderer->FrameBuffer = FrameBuffer_Create( width, height);
 	renderer->DepthBuffer = Texture_Create( width, height);
+	renderer->VertexShader = DefaultVertexShader;
+	renderer->VertexShaderUniforms = &g_defaultUniforms;
 
 	return renderer;
 }
@@ -29,13 +38,13 @@ void Renderer_Destroy( Renderer* const renderer)
 	free(renderer);
 }
 
-void Renderer_DrawMesh( const Mesh* const mesh)
+void Renderer_DrawMesh( Renderer* const renderer, const Mesh* const mesh)
 {
 	unsigned int i = 0;
 
 	assert( mesh && "mesh is NULL");
 	assert( mesh->VertexBuffer && "mesh vertexbuffer is NULL");
-
+	
 	for( i; i < mesh->NumTriangles; ++i)
 	{
 		const unsigned int triangleVerticesOffset = i * 3;
@@ -59,12 +68,26 @@ void Renderer_DrawMesh( const Mesh* const mesh)
 			triangle.V3 = mesh->VertexBuffer->Vertices[triangleVerticesOffset + 2];
 		}
 
-		// transform triangle vertices
+		// transform triangle vertices (vertex shader stage)
+		renderer->VertexShader( &triangle, renderer->VertexShaderUniforms);
 
 		// backface culling
-		
-		// clipping Sutherland-hodgman
 
-		// draw triangle(s) potentially a trianglefan due to clipping
+
+		// clipping Sutherland-hodgman (can be done in 
+
+
+		// draw triangle(s) potentially a trianglefan due to clipping (fragment shader stage)
+		RasterizeTriangle( renderer, &triangle);
 	}
+}
+
+
+void Renderer_SetVertexShader( Renderer* const renderer, VertexShaderFunction const vertexShaderFunc, VertexShaderUniforms* const vertexShaderUniforms)
+{
+	assert( vertexShaderFunc && "vertexShaderFunc is NULL");
+	assert( vertexShaderUniforms && "vertexShaderUniforms is NULL");
+
+	renderer->VertexShader = vertexShaderFunc;
+	renderer->VertexShaderUniforms = vertexShaderUniforms;
 }

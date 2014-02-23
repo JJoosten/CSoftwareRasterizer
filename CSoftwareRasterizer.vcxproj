@@ -113,7 +113,9 @@
     <ClCompile Include="src\Math\Vec2.c" />
     <ClCompile Include="src\Math\Vec3.c" />
     <ClCompile Include="src\OpenGL\OGLSurface.c" />
+    <ClCompile Include="src\Renderer\Rasterizer.c" />
     <ClCompile Include="src\Renderer\Renderer.c" />
+    <ClCompile Include="src\Renderer\VertexShaders.c" />
     <ClCompile Include="src\Stopwatch\Stopwatch.c" />
     <ClCompile Include="src\Texture\Texture.c" />
     <ClCompile Include="src\Utility\Validate.c" />
@@ -130,7 +132,9 @@
     <ClInclude Include="src\Math\Vec2.h" />
     <ClInclude Include="src\Math\Vec3.h" />
     <ClInclude Include="src\OpenGL\OGLSurface.h" />
+    <ClInclude Include="src\Renderer\Rasterizer.h" />
     <ClInclude Include="src\Renderer\Renderer.h" />
+    <ClInclude Include="src\Renderer\VertexShaders.h" />
     <ClInclude Include="src\Settings.h" />
     <ClInclude Include="src\Stopwatch\Stopwatch.h" />
     <ClInclude Include="src\Texture\Texture.h" />
