@@ -49,6 +49,7 @@ void Renderer_DrawMesh( Renderer* const renderer, const Mesh* const mesh)
 	{
 		const unsigned int triangleVerticesOffset = i * 3;
 
+		// triangle assembly
 		RasterTriangle triangle;
 		if( mesh->IndexBuffer != NULL)
 		{
@@ -72,10 +73,26 @@ void Renderer_DrawMesh( Renderer* const renderer, const Mesh* const mesh)
 		renderer->VertexShader( &triangle, renderer->VertexShaderUniforms);
 
 		// backface culling
+		{
+			float zCross = 0;
+			Vec4 triangleEdge1;
+			Vec4 triangleEdge2;
+			// calculate edge1
+			Vec4_Sub( &triangleEdge1, &triangle.V2.Position, &triangle.V1.Position);
+			// calculate edge2
+			Vec4_Sub( &triangleEdge2, &triangle.V2.Position, &triangle.V3.Position);
 
+			zCross = triangleEdge1.X * triangleEdge2.Y - triangleEdge2.X * triangleEdge1.Y;
+
+			// we use OpenGL axis so -1 is looking away from camera, +1 is looking towards camera
+			if( zCross < 0)
+				continue;
+		}
 
 		// clipping Sutherland-hodgman 
+		{
 
+		}
 
 		// draw triangle(s) potentially a trianglefan due to clipping (fragment shader stage)
 		RasterizeTriangle( renderer, &triangle);

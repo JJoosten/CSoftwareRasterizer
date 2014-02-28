@@ -5,7 +5,6 @@
 #include <string.h>
 #include <stdio.h>
 
-
 Game* Game_Create( Keyboard* const keyboard)
 {
 	Mat4 tmpProjectionMatrix;

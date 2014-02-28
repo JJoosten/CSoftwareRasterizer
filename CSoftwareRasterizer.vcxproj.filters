@@ -28,9 +28,6 @@
     <Filter Include="src\Camera">
       <UniqueIdentifier>{c39c385c-2ff8-48a8-bbd8-6107e1b8fa6e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Memory">
-      <UniqueIdentifier>{f4162796-1b69-458a-8608-6760c32978ba}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\OpenGL">
       <UniqueIdentifier>{13699dca-b0b1-4977-9936-b422ac3a134d}</UniqueIdentifier>
     </Filter>
@@ -42,6 +39,9 @@
     </Filter>
     <Filter Include="src\VertexData">
       <UniqueIdentifier>{2737de08-744e-4f4d-bf2c-2c62665ea935}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\IO">
+      <UniqueIdentifier>{187ced33-ad21-400c-b0cf-cc0f88e5e79b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -97,6 +97,15 @@
       <Filter>src\Math</Filter>
     </ClCompile>
     <ClCompile Include="src\VertexData\Vertex.c">
+      <Filter>src\VertexData</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IO\FileLoading.c">
+      <Filter>src\IO</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IO\OBJLoader.c">
+      <Filter>src\IO</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VertexData\Mesh.c">
       <Filter>src\VertexData</Filter>
     </ClCompile>
   </ItemGroup>
@@ -175,6 +184,12 @@
     </ClInclude>
     <ClInclude Include="src\Math\Vec4.h">
       <Filter>src\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\IO\FileLoading.h">
+      <Filter>src\IO</Filter>
+    </ClInclude>
+    <ClInclude Include="src\IO\OBJLoader.h">
+      <Filter>src\IO</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

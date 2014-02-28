@@ -108,6 +108,8 @@
     <ClCompile Include="src\FrameBuffer\FrameBuffer.c" />
     <ClCompile Include="src\Game.c" />
     <ClCompile Include="src\Input\Keyboard.cpp" />
+    <ClCompile Include="src\IO\FileLoading.c" />
+    <ClCompile Include="src\IO\OBJLoader.c" />
     <ClCompile Include="src\main.c" />
     <ClCompile Include="src\Math\Mat4.c" />
     <ClCompile Include="src\Math\Vec2.c" />
@@ -120,6 +122,7 @@
     <ClCompile Include="src\Stopwatch\Stopwatch.c" />
     <ClCompile Include="src\Texture\Texture.c" />
     <ClCompile Include="src\Utility\Validate.c" />
+    <ClCompile Include="src\VertexData\Mesh.c" />
     <ClCompile Include="src\VertexData\Vertex.c" />
   </ItemGroup>
   <ItemGroup>
@@ -130,6 +133,8 @@
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\Input\Keyboard.h" />
     <ClInclude Include="src\Input\KeyboardKeys.h" />
+    <ClInclude Include="src\IO\FileLoading.h" />
+    <ClInclude Include="src\IO\OBJLoader.h" />
     <ClInclude Include="src\Math\Mat4.h" />
     <ClInclude Include="src\Math\Vec2.h" />
     <ClInclude Include="src\Math\Vec3.h" />

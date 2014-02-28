@@ -1,0 +1,5 @@
+TODO:
+Create VertexBuffer_Create( Vertex* const vertices, const unsigned int numVertices)
+Create VertexBuffer_Destroy()
+Create IndexBuffer_Create( unsigned short* const indices, const unsigned int numIndices)
+Create IndexBuffer_Destroy()
