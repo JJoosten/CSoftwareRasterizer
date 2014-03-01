@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "Settings.h"
 #include "Math/Mat4.h"
+#include "IO/OBJLoader.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -10,13 +11,15 @@ Game* Game_Create( Keyboard* const keyboard)
 	Mat4 tmpProjectionMatrix;
 	
 	Game* game = malloc( sizeof(Game));
-	
 	memset( game, 0, sizeof(Game));
 
 	game->Keyboard = keyboard;
 
+	// load content
 	game->DiffuseTexture = Texture_Load("assets/textures/checkerboard.png");
-	
+	game->CubeModel = Load_OBJFile( "assets/models/cubeModel.obj"); 
+
+	// setup camera
 	Mat4_LoadPerspective( &tmpProjectionMatrix, 70.0f, (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.1f, 100.0f);
 	game->Camera = Camera_Create( &tmpProjectionMatrix);
 
@@ -34,7 +37,7 @@ void Game_Destroy( Game* const game)
 
 void Game_Update( Game* const game, const double deltaTimeSec)
 {
-	printf("Game_Update %f \n", deltaTimeSec);
+	//printf("Game_Update %f \n", deltaTimeSec);
 
 }
 
@@ -55,6 +58,6 @@ void Game_Render( Game* const game, Renderer* const renderer, const double delta
 		}
 	}
 
-	printf("Game_Render %f \n", deltaTimeSec);
+	//printf("Game_Render %f \n", deltaTimeSec);
 
 }

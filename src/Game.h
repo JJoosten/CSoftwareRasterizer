@@ -3,6 +3,7 @@
 
 #include "Defines.h"
 #include "Texture/Texture.h"
+#include "VertexData/Mesh.h"
 #include "Camera/Camera.h"
 #include "Renderer/Renderer.h"
 #include "Input/Keyboard.h"
@@ -11,6 +12,7 @@ typedef struct
 {
 	Camera* Camera;
 	Texture* DiffuseTexture;
+	Mesh* CubeModel;
 	Keyboard* Keyboard;
 } Game;
 

@@ -5,20 +5,18 @@
 
 Mesh* Mesh_Create( Vertex* const verticesTransferedOwnership, const unsigned int numVertices, unsigned short* const indicesTransferedOwnership, const unsigned int numIndices)
 {
-	assert( verticesTransferedOwnership && "verticesTransferedOwnership is NULL");
-	assert( indicesTransferedOwnership == NULL && numIndices > 0 && "indicesTransferedOwnership is NULL, indicesCount > 0");
-	assert( indicesTransferedOwnership != NULL && numIndices == 0 && "indicesTransferedOwnership != NULL, indicesCount == 0");
-
 	Mesh* mesh = malloc( sizeof(Mesh));
-	mesh->NumTriangles = 0;
-	mesh->VertexBuffer = malloc( sizeof(VertexBuffer));
-	mesh->VertexBuffer->Vertices = verticesTransferedOwnership;
-	mesh->VertexBuffer->NumVertices = numVertices;
+
+	assert( verticesTransferedOwnership && "verticesTransferedOwnership is NULL");
+	assert( (indicesTransferedOwnership != NULL && numIndices > 0) && "indicesTransferedOwnership == NULL, indicesCount > 0");
+	assert( (indicesTransferedOwnership != NULL && numIndices != 0) && "indicesTransferedOwnership != NULL, indicesCount == 0");
+
+	mesh->VertexBuffer = VertexBuffer_Create( verticesTransferedOwnership, numVertices);
+	mesh->NumTriangles = numVertices / 3;
 	if(numIndices > 0)
 	{
-		mesh->IndexBuffer = malloc( sizeof(IndexBuffer));
-		mesh->IndexBuffer->Indices = indicesTransferedOwnership;
-		mesh->IndexBuffer->NumIndices = numIndices;
+		mesh->IndexBuffer = IndexBuffer_Create( indicesTransferedOwnership, numIndices);
+		mesh->NumTriangles = numIndices / 3;
 	}
 
 	return mesh;
@@ -31,10 +29,10 @@ void Mesh_Destroy( Mesh* const mesh)
 
 	if(mesh->IndexBuffer != NULL)
 	{
-		free(mesh->IndexBuffer->Indices);
-		free(mesh->IndexBuffer);
+		IndexBuffer_Destroy( mesh->IndexBuffer);
 	}
-	free(mesh->VertexBuffer->Vertices);
-	free(mesh->VertexBuffer);
+	
+	VertexBuffer_Destroy( mesh->VertexBuffer);
+
 	free(mesh);
 }

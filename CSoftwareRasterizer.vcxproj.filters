@@ -108,6 +108,12 @@
     <ClCompile Include="src\VertexData\Mesh.c">
       <Filter>src\VertexData</Filter>
     </ClCompile>
+    <ClCompile Include="src\VertexData\VertexBuffer.c">
+      <Filter>src\VertexData</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VertexData\IndexBuffer.c">
+      <Filter>src\VertexData</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Texture\Texture.h">

@@ -9,4 +9,7 @@ typedef struct
 	unsigned int NumVertices;
 } VertexBuffer;
 
+VertexBuffer* VertexBuffer_Create( Vertex* const verticesTransferOwnership, const unsigned int numVertices);
+void VertexBuffer_Destroy( VertexBuffer* const vertexBuffer);
+
 #endif //CSR_VERTEX_BUFFER_H

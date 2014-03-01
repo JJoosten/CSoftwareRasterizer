@@ -122,8 +122,10 @@
     <ClCompile Include="src\Stopwatch\Stopwatch.c" />
     <ClCompile Include="src\Texture\Texture.c" />
     <ClCompile Include="src\Utility\Validate.c" />
+    <ClCompile Include="src\VertexData\IndexBuffer.c" />
     <ClCompile Include="src\VertexData\Mesh.c" />
     <ClCompile Include="src\VertexData\Vertex.c" />
+    <ClCompile Include="src\VertexData\VertexBuffer.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="libs\stb_image\stb_image.h" />

@@ -3,6 +3,6 @@
 
 #include "../VertexData/Mesh.h"
 
-Mesh* Load_OBJMesh( const char* const objFile);
+Mesh* Load_OBJFile( const char* const objFile);
 
 #endif
