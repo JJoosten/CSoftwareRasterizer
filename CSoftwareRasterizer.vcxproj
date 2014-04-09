@@ -104,6 +104,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="libs\stb_image\stb_image.c" />
+    <ClCompile Include="OBJLoaderTmp.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="src\Camera\Camera.c" />
     <ClCompile Include="src\FrameBuffer\FrameBuffer.c" />
     <ClCompile Include="src\Game.c" />

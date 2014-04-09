@@ -114,6 +114,7 @@
     <ClCompile Include="src\VertexData\IndexBuffer.c">
       <Filter>src\VertexData</Filter>
     </ClCompile>
+    <ClCompile Include="OBJLoaderTmp.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Texture\Texture.h">

@@ -10,6 +10,8 @@ Game* Game_Create( Keyboard* const keyboard)
 {
 	Mat4 tmpProjectionMatrix;
 	
+	OBJFile* objFile = Load_OBJFile( "assets/models/cubeModel.obj");
+
 	Game* game = malloc( sizeof(Game));
 	memset( game, 0, sizeof(Game));
 
@@ -17,7 +19,7 @@ Game* Game_Create( Keyboard* const keyboard)
 
 	// load content
 	game->DiffuseTexture = Texture_Load("assets/textures/checkerboard.png");
-	game->CubeModel = Load_OBJFile( "assets/models/cubeModel.obj"); 
+	game->CubeModel = NULL; 
 
 	// setup camera
 	Mat4_LoadPerspective( &tmpProjectionMatrix, 70.0f, (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.1f, 100.0f);
