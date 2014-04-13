@@ -64,6 +64,8 @@ OBJFile* Load_OBJFile( const char* const objFilePath)
 			if( strncmp( &file.FileData[i], "o  ", 2) == 0 ||
 				strncmp( &file.FileData[i], "##  ", 3) == 0)
 			{
+				OBJGroup** currentGroup = NULL;
+
 				++scene->NumObjects;	
 				i += 2;
 
@@ -81,7 +83,10 @@ OBJFile* Load_OBJFile( const char* const objFilePath)
 					*currentObject = malloc(sizeof(OBJObject));
 					memset(*currentObject, 0, sizeof(OBJObject));
 				}
+
+				currentGroup = &(*currentObject)->Groups;
 				
+				// retrieve name and name length of object
 				retrieveStringFromLine( &(*currentObject)->Name, &(*currentObject)->NameLength, &file.FileData[i], file.FileSizeInBytes); 
 			
 				i += (*currentObject)->NameLength;
@@ -111,37 +116,169 @@ OBJFile* Load_OBJFile( const char* const objFilePath)
 							(*currentObject)->NumUVs += 1;
 							j += 3;
 						}
+
+						// if we find another object or group, break loop
+						if( strncmp( &file.FileData[j], "o  ", 2) == 0 ||
+							strncmp( &file.FileData[j], "##  ", 3) == 0 ||
+							strncmp( &file.FileData[j], "g ", 2) == 0 ||
+							strncmp( &file.FileData[j], "f ", 2) == 0 ||
+							strncmp( &file.FileData[j], "usemtl ", 7) == 0)
+						{
+							break;
+						}
 					}
+
 				} // END OF count object data
 
-				// collect vertices
-				if( strncmp( &file.FileData[i], "v ", 2) == 0)
+				if((*currentObject)->NumPositions > 0)
+					(*currentObject)->Positions = malloc(sizeof(Vec3) * (*currentObject)->NumPositions);
+				if((*currentObject)->NumNormals > 0)
+					(*currentObject)->Normals = malloc(sizeof(Vec3) * (*currentObject)->NumPositions);
+				if((*currentObject)->NumUVs > 0)
+					(*currentObject)->UVs = malloc(sizeof(Vec2) * (*currentObject)->NumPositions);
+
+
+				// collect object data
+				for( i; i < file.FileSizeInBytes; ++i)
 				{
+					if( strncmp( &file.FileData[i], "o  ", 2) == 0 ||
+						strncmp( &file.FileData[i], "##  ", 3) == 0)
+					{
+						// make sure we find the o and ## again on next big itteration!
+						i -= 1;
+						break;
+					}
 
-					i += 2;
+					// collect vertices
+					if( strncmp( &file.FileData[i], "v ", 2) == 0)
+					{
+
+						i += 2;
+					}
+
+					// collect normals
+					if( strncmp( &file.FileData[i], "vn ", 3) == 0)
+					{
+
+						i += 3;
+					}
+
+					// collect uvs
+					if( strncmp( &file.FileData[i], "vt  ", 3) == 0)
+					{
+
+						i += 3;
+					}
+
+					// collect group data without current group
+					if( strncmp( &file.FileData[i], "g ", 2) == 0 ||
+						strncmp( &file.FileData[i], "f ", 2) == 0 ||
+						strncmp( &file.FileData[i], "usemtl ", 7) == 0)
+					{
+						if( *currentGroup == NULL)
+						{
+							OBJGroup** group = &(*currentObject)->Groups;
+
+							while(*group != NULL)
+								*group = (*group)->NextGroup;
+							*group =  malloc(sizeof(OBJGroup));
+							*currentGroup = *group; 
+							memset( *currentGroup, 0, sizeof(OBJGroup));
+			
+							if( strncmp( &file.FileData[i], "g ", 2) != 0)
+							{
+								(*currentGroup)->Name = "Root";
+								(*currentGroup)->NameLength = strlen((*currentGroup)->Name);
+							}
+							else
+							{
+								i += 2;
+				
+								// retrieve name and name length of object
+								retrieveStringFromLine( &(*currentGroup)->Name, &(*currentGroup)->NameLength, &file.FileData[i], file.FileSizeInBytes); 
+			
+								i += (*currentGroup)->NameLength;
+							}
+
+							
+							// count group data
+							{
+								unsigned int j = i;
+								for( j; j < file.FileSizeInBytes; ++j)
+								{
+									// count positions
+									if( strncmp( &file.FileData[j], "v ", 2) == 0 ||
+										strncmp( &file.FileData[j], "vn ", 3) == 0 ||
+										strncmp( &file.FileData[j], "vt  ", 3) == 0 ||
+										strncmp( &file.FileData[j], "o  ", 2) == 0 ||
+										strncmp( &file.FileData[j], "##  ", 3) == 0 ||
+										strncmp( &file.FileData[j], "g ", 2) == 0)
+									{
+										break;
+									}
+								
+									if( strncmp( &file.FileData[j], "f ", 2) == 0)
+									{
+										unsigned int numWhiteSpacesBetweenValues = 0;
+
+										j += 2;
+										(*currentGroup)->NumFaces += 1;
+										
+										// make sure to dont count whitespace before first set of indices
+										while( j < file.FileSizeInBytes && file.FileData[j] == ' ') { ++j; continue; }
+											
+										
+										// move forward as long as character is ' '
+										while( j < file.FileSizeInBytes && file.FileData[j] != '\n') 
+										{ 
+											++j; 
+										
+											while( j < file.FileSizeInBytes && file.FileData[j] == ' ') { ++j; continue; }
+											while( j < file.FileSizeInBytes && 
+												  file.FileData[j] != ' ' && 
+												  file.FileData[j] != '\n') 
+											{ ++j; continue; }
+										
+											numWhiteSpacesBetweenValues += 1;
+
+											continue;
+										}
+
+										(*currentGroup)->NumIndicesPerFace = numWhiteSpacesBetweenValues;
+									}
+
+								}
+
+							} // END OF count group data
+
+							// generate all the index buffers
+							if((*currentObject)->NumPositions > 0)
+								(*currentGroup)->PositionIndices = malloc( sizeof(unsigned int) * (*currentGroup)->NumIndicesPerFace * (*currentGroup)->NumFaces);
+							if((*currentObject)->NumUVs > 0)
+								(*currentGroup)->UVIndices = malloc( sizeof(unsigned int) * (*currentGroup)->NumIndicesPerFace * (*currentGroup)->NumFaces);
+							if((*currentObject)->NumNormals > 0)
+								(*currentGroup)->NormalIndices = malloc( sizeof(unsigned int) * (*currentGroup)->NumIndicesPerFace * (*currentGroup)->NumFaces);
+
+						}
+
+						// collect data to *current group
+						if(strncmp( &file.FileData[i], "usemtl ", 7) == 0)
+						{
+							i += 7;
+							
+							// retrieve material name and material name length of object
+							retrieveStringFromLine( &(*currentGroup)->MaterialName, &(*currentGroup)->MaterialNameLength, &file.FileData[i], file.FileSizeInBytes); 
+			
+						}
+						else if( strncmp( &file.FileData[i], "f ", 2) == 0)
+						{
+							i += 2;
+
+							// parse uvs
+						}
+					}
 				}
-
-				// collect normals
-				if( strncmp( &file.FileData[i], "vn ", 3) == 0)
-				{
-
-					i += 3;
-				}
-
-				// collect uvs
-				if( strncmp( &file.FileData[i], "vt  ", 3) == 0)
-				{
-
-					i += 3;
-				}
-
 			}
-
-
-
-
-
-
 		}
 	}
 

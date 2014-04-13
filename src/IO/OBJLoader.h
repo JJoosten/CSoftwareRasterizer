@@ -8,6 +8,9 @@ typedef struct
 	char* Name;
 	unsigned int NameLength;
 
+	char* MaterialName;
+	unsigned int MaterialNameLength;
+
 	unsigned int NumFaces;
 	unsigned int NumIndicesPerFace;
 	unsigned int* PositionIndices;
