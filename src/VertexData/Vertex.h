@@ -13,7 +13,7 @@ typedef struct
 
 } Vertex;
 
-typedef struct
+typedef struct 
 {
 	Vec4 Position;
 	Vec3 Normal;
