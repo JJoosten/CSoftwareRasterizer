@@ -35,10 +35,10 @@ void retrieveStringFromLine( char** stringOUT, unsigned int* stringLengthOUT, co
 	// retrieve string
 	{
 		const unsigned int stringLength = i - startOfString;
-		*stringLengthOUT = stringLength;
-		*stringOUT = malloc(sizeof(char) * stringLength + 1);
-		memcpy( *stringOUT,  &lineIN[startOfString], stringLength);
-		(*stringOUT)[stringLength] = '\0';
+		*stringLengthOUT = stringLength - 1;
+		*stringOUT = malloc(sizeof(char) * stringLength);
+		memcpy( *stringOUT,  &lineIN[startOfString], stringLength - 1);
+		(*stringOUT)[stringLength - 1] = '\0';
 	}
 }
 
@@ -360,6 +360,7 @@ OBJFile* Load_OBJFile( const char* const objFilePath)
 							else if( strncmp( &file.FileData[i], "f ", 2) == 0)
 							{
 								i += 2;
+
 
 								// parse uvs
 							}

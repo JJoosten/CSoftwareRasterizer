@@ -1,5 +1,4 @@
 #include "Stopwatch.h"
-#include <string.h>
 
 // TODO: make this thread safe!
 
