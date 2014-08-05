@@ -42,6 +42,73 @@ void retrieveStringFromLine( char** stringOUT, unsigned int* stringLengthOUT, co
 	}
 }
 
+
+void parseVec2FromLine( Vec2* inOutVec2, char* stringToParse, unsigned int length)
+{
+	unsigned int startIndexOfValue = 0;
+	unsigned int numIndexOfVector = 0;					
+
+	// parse string with positions
+	while( startIndexOfValue < length)
+	{
+		unsigned int endIndexOfValue = startIndexOfValue;
+								
+		// move forward as long as character is ' '
+		while( endIndexOfValue < length && stringToParse[endIndexOfValue] != '\n' && stringToParse[endIndexOfValue] != ' ') { ++endIndexOfValue; continue; }
+
+		// parse value
+		{
+			char valueBuffer[64];
+
+			memcpy( valueBuffer, &stringToParse[startIndexOfValue], endIndexOfValue - startIndexOfValue);
+			valueBuffer[endIndexOfValue - startIndexOfValue] = '\0';
+
+			(*inOutVec2).XY[numIndexOfVector] = (float)atof(valueBuffer);
+
+			++numIndexOfVector;
+		}
+									
+		startIndexOfValue = endIndexOfValue + 1;
+
+		if(numIndexOfVector >= 2)
+			break;
+
+	}
+}
+
+void parseVec3FromLine( Vec3* inOutVec3, char* stringToParse, unsigned int length)
+{
+	unsigned int startIndexOfValue = 0;
+	unsigned int numIndexOfVector = 0;					
+
+	// parse string with positions
+	while( startIndexOfValue < length)
+	{
+		unsigned int endIndexOfValue = startIndexOfValue;
+								
+		// move forward as long as character is ' '
+		while( endIndexOfValue < length && stringToParse[endIndexOfValue] != '\n' && stringToParse[endIndexOfValue] != ' ') { ++endIndexOfValue; continue; }
+
+		// parse value
+		{
+			char valueBuffer[64];
+
+			memcpy( valueBuffer, &stringToParse[startIndexOfValue], endIndexOfValue - startIndexOfValue);
+			valueBuffer[endIndexOfValue - startIndexOfValue] = '\0';
+
+			(*inOutVec3).XYZ[numIndexOfVector] = (float)atof(valueBuffer);
+
+			++numIndexOfVector;
+		}
+									
+		startIndexOfValue = endIndexOfValue + 1;
+
+		if(numIndexOfVector >= 3)
+			break;
+
+	}
+}
+
 OBJFile* Load_OBJFile( const char* const objFilePath)
 {
 	File file;
@@ -157,48 +224,12 @@ OBJFile* Load_OBJFile( const char* const objFilePath)
 						// collect vertices
 						if( strncmp( &file.FileData[i], "v ", 2) == 0)
 						{
-							unsigned int startIndexOfValue = 0;
-							unsigned int numIndexOfVector = 0;
-							float values[3];
-							
 							i += 2;
-						
-							// move forward as long as character is ' '
-							while( i < file.FileSizeInBytes && file.FileData[i] == ' ') { ++i; continue; }
 
 							assert(numPositionsParsed < (*currentObject)->NumPositions && "NumPositionsParsed bigger then countend positions");
+
+							parseVec3FromLine(&(*currentObject)->Positions[numPositionsParsed], &file.FileData[i], file.FileSizeInBytes - i);
 						
-							startIndexOfValue = i;
-							
-
-							// parse string with positions
-							while( startIndexOfValue < file.FileSizeInBytes)
-							{
-								char* const stringToParseToVec3 = &file.FileData[i];
-
-								unsigned int endIndexOfValue = startIndexOfValue;
-								
-								// move forward as long as character is ' '
-								while( endIndexOfValue < file.FileSizeInBytes && file.FileData[endIndexOfValue] != '\n' && file.FileData[endIndexOfValue] != ' ') { ++endIndexOfValue; continue; }
-
-								// parse value
-								{
-									char  valueBuffer[64];
-
-									memcpy( valueBuffer, &file.FileData[startIndexOfValue], endIndexOfValue - startIndexOfValue);
-									valueBuffer[endIndexOfValue - startIndexOfValue] = '\0';
-
-									values[numIndexOfVector] = (float)atof(valueBuffer);
-
-									++numIndexOfVector;
-
-
-								}
-									
-								startIndexOfValue = endIndexOfValue + 1;
-
-							}
-
 							++numPositionsParsed;
 						}
 
@@ -206,24 +237,22 @@ OBJFile* Load_OBJFile( const char* const objFilePath)
 						if( strncmp( &file.FileData[i], "vn ", 3) == 0)
 						{
 							i += 3;
-	
-							assert(numNormalsParsed < (*currentObject)->NumNormals && "NumPositionsParsed bigger then countend positions");
-	
-						
 
+							assert(numNormalsParsed < (*currentObject)->NumNormals && "NumPositionsParsed bigger then countend positions");
+							
+							parseVec3FromLine(&(*currentObject)->Normals[numNormalsParsed], &file.FileData[i], file.FileSizeInBytes - i);
 
 							++numNormalsParsed;
 						}
 
-						// collect uvs
+						// collect uvs QQQ TEST THIS (parseVec2FromLine)
 						if( strncmp( &file.FileData[i], "vt  ", 3) == 0)
 						{
 							i += 3;
 
 							assert(numUVsParsed < (*currentObject)->NumNormals && "NumPositionsParsed bigger then countend positions");
 	
-					
-
+							parseVec2FromLine(&(*currentObject)->UVs[numUVsParsed],  &file.FileData[i], file.FileSizeInBytes - i);
 
 							++numUVsParsed;
 						}
