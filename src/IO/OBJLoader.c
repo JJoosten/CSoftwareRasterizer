@@ -190,11 +190,8 @@ OBJFile* Load_OBJFile( const char* const objFilePath)
 							strncmp( &file.FileData[j], "g ", 2) == 0 ||
 							strncmp( &file.FileData[j], "f ", 2) == 0 ||
 							strncmp( &file.FileData[j], "usemtl ", 7) == 0)
-						{
 							break;
-						}
 					}
-
 				} // END OF count object data
 
 				// generate the buffers to store the positions, normals and uvs in
@@ -238,7 +235,7 @@ OBJFile* Load_OBJFile( const char* const objFilePath)
 						{
 							i += 3;
 
-							assert(numNormalsParsed < (*currentObject)->NumNormals && "NumPositionsParsed bigger then countend positions");
+							assert(numNormalsParsed < (*currentObject)->NumNormals && "numNormalsParsed bigger then countend positions");
 							
 							parseVec3FromLine(&(*currentObject)->Normals[numNormalsParsed], &file.FileData[i], file.FileSizeInBytes - i);
 
@@ -250,7 +247,7 @@ OBJFile* Load_OBJFile( const char* const objFilePath)
 						{
 							i += 3;
 
-							assert(numUVsParsed < (*currentObject)->NumNormals && "NumPositionsParsed bigger then countend positions");
+							assert(numUVsParsed < (*currentObject)->NumUVs && "numUVsParsed bigger then countend positions");
 	
 							parseVec2FromLine(&(*currentObject)->UVs[numUVsParsed],  &file.FileData[i], file.FileSizeInBytes - i);
 
@@ -287,7 +284,6 @@ OBJFile* Load_OBJFile( const char* const objFilePath)
 									i += (*currentGroup)->NameLength;
 								}
 
-							
 								// count group data
 								{
 									unsigned int j = i;
@@ -300,9 +296,7 @@ OBJFile* Load_OBJFile( const char* const objFilePath)
 											strncmp( &file.FileData[j], "o  ", 2) == 0 ||
 											strncmp( &file.FileData[j], "##  ", 3) == 0 ||
 											strncmp( &file.FileData[j], "g ", 2) == 0)
-										{
 											break;
-										}
 								
 										if( strncmp( &file.FileData[j], "f ", 2) == 0)
 										{
@@ -313,7 +307,6 @@ OBJFile* Load_OBJFile( const char* const objFilePath)
 										
 											// make sure to dont count whitespace before first set of indices
 											while( j < file.FileSizeInBytes && file.FileData[j] == ' ') { ++j; continue; }
-											
 										
 											// move forward as long as character is ' '
 											while( j < file.FileSizeInBytes && file.FileData[j] != '\n') 
@@ -333,9 +326,7 @@ OBJFile* Load_OBJFile( const char* const objFilePath)
 
 											(*currentGroup)->NumIndicesPerFace = numWhiteSpacesBetweenValues;
 										}
-
 									}
-
 								} // END OF count group data
 
 								// generate all the index buffers
@@ -345,7 +336,6 @@ OBJFile* Load_OBJFile( const char* const objFilePath)
 									(*currentGroup)->UVIndices = malloc( sizeof(unsigned int) * (*currentGroup)->NumIndicesPerFace * (*currentGroup)->NumFaces);
 								if((*currentObject)->NumNormals > 0)
 									(*currentGroup)->NormalIndices = malloc( sizeof(unsigned int) * (*currentGroup)->NumIndicesPerFace * (*currentGroup)->NumFaces);
-
 							}
 
 							// collect data to *current group
@@ -355,14 +345,49 @@ OBJFile* Load_OBJFile( const char* const objFilePath)
 							
 								// retrieve material name and material name length of object
 								retrieveStringFromLine( &(*currentGroup)->MaterialName, &(*currentGroup)->MaterialNameLength, &file.FileData[i], file.FileSizeInBytes); 
-			
 							}
 							else if( strncmp( &file.FileData[i], "f ", 2) == 0)
 							{
+								char valueBuffer[64];
+								unsigned int startIndex = 0;
+								unsigned int endIndex = 0;
+
 								i += 2;
 
+								// first comes position followed by / = x/
+								// second comes uv followed by /   = x/y/
+								// third comes normal = x/y/z
+								
+								while( i < file.FileSizeInBytes && 
+										   file.FileData[i] != '\n' && 
+										   file.FileData[i] != '\0')
+								{
+									// make sure to dont count whitespace before first set of indices
+									while( i < file.FileSizeInBytes && (file.FileData[i] == ' ' || file.FileData[i] == '\\')) { ++i; continue; }
+								
+									startIndex = i;
 
-								// parse uvs
+									while( i < file.FileSizeInBytes &&
+											   (file.FileData[i] != '/' && 
+											   file.FileData[i] != '\n' && 
+											   file.FileData[i] != '\0')) 
+									{ ++i; continue; }
+
+									if(file.FileData[i] != '\n' && file.FileData[i] != '\0')
+									{
+
+										endIndex = i;
+
+										memcpy( valueBuffer, &file.FileData[startIndex], endIndex - startIndex);
+										valueBuffer[endIndex - startIndex] = '\0';
+
+										printf(valueBuffer);
+										printf(" ");
+
+										i += 1;
+										// parse uvs
+									}
+								}
 							}
 						}
 					}
