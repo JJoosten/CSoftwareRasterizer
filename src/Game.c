@@ -6,7 +6,7 @@
 #include <string.h>
 #include <stdio.h>
 
-Game* Game_Create( Keyboard* const keyboard)
+Game* Game_Create( Keyboard* const keyboard, Mouse* const mouse)
 {
 	Mat4 tmpProjectionMatrix;
 	
@@ -15,7 +15,11 @@ Game* Game_Create( Keyboard* const keyboard)
 	Game* game = malloc( sizeof(Game));
 	memset( game, 0, sizeof(Game));
 
+	Keyboard_Initialize( keyboard);
+	Mouse_Initialize( mouse);
+
 	game->Keyboard = keyboard;
+	game->Mouse = mouse;
 
 	// load content
 	game->DiffuseTexture = Texture_Load("assets/textures/checkerboard.png");

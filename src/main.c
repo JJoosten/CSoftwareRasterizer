@@ -6,13 +6,14 @@
 #include "OpenGL/OGLSurface.h"
 #include "Stopwatch/Stopwatch.h"
 #include "Input/Keyboard.h"
+#include "Input/Mouse.h"
 #include <SFML/Window.h>
 
 // global variables
 bool g_isWindowOpen = true;
 
 
-void handleWindowEvents( sfWindow* window, Keyboard* keyboard)
+void handleWindowEvents( sfWindow* window, Keyboard* keyboard, Mouse* mouse)
 {
 	// variables
 	sfEvent windowEvent;
@@ -31,6 +32,16 @@ void handleWindowEvents( sfWindow* window, Keyboard* keyboard)
 			break;
 			case sfEvtLostFocus:
 				sfWindow_setFramerateLimit(window, 24);
+			break;
+			case sfEvtMouseButtonPressed:
+			{
+
+			}
+			break;
+			case sfEvtMouseButtonReleased:
+			{
+
+			}
 			break;
 			case sfEvtKeyPressed:
 			{
@@ -74,14 +85,13 @@ int main(int argc, char *argv[])
 	Renderer* renderer = Renderer_Create( SCREEN_WIDTH, SCREEN_HEIGHT);
 	
 	Keyboard keyboard;
+	Mouse mouse;
 
-	Game* game = Game_Create( &keyboard);
+	Game* game = Game_Create( &keyboard, &mouse);
 	
 	OGLSurface* surface = OGLSurface_Create( renderer->FrameBuffer);
 
 	Stopwatch stopwatch;
-	
-	Keyboard_Initialize( &keyboard);
 
 	Stopwatch_Init( &stopwatch);
 
@@ -105,7 +115,7 @@ int main(int argc, char *argv[])
 		// update input
 		Keyboard_Update( &keyboard);
 
-		handleWindowEvents( window, &keyboard);
+		handleWindowEvents( window, &keyboard, &mouse);
 
 		Game_Update( game, deltaTimeSec);
 

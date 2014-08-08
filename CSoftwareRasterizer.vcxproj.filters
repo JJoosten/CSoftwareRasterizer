@@ -81,9 +81,6 @@
     <ClCompile Include="src\Math\Vec3.c">
       <Filter>src\Math</Filter>
     </ClCompile>
-    <ClCompile Include="src\Input\Keyboard.cpp">
-      <Filter>src\Input</Filter>
-    </ClCompile>
     <ClCompile Include="src\Math\Vec2.c">
       <Filter>src\Math</Filter>
     </ClCompile>
@@ -114,7 +111,12 @@
     <ClCompile Include="src\VertexData\IndexBuffer.c">
       <Filter>src\VertexData</Filter>
     </ClCompile>
-    <ClCompile Include="OBJLoaderTmp.c" />
+    <ClCompile Include="src\Input\Mouse.c">
+      <Filter>src\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Input\Keyboard.c">
+      <Filter>src\Input</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Texture\Texture.h">
@@ -197,6 +199,12 @@
     </ClInclude>
     <ClInclude Include="src\IO\OBJLoader.h">
       <Filter>src\IO</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Input\Mouse.h">
+      <Filter>src\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Input\MouseButtons.h">
+      <Filter>src\Input</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -15,6 +15,4 @@ void FrameBuffer_Destroy( FrameBuffer* const texture);
 void FrameBuffer_Clear( FrameBuffer* const frameBuffer, const unsigned int clearColor);
 void FrameBuffer_ClearToBlack( FrameBuffer* const frameBuffer);
 
-
-
 #endif // TEXTURE_H

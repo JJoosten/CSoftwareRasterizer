@@ -390,7 +390,9 @@ OBJFile* Load_OBJFile( const char* const objFilePath)
 
 								// count the values and assign them properly
 
-								printf("check end of line");
+
+
+								printf(" ");
 							}
 							
 						}
