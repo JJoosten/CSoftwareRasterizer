@@ -349,46 +349,50 @@ OBJFile* Load_OBJFile( const char* const objFilePath)
 							else if( strncmp( &file.FileData[i], "f ", 2) == 0)
 							{
 								char valueBuffer[64];
+								int indexBuffer[9];
+								unsigned int numIndex = 0;
 								unsigned int startIndex = 0;
 								unsigned int endIndex = 0;
 
 								i += 2;
-
-								// first comes position followed by / = x/
-								// second comes uv followed by /   = x/y/
-								// third comes normal = x/y/z
 								
-								while( i < file.FileSizeInBytes && 
-										   file.FileData[i] != '\n' && 
-										   file.FileData[i] != '\0')
+								// get to the starting point of the line
+								while( i < file.FileSizeInBytes && file.FileData[i] == ' ') { ++i; continue; }
+
+								while( i < file.FileSizeInBytes && file.FileData[i] != '\n' && file.FileData[i] != '\0')
 								{
-									// make sure to dont count whitespace before first set of indices
-									while( i < file.FileSizeInBytes && (file.FileData[i] == ' ' || file.FileData[i] == '\\')) { ++i; continue; }
-								
+									int value = -1;
+
+									// get to the starting point of the line
+									while( i < file.FileSizeInBytes && file.FileData[i] == ' ') { ++i; continue; }
+
 									startIndex = i;
+								
+									// get to the starting point of the line
+									while( i < file.FileSizeInBytes && file.FileData[i] != '/' && file.FileData[i] != '\n' &&  file.FileData[i] != '\0' && file.FileData[i] != ' ' && file.FileData[i] != '\r') { ++i; continue; }
 
-									while( i < file.FileSizeInBytes &&
-											   (file.FileData[i] != '/' && 
-											   file.FileData[i] != '\n' && 
-											   file.FileData[i] != '\0')) 
-									{ ++i; continue; }
+									endIndex = i;
 
-									if(file.FileData[i] != '\n' && file.FileData[i] != '\0')
-									{
-
-										endIndex = i;
-
+									if(startIndex != endIndex)
+									{	
 										memcpy( valueBuffer, &file.FileData[startIndex], endIndex - startIndex);
 										valueBuffer[endIndex - startIndex] = '\0';
-
-										printf(valueBuffer);
-										printf(" ");
-
-										i += 1;
-										// parse uvs
+								
+										value = atoi(valueBuffer);
 									}
+
+									++i;
+
+									indexBuffer[numIndex] = value;
+
+									++numIndex;
 								}
+
+								// count the values and assign them properly
+
+								printf("check end of line");
 							}
+							
 						}
 					}
 				}
