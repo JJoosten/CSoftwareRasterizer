@@ -6,9 +6,9 @@
 typedef enum
 {
 	csrButtonNone = 0,
-	csrButtonLeft = sfMouseLeft,
-	csrButtonMiddle = sfMouseMiddle,
-	csrButtonRight = sfMouseRight
+	csrButtonLeft = 1,
+	csrButtonMiddle = 2,
+	csrButtonRight = 4
 } MouseButtons;
 
 #endif

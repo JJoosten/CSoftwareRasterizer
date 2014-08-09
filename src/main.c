@@ -35,14 +35,25 @@ void handleWindowEvents( sfWindow* window, Keyboard* keyboard, Mouse* mouse)
 			break;
 			case sfEvtMouseButtonPressed:
 			{
-
+				unsigned int key = 1 * sfMouse_isButtonPressed(sfMouseLeft);
+				key |= 2 * sfMouse_isButtonPressed(sfMouseMiddle);
+				key |= 4 * sfMouse_isButtonPressed(sfMouseRight);
+				Mouse_SetKeyDown(mouse, key);
 			}
 			break;
 			case sfEvtMouseButtonReleased:
 			{
-
+				unsigned int key = 1 * (!sfMouse_isButtonPressed(sfMouseLeft));
+				key |= 2 * (!sfMouse_isButtonPressed(sfMouseMiddle));
+				key |= 4 * (!sfMouse_isButtonPressed(sfMouseRight));
+				Mouse_SetKeyUp(mouse, key);
 			}
 			break;
+			case sfEvtMouseMoved:
+			{
+				sfVector2i pos = sfMouse_getPosition(NULL);
+				Mouse_SetScreenPos( mouse, pos.x, pos.y);
+			}
 			case sfEvtKeyPressed:
 			{
 				unsigned int i = 0; 
@@ -69,6 +80,7 @@ void handleWindowEvents( sfWindow* window, Keyboard* keyboard, Mouse* mouse)
 			break;
 		}
 	}
+
 }
 
 int main(int argc, char *argv[])

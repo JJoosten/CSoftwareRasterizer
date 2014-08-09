@@ -45,6 +45,10 @@ void Game_Update( Game* const game, const double deltaTimeSec)
 {
 	//printf("Game_Update %f \n", deltaTimeSec);
 
+
+	printf("Mouse Clicked: MouseButtonLeft: %i \n", Mouse_IsKeyDown(game->Mouse, csrButtonLeft));
+	printf("Mouse Clicked: MouseButtonMiddle: %i \n", Mouse_IsKeyDown(game->Mouse, csrButtonMiddle));
+	printf("Mouse Clicked: MouseButtonRight: %i \n", Mouse_IsKeyDown(game->Mouse, csrButtonRight));
 }
 
 void Game_Render( Game* const game, Renderer* const renderer, const double deltaTimeSec)

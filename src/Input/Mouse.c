@@ -12,55 +12,56 @@ void Mouse_Initialize( Mouse* const mouse)
 void Mouse_SetKeyDown( Mouse* const mouse, MouseButtons mouseButton)
 {
 	assert( mouse && "mouse is NULL");
-	assert( mouseButton >= 0 && mouseButton < 3 && "Button is out of range \n");
-
+	assert( mouseButton >= 0 && mouseButton < 8 && "Button is out of range \n");
+	
+	mouse->PrevState = mouse->CurrentState;
 	mouse->CurrentState.State |= mouseButton;
 }
 
 void Mouse_SetKeyUp( Mouse* const mouse, MouseButtons mouseButton)
 {
 	assert( mouse && "mouse is NULL");
-	assert( mouseButton >= 0 && mouseButton < 3 && "Button is out of range \n");
+	assert( mouseButton >= 0 && mouseButton < 8 && "Button is out of range \n");
 	
+	mouse->PrevState = mouse->CurrentState;
 	mouse->CurrentState.State = (mouse->CurrentState.State & (~mouseButton));
 }
 
-void Mouse_SetScreenPosX( Mouse* const mouse, unsigned short screenPosX)
-{
-	assert( mouse && "mouse is NULL");
-
-	mouse->CurrentState.MousePosX = screenPosX;
-}
-
-void Mouse_SetScreenPosY( Mouse* const mouse, unsigned short screenPosY)
+void Mouse_SetScreenPos( Mouse* const mouse, unsigned short screenPosX, unsigned short screenPosY)
 {
 	assert( mouse && "mouse is NULL");
 	
-	mouse->CurrentState.MousePosX = screenPosY;
+	mouse->PrevState = mouse->CurrentState;
+	mouse->CurrentState.MousePosX = screenPosX;
+	mouse->CurrentState.MousePosY = screenPosY;
 }
 
 bool Mouse_IsKeyDown( Mouse* const mouse, MouseButtons mouseButton)
 {
+	int isolatedKeyFlag = 0;
 	assert( mouse && "mouse is NULL");
-	assert( mouseButton >= 0 && mouseButton < 3 && "Button is out of range \n");
+	assert( mouseButton >= 0 && mouseButton < 8 && "Button is out of range \n");
 	
-	return (bool)(mouse->CurrentState.State &= mouseButton);
+	isolatedKeyFlag = mouse->CurrentState.State & mouseButton;
+	return (bool)(isolatedKeyFlag >> (isolatedKeyFlag >> 1));
 }
 
 bool Mouse_IsKeyUp( Mouse* const mouse, MouseButtons mouseButton)
 {
 	assert( mouse && "mouse is NULL");
-	assert( mouseButton >= 0 && mouseButton < 3 && "Button is out of range \n");
+	assert( mouseButton >= 0 && mouseButton < 8 && "Button is out of range \n");
 	
 	return !Mouse_IsKeyDown( mouse, mouseButton);
 }
 
 bool Mouse_IsKeyPressed( Mouse* const mouse, MouseButtons mouseButton)
 {
+	int isolatedKeyFlag = 0;
 	assert( mouse && "mouse is NULL");
-	assert( mouseButton >= 0 && mouseButton < 3 && "Button is out of range \n");
+	assert( mouseButton >= 0 && mouseButton < 8 && "Button is out of range \n");
 	
-	return (bool)(mouse->PrevState.State &= mouseButton);
+	isolatedKeyFlag = mouse->PrevState.State & mouseButton;
+	return (bool)(isolatedKeyFlag >> (isolatedKeyFlag >> 1));
 }
 
 short Mouse_GetScreenPosX( Mouse* const mouse)
@@ -85,12 +86,4 @@ MouseState Mouse_GetPrevMouseState( Mouse* const mouse)
 {
 	assert( mouse && "mouse is NULL");
 	return mouse->PrevState;
-}
-
-void Mouse_Update( Mouse* const mouse)
-{
-	assert( mouse && "mouse is NULL");
-	
-	mouse->PrevState = mouse->CurrentState;
-	memset( &mouse->CurrentState, 0, sizeof(MouseState));
 }

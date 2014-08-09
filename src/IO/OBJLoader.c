@@ -206,6 +206,9 @@ OBJFile* Load_OBJFile( const char* const objFilePath)
 					unsigned int numPositionsParsed = 0;
 					unsigned int numNormalsParsed = 0;
 					unsigned int numUVsParsed = 0;
+					unsigned int currentStorePositionIndex = 0;
+					unsigned int currentStoreUVIndex = 0;
+					unsigned int currentStoreNormalIndex = 0;
 
 					// collect object data
 					for( i; i < file.FileSizeInBytes; ++i)
@@ -259,6 +262,7 @@ OBJFile* Load_OBJFile( const char* const objFilePath)
 							strncmp( &file.FileData[i], "f ", 2) == 0 ||
 							strncmp( &file.FileData[i], "usemtl ", 7) == 0)
 						{
+
 							if( *currentGroup == NULL)
 							{
 								OBJGroup** group = &(*currentObject)->Groups;
@@ -324,6 +328,7 @@ OBJFile* Load_OBJFile( const char* const objFilePath)
 												continue;
 											}
 
+											// QQQ not really reliable
 											(*currentGroup)->NumIndicesPerFace = numWhiteSpacesBetweenValues;
 										}
 									}
@@ -336,7 +341,7 @@ OBJFile* Load_OBJFile( const char* const objFilePath)
 									(*currentGroup)->UVIndices = malloc( sizeof(unsigned int) * (*currentGroup)->NumIndicesPerFace * (*currentGroup)->NumFaces);
 								if((*currentObject)->NumNormals > 0)
 									(*currentGroup)->NormalIndices = malloc( sizeof(unsigned int) * (*currentGroup)->NumIndicesPerFace * (*currentGroup)->NumFaces);
-							}
+							} // END OF *current group == NULL
 
 							// collect data to *current group
 							if(strncmp( &file.FileData[i], "usemtl ", 7) == 0)
@@ -389,10 +394,20 @@ OBJFile* Load_OBJFile( const char* const objFilePath)
 								}
 
 								// count the values and assign them properly
-
-
-
-								printf(" ");
+								{
+									unsigned int j = 0;
+									for(j; j < (*currentGroup)->NumIndicesPerFace; ++j)
+									{
+										if((*currentObject)->NumPositions > 0)
+											(*currentGroup)->PositionIndices[currentStorePositionIndex++] = indexBuffer[j * 3 + 0];
+										
+										if((*currentObject)->NumUVs > 0)
+											(*currentGroup)->UVIndices[currentStoreUVIndex++] = indexBuffer[j * 3 + 1];
+								
+										if((*currentObject)->NumNormals > 0)
+											(*currentGroup)->NormalIndices[currentStoreNormalIndex++] = indexBuffer[j * 3 + 2];
+									}
+								}
 							}
 							
 						}

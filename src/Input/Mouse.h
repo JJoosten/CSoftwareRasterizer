@@ -23,8 +23,7 @@ void Mouse_Initialize( Mouse* const mouse);
 
 void Mouse_SetKeyDown( Mouse* const mouse, MouseButtons mouseButton);
 void Mouse_SetKeyUp( Mouse* const mouse, MouseButtons mouseButton);
-void Mouse_SetScreenPosX( Mouse* const mouse, unsigned short screenPosX);
-void Mouse_SetScreenPosY( Mouse* const mouse, unsigned short screenPosY);
+void Mouse_SetScreenPos( Mouse* const mouse, unsigned short screenPosX, unsigned short screenPosY);
 
 bool Mouse_IsKeyDown( Mouse* const mouse, MouseButtons mouseButton);
 bool Mouse_IsKeyUp( Mouse* const mouse, MouseButtons mouseButton); 
@@ -35,6 +34,4 @@ short Mouse_GetScreenPosY( Mouse* const mouse);
 
 MouseState Mouse_GetCurrentMouseState( Mouse* const mouse);
 MouseState Mouse_GetPrevMouseState( Mouse* const mouse);
-
-void Mouse_Update( Mouse* const mouse);
 #endif
