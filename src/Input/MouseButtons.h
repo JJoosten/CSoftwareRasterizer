@@ -5,10 +5,10 @@
 
 typedef enum
 {
-	csrButtonNone = 0,
-	csrButtonLeft = 1,
-	csrButtonMiddle = 2,
-	csrButtonRight = 4
+	csrMouseButtonNone = 0,
+	csrMouseButtonLeft = 1,
+	csrMouseButtonMiddle = 2,
+	csrMouseButtonRight = 4
 } MouseButtons;
 
 #endif

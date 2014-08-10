@@ -419,3 +419,39 @@ OBJFile* Load_OBJFile( const char* const objFilePath)
 
 	return scene;
 }
+
+void Unload_OBJFile( OBJFile* const objFile)
+{
+	// TODO: implement QQQ
+}
+
+Mesh* Mesh_CreateFromOBJGroup( OBJObject* const objObject, OBJGroup* const objGroup)
+{
+	Mesh* mesh = NULL;
+
+	Vertex* vertices = malloc(sizeof(Vertex) * objObject->NumPositions);
+	Vertex* vertex = vertices;
+	
+	unsigned int numIndices = objGroup->NumFaces * objGroup->NumIndicesPerFace;
+	unsigned short* indices = (unsigned short*)malloc(sizeof(unsigned short) * numIndices);
+
+	unsigned int i = 0;
+	for( i; i < objObject->NumPositions; ++i)
+	{
+
+		if(objObject->NumPositions > 0)
+			vertex->Position = objObject->Positions[objGroup->PositionIndices[i]];
+		if(objObject->NumUVs > 0)
+			vertex->UV = objObject->UVs[objGroup->UVIndices[i]];
+		if(objObject->NumNormals > 0)
+			vertex->Normal = objObject->Normals[objGroup->NormalIndices[i]];
+		
+		// move further with the vertices
+		++vertex;
+	}
+
+	// create vertex and index buffer
+	mesh = Mesh_Create( vertices, objObject->NumPositions, indices, numIndices);
+	
+	return mesh;
+}

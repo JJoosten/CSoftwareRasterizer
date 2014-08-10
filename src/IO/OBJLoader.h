@@ -51,5 +51,10 @@ typedef struct
 } OBJFile;
 
 OBJFile* Load_OBJFile( const char* const objFile);
+void Unload_OBJFile( OBJFile* const objFile);
+
+
+// Mesh extension
+Mesh* Mesh_CreateFromOBJGroup( OBJObject* const objObject, OBJGroup* const objGroup);
 
 #endif

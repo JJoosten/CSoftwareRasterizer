@@ -110,6 +110,9 @@
     <ClCompile Include="src\Input\Keyboard.c" />
     <ClCompile Include="src\Input\Mouse.c" />
     <ClCompile Include="src\IO\FileLoading.c" />
+    <ClCompile Include="src\IO\MTLLoader.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="src\IO\OBJLoader.c" />
     <ClCompile Include="src\main.c" />
     <ClCompile Include="src\Math\Mat4.c" />
@@ -139,6 +142,9 @@
     <ClInclude Include="src\Input\Mouse.h" />
     <ClInclude Include="src\Input\MouseButtons.h" />
     <ClInclude Include="src\IO\FileLoading.h" />
+    <ClInclude Include="src\IO\MTLLoader.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="src\IO\OBJLoader.h" />
     <ClInclude Include="src\Math\Mat4.h" />
     <ClInclude Include="src\Math\Vec2.h" />

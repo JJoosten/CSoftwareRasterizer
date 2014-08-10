@@ -117,6 +117,9 @@
     <ClCompile Include="src\Input\Keyboard.c">
       <Filter>src\Input</Filter>
     </ClCompile>
+    <ClCompile Include="src\IO\MTLLoader.c">
+      <Filter>src\IO</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Texture\Texture.h">
@@ -205,6 +208,9 @@
     </ClInclude>
     <ClInclude Include="src\Input\MouseButtons.h">
       <Filter>src\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\IO\MTLLoader.h">
+      <Filter>src\IO</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

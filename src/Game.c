@@ -11,6 +11,7 @@ Game* Game_Create( Keyboard* const keyboard, Mouse* const mouse)
 	Mat4 tmpProjectionMatrix;
 	
 	OBJFile* objFile = Load_OBJFile( "assets/models/cubeModel.obj");
+	Mesh* mesh = Mesh_CreateFromOBJGroup( objFile->Objects, objFile->Objects->Groups);
 
 	Game* game = malloc( sizeof(Game));
 	memset( game, 0, sizeof(Game));
@@ -45,10 +46,6 @@ void Game_Update( Game* const game, const double deltaTimeSec)
 {
 	//printf("Game_Update %f \n", deltaTimeSec);
 
-
-	printf("Mouse Clicked: MouseButtonLeft: %i \n", Mouse_IsKeyDown(game->Mouse, csrButtonLeft));
-	printf("Mouse Clicked: MouseButtonMiddle: %i \n", Mouse_IsKeyDown(game->Mouse, csrButtonMiddle));
-	printf("Mouse Clicked: MouseButtonRight: %i \n", Mouse_IsKeyDown(game->Mouse, csrButtonRight));
 }
 
 void Game_Render( Game* const game, Renderer* const renderer, const double deltaTimeSec)
