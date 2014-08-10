@@ -109,7 +109,7 @@ void parseVec3FromLine( Vec3* inOutVec3, char* stringToParse, unsigned int lengt
 	}
 }
 
-OBJFile* Load_OBJFile( const char* const objFilePath)
+OBJFile* OBJFile_Load( const char* const objFilePath)
 {
 	File file;
 
@@ -133,7 +133,7 @@ OBJFile* Load_OBJFile( const char* const objFilePath)
 			{
 				OBJGroup** currentGroup = NULL;
 
-				++scene->NumObjects;	
+				++scene->NumObjectsInLinkedList;	
 				i += 2;
 
 				if(scene->Objects != NULL)
@@ -272,6 +272,7 @@ OBJFile* Load_OBJFile( const char* const objFilePath)
 								*group =  malloc(sizeof(OBJGroup));
 								*currentGroup = *group; 
 								memset( *currentGroup, 0, sizeof(OBJGroup));
+								++((*currentObject)->NumGroupsInLinkedList);
 			
 								if( strncmp( &file.FileData[i], "g ", 2) != 0)
 								{
@@ -420,9 +421,39 @@ OBJFile* Load_OBJFile( const char* const objFilePath)
 	return scene;
 }
 
-void Unload_OBJFile( OBJFile* const objFile)
+void OBJFile_Unload( OBJFile* objFile)
 {
-	// TODO: implement QQQ
+	OBJObject* curObjObject = objFile->Objects;
+
+	free( objFile->MaterialFilePath);
+
+	while( curObjObject != NULL)
+	{
+		OBJGroup* curObjGroup = curObjObject->Groups;
+		OBJObject* objectToFree = curObjObject;
+
+		while( curObjGroup != NULL)
+		{
+			OBJGroup* groupToFree = curObjGroup;
+
+			free(curObjGroup->MaterialName);
+			free(curObjGroup->Name);
+			free(curObjGroup->NormalIndices);
+			free(curObjGroup->PositionIndices);
+			free(curObjGroup->UVIndices);
+
+			curObjGroup = curObjGroup->NextGroup;
+			free(groupToFree);
+		}
+
+		free(curObjObject->Name);
+		free(curObjObject->Normals);
+		free(curObjObject->Positions);
+		free(curObjObject->UVs);
+
+		curObjObject = curObjObject->NextObject;
+		free(objectToFree);
+	}
 }
 
 Mesh* Mesh_CreateFromOBJGroup( OBJObject* const objObject, OBJGroup* const objGroup)

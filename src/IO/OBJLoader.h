@@ -34,7 +34,7 @@ typedef struct
 	unsigned int NumUVs;
 	Vec2* UVs;
 	
-	unsigned int NumGroups;
+	unsigned int NumGroupsInLinkedList;
 	OBJGroup* Groups;
 	
 	void* NextObject;
@@ -43,15 +43,15 @@ typedef struct
 
 typedef struct
 {
-	unsigned int NumObjects;
+	unsigned int NumObjectsInLinkedList;
 	OBJObject* Objects;
 
 	char* MaterialFilePath;
 	unsigned int MaterialFilePathLength;
 } OBJFile;
 
-OBJFile* Load_OBJFile( const char* const objFile);
-void Unload_OBJFile( OBJFile* const objFile);
+OBJFile* OBJFile_Load( const char* const objFile);
+void OBJFile_Unload( OBJFile* objFile);
 
 
 // Mesh extension

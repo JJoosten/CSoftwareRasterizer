@@ -111,7 +111,7 @@
     <ClCompile Include="src\Input\Mouse.c" />
     <ClCompile Include="src\IO\FileLoading.c" />
     <ClCompile Include="src\IO\MTLLoader.c">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="src\IO\OBJLoader.c" />
     <ClCompile Include="src\main.c" />
@@ -143,7 +143,7 @@
     <ClInclude Include="src\Input\MouseButtons.h" />
     <ClInclude Include="src\IO\FileLoading.h" />
     <ClInclude Include="src\IO\MTLLoader.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="src\IO\OBJLoader.h" />
     <ClInclude Include="src\Math\Mat4.h" />

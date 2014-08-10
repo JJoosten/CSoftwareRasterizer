@@ -23,12 +23,14 @@ typedef struct
 	char* Name;
 	unsigned int NameLength;
 
+	void* Next;
+
 } MTLMaterial;
 
 typedef struct
 {
 	MTLMaterial* Material;
-	unsigned int NumMaterials;
+	unsigned int NumMaterialsInLinkedList;
 
 } MTLFile;
 
