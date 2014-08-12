@@ -34,7 +34,8 @@ typedef struct
 
 } MTLFile;
 
-MTLFile* Load_MTLFile( const char* const mtlFile);
+MTLFile* MTLFile_Load( const char* const mtlFile);
+void MTLFile_Unload( MTLFile* mtlFile);
 
 
 #endif

@@ -2,6 +2,7 @@
 #include "Settings.h"
 #include "Math/Mat4.h"
 #include "IO/OBJLoader.h"
+#include "IO/MTLLoader.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -11,12 +12,13 @@ Game* Game_Create( Keyboard* const keyboard, Mouse* const mouse)
 	Mat4 tmpProjectionMatrix;
 	
 	OBJFile* objFile = OBJFile_Load( "assets/models/cubeModel.obj");
+	MTLFile* materialFile = MTLFile_Load( "assets/models/cubeModel.mtl");
 	Mesh* mesh = Mesh_CreateFromOBJGroup( objFile->Objects, objFile->Objects->Groups);
 
 	Game* game = malloc( sizeof(Game));
 	memset( game, 0, sizeof(Game));
 	
-	// QQQ FIX THIS FUNCTION OBJFile_Unload(objFile);
+	OBJFile_Unload(objFile);
 
 	Keyboard_Initialize( keyboard);
 	Mouse_Initialize( mouse);

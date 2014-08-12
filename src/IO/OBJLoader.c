@@ -276,8 +276,12 @@ OBJFile* OBJFile_Load( const char* const objFilePath)
 			
 								if( strncmp( &file.FileData[i], "g ", 2) != 0)
 								{
-									(*currentGroup)->Name = "Root";
-									(*currentGroup)->NameLength = strlen((*currentGroup)->Name);
+									const char rootName[] = "Root";
+
+									(*currentGroup)->Name = malloc(sizeof(char) * 5);
+									memcpy((*currentGroup)->Name, rootName, 4);
+									(*currentGroup)->Name[4] = '\0';
+									(*currentGroup)->NameLength = 4;
 								}
 								else
 								{
