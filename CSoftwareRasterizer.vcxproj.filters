@@ -43,6 +43,9 @@
     <Filter Include="src\IO">
       <UniqueIdentifier>{187ced33-ad21-400c-b0cf-cc0f88e5e79b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Content">
+      <UniqueIdentifier>{935f2332-5ad7-4833-9e43-fd28e9f39227}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.c">
@@ -215,5 +218,21 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="Notes.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\models\CornellBox-Original.mtl">
+      <Filter>Content</Filter>
+    </None>
+    <None Include="assets\models\cubeModel.mtl">
+      <Filter>Content</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="assets\models\CornellBox-Original.obj">
+      <Filter>Content</Filter>
+    </Object>
+    <Object Include="assets\models\cubeModel.obj">
+      <Filter>Content</Filter>
+    </Object>
   </ItemGroup>
 </Project>

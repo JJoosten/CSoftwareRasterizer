@@ -11,9 +11,11 @@ typedef struct
 
 typedef struct
 {
-	Vec3 Diffuse;
-	Vec3 Specular;
+	Vec3 AmbientColor;
+	Vec3 DiffuseColor;
+	Vec3 SpecularColor;
 	float SpecularCoefficient;
+	float IndexOfRefraction;
 
 	MTLTexture DiffuseTexture;
 	MTLTexture SpecularTexture;

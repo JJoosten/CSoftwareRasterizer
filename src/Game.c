@@ -12,13 +12,14 @@ Game* Game_Create( Keyboard* const keyboard, Mouse* const mouse)
 	Mat4 tmpProjectionMatrix;
 	
 	OBJFile* objFile = OBJFile_Load( "assets/models/cubeModel.obj");
-	MTLFile* materialFile = MTLFile_Load( "assets/models/cubeModel.mtl");
+	MTLFile* mtlFile = MTLFile_Load( "assets/models/cubeModel.mtl");
 	Mesh* mesh = Mesh_CreateFromOBJGroup( objFile->Objects, objFile->Objects->Groups);
 
 	Game* game = malloc( sizeof(Game));
 	memset( game, 0, sizeof(Game));
 	
 	OBJFile_Unload(objFile);
+	MTLFile_Unload(mtlFile);
 
 	Keyboard_Initialize( keyboard);
 	Mouse_Initialize( mouse);

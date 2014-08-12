@@ -76,7 +76,7 @@ void parseVec2FromLine( Vec2* inOutVec2, char* stringToParse, unsigned int lengt
 	}
 }
 
-void parseVec3FromLine( Vec3* inOutVec3, char* stringToParse, unsigned int length)
+static void parseVec3FromLine( Vec3* inOutVec3, char* stringToParse, unsigned int length)
 {
 	unsigned int startIndexOfValue = 0;
 	unsigned int numIndexOfVector = 0;					
