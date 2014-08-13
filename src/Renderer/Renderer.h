@@ -23,6 +23,7 @@ void Renderer_DrawMesh( Renderer* const renderer, const Mesh* const mesh);
 
 // shader 
 void Renderer_SetVertexShader( Renderer* const renderer, VertexShaderFunction const vertexShaderFunc, VertexShaderUniforms* const vertexShaderUniforms);
+void Renderer_SetVertexShaderUniforms( Renderer* const renderer, VertexShaderUniforms* const vertexShaderUniforms);
 
 
 // sampler

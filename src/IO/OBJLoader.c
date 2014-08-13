@@ -470,20 +470,26 @@ Mesh* Mesh_CreateFromOBJGroup( OBJObject* const objObject, OBJGroup* const objGr
 	unsigned int numIndices = objGroup->NumFaces * objGroup->NumIndicesPerFace;
 	unsigned short* indices = (unsigned short*)malloc(sizeof(unsigned short) * numIndices);
 
+	// note that in OBJ files, indexing starts from 1, so to fix this we substract 1 from the index
+
 	unsigned int i = 0;
 	for( i; i < objObject->NumPositions; ++i)
 	{
 
 		if(objObject->NumPositions > 0)
-			vertex->Position = objObject->Positions[objGroup->PositionIndices[i]];
+			vertex->Position = objObject->Positions[objGroup->PositionIndices[i] - 1];
 		if(objObject->NumUVs > 0)
-			vertex->UV = objObject->UVs[objGroup->UVIndices[i]];
+			vertex->UV = objObject->UVs[objGroup->UVIndices[i] - 1];
 		if(objObject->NumNormals > 0)
-			vertex->Normal = objObject->Normals[objGroup->NormalIndices[i]];
+			vertex->Normal = objObject->Normals[objGroup->NormalIndices[i] - 1];
 		
 		// move further with the vertices
 		++vertex;
 	}
+
+	// copy indices
+	for( i = 0; i < numIndices; ++i)
+		indices[i] = objGroup->PositionIndices[i] - 1;
 
 	// create vertex and index buffer
 	mesh = Mesh_Create( vertices, objObject->NumPositions, indices, numIndices);

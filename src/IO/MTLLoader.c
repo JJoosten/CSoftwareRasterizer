@@ -5,6 +5,24 @@
 #include <stdio.h>
 #include <assert.h>
 
+static void parseFloatFromLine( float* inOutFloat, char* stringToParse, unsigned int length)
+{
+	unsigned int startIndex = 0;
+	unsigned int endIndex = 0;
+
+	while( endIndex < length && stringToParse[endIndex] != ' ' && stringToParse[endIndex] != '\n' && stringToParse[endIndex] != '\0') { ++endIndex; continue; }
+
+	// parse float
+	{
+		static char valueBuffer[64];
+
+		unsigned int valueLength = endIndex - startIndex - 1;
+		memcpy( valueBuffer, &stringToParse[startIndex], valueLength);
+		valueBuffer[valueLength] = '\0';
+
+		*inOutFloat = (float)atof(valueBuffer);
+	}
+}
 
 static void parseVec3FromLine( Vec3* inOutVec3, char* stringToParse, unsigned int length)
 {
@@ -21,7 +39,7 @@ static void parseVec3FromLine( Vec3* inOutVec3, char* stringToParse, unsigned in
 
 		// parse value
 		{
-			char valueBuffer[64];
+			static char valueBuffer[64];
 
 			memcpy( valueBuffer, &stringToParse[startIndexOfValue], endIndexOfValue - startIndexOfValue);
 			valueBuffer[endIndexOfValue - startIndexOfValue] = '\0';
@@ -55,8 +73,6 @@ MTLFile* MTLFile_Load( const char* const mtlFile)
 		unsigned int i = 0;
 		for( i; i < file.FileSizeInBytes; ++i)
 		{
-			char tmpBuffer[64];
-
 			// STARTOF newmtl
 			if( strncmp( &file.FileData[i], "newmtl " , 7) == 0)
 			{
@@ -101,20 +117,7 @@ MTLFile* MTLFile_Load( const char* const mtlFile)
 				
 				while( i < file.FileSizeInBytes && file.FileData[i] == ' ') { ++i; continue; }
 
-				startIndex = i;
-
-				while( i < file.FileSizeInBytes && file.FileData[i] != ' ' && file.FileData[i] != '\n' && file.FileData[i] != '\0') { ++i; continue; }
-
-				endIndex = i;
-
-				// parse float TODO: make this a function
-				{
-					unsigned int valueLength = endIndex - startIndex - 1;
-					memcpy( tmpBuffer, &file.FileData[startIndex], valueLength);
-					tmpBuffer[valueLength] = '\0';
-
-					(*currentMaterial)->SpecularCoefficient = (float)atof(tmpBuffer);
-				}
+				parseFloatFromLine( &(*currentMaterial)->SpecularCoefficient, &file.FileData[i], file.FileSizeInBytes - i);
 
 			}
 			// ENDOF specular coefficient
@@ -128,21 +131,8 @@ MTLFile* MTLFile_Load( const char* const mtlFile)
 				i += 3;
 				
 				while( i < file.FileSizeInBytes && file.FileData[i] == ' ') { ++i; continue; }
-
-				startIndex = i;
-
-				while( i < file.FileSizeInBytes && file.FileData[i] != ' ' && file.FileData[i] != '\n' && file.FileData[i] != '\0') { ++i; continue; }
-
-				endIndex = i;
-
-				// parse float
-				{
-					unsigned int valueLength = endIndex - startIndex - 1;
-					memcpy( tmpBuffer, &file.FileData[startIndex], valueLength);
-					tmpBuffer[valueLength] = '\0';
-
-					(*currentMaterial)->IndexOfRefraction = (float)atof(tmpBuffer);
-				}
+				
+				parseFloatFromLine( &(*currentMaterial)->IndexOfRefraction, &file.FileData[i], file.FileSizeInBytes - i);
 
 			}
 			// ENDOF index of refraction coefficient
@@ -191,5 +181,16 @@ MTLFile* MTLFile_Load( const char* const mtlFile)
 
 void MTLFile_Unload( MTLFile* mtlFile)
 {
-	// QQQ TODO:IMPLEMENT
+	MTLMaterial* currentMaterial = mtlFile->Material;
+	while( currentMaterial != NULL)
+	{
+		MTLMaterial* nextMaterial = (MTLMaterial*)currentMaterial->Next;
+		
+		// clear members
+		free(currentMaterial->Name);
+		
+		// clear object
+		free(currentMaterial);
+		currentMaterial = nextMaterial;
+	}
 }

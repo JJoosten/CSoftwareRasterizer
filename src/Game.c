@@ -13,13 +13,9 @@ Game* Game_Create( Keyboard* const keyboard, Mouse* const mouse)
 	
 	OBJFile* objFile = OBJFile_Load( "assets/models/cubeModel.obj");
 	MTLFile* mtlFile = MTLFile_Load( "assets/models/cubeModel.mtl");
-	Mesh* mesh = Mesh_CreateFromOBJGroup( objFile->Objects, objFile->Objects->Groups);
 
 	Game* game = malloc( sizeof(Game));
 	memset( game, 0, sizeof(Game));
-	
-	OBJFile_Unload(objFile);
-	MTLFile_Unload(mtlFile);
 
 	Keyboard_Initialize( keyboard);
 	Mouse_Initialize( mouse);
@@ -29,7 +25,11 @@ Game* Game_Create( Keyboard* const keyboard, Mouse* const mouse)
 
 	// load content
 	game->DiffuseTexture = Texture_Load("assets/textures/checkerboard.png");
-	game->CubeModel = NULL; 
+	game->CubeModel = Mesh_CreateFromOBJGroup( objFile->Objects, objFile->Objects->Groups);
+	
+	// unload temp data
+	OBJFile_Unload(objFile);
+	MTLFile_Unload(mtlFile);
 
 	// setup camera
 	Mat4_LoadPerspective( &tmpProjectionMatrix, 70.0f, (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.1f, 100.0f);
@@ -69,6 +69,8 @@ void Game_Render( Game* const game, Renderer* const renderer, const double delta
 			renderer->FrameBuffer->Pixels[y * renderer->FrameBuffer->Width + x] =  game->DiffuseTexture->Texels[y * game->DiffuseTexture->Width + x];
 		}
 	}
+
+	Renderer_DrawMesh( renderer, game->CubeModel);
 
 	//printf("Game_Render %f \n", deltaTimeSec);
 

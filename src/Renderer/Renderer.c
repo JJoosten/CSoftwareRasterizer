@@ -16,8 +16,8 @@ Renderer* Renderer_Create( const unsigned int width, const unsigned int height)
 
 	memset( renderer, 0, sizeof(Renderer));
 
-	// set the default uniform matrix to identity matrix
-	Mat4_LoadIdentity( &g_defaultUniforms.WorldToViewToProjectionMatrix);
+	// set the default uniform matrix to a standard projection matrix
+	Mat4_LoadPerspective( &g_defaultUniforms.WorldToViewToProjectionMatrix, 70.0f, (float)width / (float)height, 0.1f, 100.0f);
 
 	renderer->FrameBuffer = FrameBuffer_Create( width, height);
 	renderer->DepthBuffer = Texture_Create( width, height);
@@ -41,9 +41,10 @@ void Renderer_Destroy( Renderer* const renderer)
 void Renderer_DrawMesh( Renderer* const renderer, const Mesh* const mesh)
 {
 	unsigned int i = 0;
-
-	assert( mesh && "mesh is NULL");
-	assert( mesh->VertexBuffer && "mesh vertexbuffer is NULL");
+	
+	assert( renderer && "Renderer_DrawMesh renderer is NULL");
+	assert( mesh && "Renderer_DrawMesh mesh is NULL");
+	assert( mesh->VertexBuffer && "Renderer_DrawMesh mesh vertexbuffer is NULL");
 	
 	for( i; i < mesh->NumTriangles; ++i)
 	{
@@ -91,6 +92,7 @@ void Renderer_DrawMesh( Renderer* const renderer, const Mesh* const mesh)
 
 		// clipping Sutherland-hodgman 
 		{
+			// TODO: dO clipping in clip space (cube from -1 to 1 on XYZ)
 
 		}
 
@@ -102,9 +104,17 @@ void Renderer_DrawMesh( Renderer* const renderer, const Mesh* const mesh)
 
 void Renderer_SetVertexShader( Renderer* const renderer, VertexShaderFunction const vertexShaderFunc, VertexShaderUniforms* const vertexShaderUniforms)
 {
-	assert( vertexShaderFunc && "vertexShaderFunc is NULL");
-	assert( vertexShaderUniforms && "vertexShaderUniforms is NULL");
+	assert( renderer && "Renderer_SetVertexShader renderer is NULL");
+	assert( vertexShaderFunc && "Renderer_SetVertexShader vertexShaderFunc is NULL");
+	assert( vertexShaderUniforms && "Renderer_SetVertexShader vertexShaderUniforms is NULL");
 
 	renderer->VertexShader = vertexShaderFunc;
+	renderer->VertexShaderUniforms = vertexShaderUniforms;
+}
+
+void Renderer_SetVertexShaderUniforms( Renderer* const renderer, VertexShaderUniforms* const vertexShaderUniforms)
+{
+	assert( renderer && "Renderer_SetVertexShaderUniforms renderer is NULL");
+	assert( vertexShaderUniforms && "Renderer_SetVertexShaderUniforms vertexShaderUniforms is NULL");
 	renderer->VertexShaderUniforms = vertexShaderUniforms;
 }
