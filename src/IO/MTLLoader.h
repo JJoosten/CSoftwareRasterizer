@@ -16,6 +16,7 @@ typedef struct
 	Vec3 SpecularColor;
 	float SpecularCoefficient;
 	float IndexOfRefraction;
+	float AlphaValue;
 
 	MTLTexture DiffuseTexture;
 	MTLTexture SpecularTexture;

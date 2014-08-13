@@ -1,0 +1,2 @@
+TODO:
+- Write parsing helper functions, currently both IO/OBJLoader and IO/MTLLoader have the same helper functions in the .c

@@ -5,6 +5,29 @@
 #include <stdio.h>
 #include <assert.h>
 
+static void retrieveStringFromLine( char** stringOUT, unsigned int* stringLengthOUT, const char* lineIN, const unsigned int lineLengthIN)
+{
+	unsigned int startOfString = 0;
+
+	unsigned int i = 0;
+
+	// move forward as long as character is ' '
+	while( i < lineLengthIN && lineIN[i] == ' ') { ++i; continue; }
+
+	startOfString = i;
+								
+	while( i < lineLengthIN && lineIN[i] != ' ' &&  lineIN[i] != '\0' &&  lineIN[i] != '\n') { ++i; }
+
+	// retrieve string
+	{
+		const unsigned int stringLength = i - startOfString;
+		*stringLengthOUT = stringLength - 1;
+		*stringOUT = malloc(sizeof(char) * stringLength);
+		memcpy( *stringOUT,  &lineIN[startOfString], stringLength - 1);
+		(*stringOUT)[stringLength - 1] = '\0';
+	}
+}
+
 static void parseFloatFromLine( float* inOutFloat, char* stringToParse, unsigned int length)
 {
 	unsigned int startIndex = 0;
@@ -89,51 +112,30 @@ MTLFile* MTLFile_Load( const char* const mtlFile)
 				// jump over the newmtl 
 				i += 7;
 
-				while( i < file.FileSizeInBytes && file.FileData[i] == ' ') { ++i; continue; }
-
-				// parse name by getting the remainder of the line length and copying the name
-				{
-					unsigned int startNameIndex = i;
-					unsigned int endNameIndex = 0;
-
-					while( i < file.FileSizeInBytes && file.FileData[i] != '\n') { ++i; continue; }
-
-					endNameIndex = i;
-					
-					(*currentMaterial)->NameLength = endNameIndex - startNameIndex - 1;
-					(*currentMaterial)->Name = malloc(sizeof(char) * (*currentMaterial)->NameLength + 1);
-					memcpy( (*currentMaterial)->Name, &file.FileData[startNameIndex], (*currentMaterial)->NameLength);
-					(*currentMaterial)->Name[(*currentMaterial)->NameLength] = '\0';
-				}
+				retrieveStringFromLine( &(*currentMaterial)->Name, &(*currentMaterial)->NameLength, &file.FileData[i], file.FileSizeInBytes); 
+			
+				i += (*currentMaterial)->NameLength;
 			} // ENDOF newmtl
 
 			// STARTOF specular coefficient
 			if( strncmp( &file.FileData[i], "Ns " , 3) == 0)
 			{
-				unsigned int startIndex = 0;
-				unsigned int endIndex = 0;
-
 				i += 3;
 				
 				while( i < file.FileSizeInBytes && file.FileData[i] == ' ') { ++i; continue; }
 
 				parseFloatFromLine( &(*currentMaterial)->SpecularCoefficient, &file.FileData[i], file.FileSizeInBytes - i);
-
 			}
 			// ENDOF specular coefficient
 			
 			// STARTOF index of refraction coefficient
 			if( strncmp( &file.FileData[i], "Ni " , 3) == 0)
 			{
-				unsigned int startIndex = 0;
-				unsigned int endIndex = 0;
-
 				i += 3;
 				
 				while( i < file.FileSizeInBytes && file.FileData[i] == ' ') { ++i; continue; }
 				
 				parseFloatFromLine( &(*currentMaterial)->IndexOfRefraction, &file.FileData[i], file.FileSizeInBytes - i);
-
 			}
 			// ENDOF index of refraction coefficient
 
@@ -145,7 +147,6 @@ MTLFile* MTLFile_Load( const char* const mtlFile)
 				while( i < file.FileSizeInBytes && file.FileData[i] == ' ') { ++i; continue; }
 
 				parseVec3FromLine( &(*currentMaterial)->AmbientColor, &file.FileData[i], file.FileSizeInBytes - i);
-
 			}
 			// ENDOF ambient color
 
@@ -157,7 +158,6 @@ MTLFile* MTLFile_Load( const char* const mtlFile)
 				while( i < file.FileSizeInBytes && file.FileData[i] == ' ') { ++i; continue; }
 
 				parseVec3FromLine( &(*currentMaterial)->SpecularColor, &file.FileData[i], file.FileSizeInBytes - i);
-
 			}
 			// ENDOF specular color
 
@@ -171,8 +171,65 @@ MTLFile* MTLFile_Load( const char* const mtlFile)
 				parseVec3FromLine( &(*currentMaterial)->DiffuseColor, &file.FileData[i], file.FileSizeInBytes - i);
 			}
 			// ENDOF diffuse color
+			
+			// STARTOF alpha
+			if( strncmp( &file.FileData[i], "d " , 2) == 0 || strncmp( &file.FileData[i], "Tr" , 2) == 0)
+			{
+				unsigned int startIndex = 0;
+				unsigned int endIndex = 0;
 
+				i += 2;
+				
+				while( i < file.FileSizeInBytes && file.FileData[i] == ' ') { ++i; continue; }
+				
+				(*currentMaterial)->AlphaValue = 1.0f;
+				parseFloatFromLine( &(*currentMaterial)->AlphaValue, &file.FileData[i], file.FileSizeInBytes - i);
+			}
+			// ENDOF alpha
+			
+			// STARTOF texture diffuse
+			if( strncmp( &file.FileData[i], "map_Kd " , 7) == 0)
+			{
+				i += 7;
 
+				retrieveStringFromLine( &(*currentMaterial)->DiffuseTexture.FilePath, &(*currentMaterial)->DiffuseTexture.FilePathLength, &file.FileData[i], file.FileSizeInBytes); 
+			
+				i += (*currentMaterial)->DiffuseTexture.FilePathLength;
+			}
+			// ENDOF texture diffuse
+		
+			// STARTOF texture specular
+			if( strncmp( &file.FileData[i], "map_Ks " , 7) == 0)
+			{
+				i += 7;
+
+				retrieveStringFromLine( &(*currentMaterial)->SpecularTexture.FilePath, &(*currentMaterial)->SpecularTexture.FilePathLength, &file.FileData[i], file.FileSizeInBytes); 
+			
+				i += (*currentMaterial)->SpecularTexture.FilePathLength;
+			}
+			// ENDOF texture specular
+		
+			// STARTOF texture alpha
+			if( strncmp( &file.FileData[i], "map_d " , 6) == 0)
+			{
+				i += 6;
+
+				retrieveStringFromLine( &(*currentMaterial)->AlphaTexture.FilePath, &(*currentMaterial)->AlphaTexture.FilePathLength, &file.FileData[i], file.FileSizeInBytes); 
+			
+				i += (*currentMaterial)->AlphaTexture.FilePathLength;
+			}
+			// ENDOF texture alpha
+	
+			// STARTOF texture normal 
+			if( strncmp( &file.FileData[i], "map_bump " , 9) == 0)
+			{
+				i += 9;
+
+				retrieveStringFromLine( &(*currentMaterial)->NormalTexture.FilePath, &(*currentMaterial)->NormalTexture.FilePathLength, &file.FileData[i], file.FileSizeInBytes); 
+			
+				i += (*currentMaterial)->NormalTexture.FilePathLength;
+			}
+			// ENDOF texture normal
 		}
 	}
 
@@ -188,6 +245,15 @@ void MTLFile_Unload( MTLFile* mtlFile)
 		
 		// clear members
 		free(currentMaterial->Name);
+
+		if( currentMaterial->DiffuseTexture.FilePath != NULL)
+			free(currentMaterial->DiffuseTexture.FilePath);
+		if( currentMaterial->SpecularTexture.FilePath != NULL)
+			free(currentMaterial->SpecularTexture.FilePath);
+		if( currentMaterial->AlphaTexture.FilePath != NULL)
+			free(currentMaterial->AlphaTexture.FilePath);
+		if( currentMaterial->NormalTexture.FilePath != NULL)
+			free(currentMaterial->NormalTexture.FilePath);
 		
 		// clear object
 		free(currentMaterial);
