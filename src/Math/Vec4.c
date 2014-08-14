@@ -166,6 +166,21 @@ Vec4* Vec4_Mul( Vec4* const out, const Vec4* const a, const Vec4* const b)
 	return out;
 }
 
+
+Vec4* Vec4_DivByFloat( Vec4* const out, const Vec4* const a, const float w)
+{
+	assert( out && "Vec4_Div out == NULL");
+	assert( a && "Vec4_Div a == NULL");
+	assert( w != 0.0f && "Vec4_Div w == NULL");
+
+	out->X = a->X / w;
+	out->Y = a->Y / w;
+	out->Z = a->Z / w;
+	out->W = a->W / w;
+
+	return out;
+}
+
 Vec4* Vec4_Scale( Vec4* const out, const Vec4* const a, const float b)
 {
 	assert( out && "Vec4_Scale out == NULL");

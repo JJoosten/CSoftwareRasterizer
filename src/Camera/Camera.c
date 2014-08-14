@@ -12,7 +12,7 @@ Camera* Camera_Create( const Mat4* const projectionMatrix)
 
 	Vec3_LoadZero( &target);
 	Vec3_LoadUp( &worldUp);
-	Vec3_LoadOne( &camera->Position);
+	Vec3_LoadScalar( &camera->Position, 2.0f);
 
 	Mat4_LoadLookAt( &camera->ViewMatrix, &target, &camera->Position, &worldUp);
 	Mat4_Copy( &camera->ProjectionMatrix, projectionMatrix);

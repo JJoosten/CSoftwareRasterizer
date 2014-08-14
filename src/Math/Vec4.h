@@ -17,6 +17,8 @@ typedef struct
 		{
 			float R, G, B, A;
 		};
+		Vec3 XYZ;
+		Vec3 RGB;
 	};
 } Vec4, RGBA;
 
@@ -37,6 +39,7 @@ Vec4* Vec4_Add( Vec4* const out, const Vec4* const a, const Vec4* const b);
 Vec4* Vec4_Sub( Vec4* const out, const Vec4* const a, const Vec4* const b);
 
 Vec4* Vec4_Mul( Vec4* const out, const Vec4* const a, const Vec4* const b);
+Vec4* Vec4_DivByFloat( Vec4* const out, const Vec4* const a, const float w);
 Vec4* Vec4_Scale( Vec4* const out, const Vec4* const a, const float b);
 
 float Vec4_Dot( const Vec4* const a, const Vec4* const b);

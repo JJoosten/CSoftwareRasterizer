@@ -69,9 +69,15 @@ void Game_Render( Game* const game, Renderer* const renderer, const double delta
 			renderer->FrameBuffer->Pixels[y * renderer->FrameBuffer->Width + x] =  game->DiffuseTexture->Texels[y * game->DiffuseTexture->Width + x];
 		}
 	}
+	
+	// draw mesh and setup shader state
+	{
+		VertexShaderUniforms vertexShaderUniforms;
+		Mat4_Multiply( &vertexShaderUniforms.WorldToViewToProjectionMatrix, &game->Camera->ProjectionMatrix, &game->Camera->ViewMatrix);
+		Renderer_SetVertexShaderUniforms( renderer, &vertexShaderUniforms);
 
-	Renderer_DrawMesh( renderer, game->CubeModel);
-
+		Renderer_DrawMesh( renderer, game->CubeModel);
+	}
 	//printf("Game_Render %f \n", deltaTimeSec);
 
 }

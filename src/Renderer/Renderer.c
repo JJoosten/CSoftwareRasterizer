@@ -92,7 +92,7 @@ void Renderer_DrawMesh( Renderer* const renderer, const Mesh* const mesh)
 
 		// clipping Sutherland-hodgman 
 		{
-			// TODO: dO clipping in clip space (cube from -1 to 1 on XYZ)
+			// TODO: do clipping in clip space (cube from -1 to 1 on XYZ)
 
 		}
 

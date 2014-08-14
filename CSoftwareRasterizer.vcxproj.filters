@@ -215,6 +215,9 @@
     <ClInclude Include="src\IO\MTLLoader.h">
       <Filter>src\IO</Filter>
     </ClInclude>
+    <ClInclude Include="src\Renderer\Material.h">
+      <Filter>src\Renderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Notes.txt" />

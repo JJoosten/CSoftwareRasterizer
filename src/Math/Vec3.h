@@ -1,6 +1,8 @@
 #ifndef CSR_VEC3_H
 #define CSR_VEC3_H
 
+#include "Vec2.h"
+
 typedef struct
 {
 	union
@@ -15,6 +17,8 @@ typedef struct
 		{
 			float R, G, B;
 		};
+		Vec2 XY;
+		Vec2 RG;
 	};
 } Vec3, RGB;
 
@@ -34,6 +38,7 @@ Vec3* Vec3_Add( Vec3* const out, const Vec3* const a, const Vec3* const b);
 Vec3* Vec3_Sub( Vec3* const out, const Vec3* const a, const Vec3* const b);
 
 Vec3* Vec3_Mul( Vec3* const out, const Vec3* const a, const Vec3* const b);
+Vec3* Vec3_DivByFloat( Vec3* const out, const Vec3* const a, const float w);
 Vec3* Vec3_Scale( Vec3* const out, const Vec3* const a, const float b);
 
 float Vec3_Dot( const Vec3* const a, const Vec3* const b);

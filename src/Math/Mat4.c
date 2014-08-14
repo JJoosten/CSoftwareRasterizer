@@ -29,7 +29,7 @@ Mat4* Mat4_LoadOrtho( Mat4* const out, const float left, const float right, cons
 
 	out->ColumnMajor[0] = 2.0f / (right - left);	out->ColumnMajor[4] = 0.0f;						out->ColumnMajor[ 8] = 0.0f;					out->ColumnMajor[12] = -((right + left) / (right - left));
 	out->ColumnMajor[1] = 0.0f;						out->ColumnMajor[5] = 2.0f / (top - bottom);	out->ColumnMajor[ 9] = 0.0f;					out->ColumnMajor[13] = -((top + bottom) / (top - bottom));
-	out->ColumnMajor[2] = 0.0f;						out->ColumnMajor[6] = 0.0f;						out->ColumnMajor[10] = 1.0f / (far - near);		out->ColumnMajor[14] = -(near / (far - near));
+	out->ColumnMajor[2] = 0.0f;						out->ColumnMajor[6] = 0.0f;						out->ColumnMajor[10] = 1.0f / (far - near);		out->ColumnMajor[14] = -((far + near) / (far - near));
 	out->ColumnMajor[3] = 0.0f;						out->ColumnMajor[7] = 0.0f;						out->ColumnMajor[11] = 0.0f;					out->ColumnMajor[15] = 1.0f;
 
 	return out;
@@ -57,7 +57,7 @@ Mat4* Mat4_LoadLookAt( Mat4* const out, const Vec3* const target, const Vec3* co
 	assert( eye && "Mat4_LoadLookAt eye == NULL");
 	assert( up && "Mat4_LoadLookAt up == NULL");
 
-	Vec3_Cross( &direction, target, eye);
+	Vec3_Sub(&direction, target, eye);
 	Vec3_Normalize( &direction, &direction);
 	
 	Vec3_Cross( &localLeft, &direction, up);
@@ -65,9 +65,11 @@ Mat4* Mat4_LoadLookAt( Mat4* const out, const Vec3* const target, const Vec3* co
 	
 	Vec3_Cross( &localUp, &localLeft, &direction);
 
-	out->ColumnMajor[0] = localLeft.X;	out->ColumnMajor[4] = localLeft.Y;	out->ColumnMajor[ 8] = localLeft.Z;		out->ColumnMajor[12] = -eye->X;
-	out->ColumnMajor[1] = localUp.X;	out->ColumnMajor[5] = localUp.Y;	out->ColumnMajor[ 9] = localUp.Z;		out->ColumnMajor[13] = -eye->Y;
-	out->ColumnMajor[2] = -direction.X;	out->ColumnMajor[6] = -direction.Y;	out->ColumnMajor[10] = -direction.Z;	out->ColumnMajor[14] = -eye->Z;
+	// TODO: Fix this matrix up!
+
+	out->ColumnMajor[0] = localLeft.X;	out->ColumnMajor[4] = localUp.Y;	out->ColumnMajor[ 8] = direction.Z;		out->ColumnMajor[12] = -eye->X;
+	out->ColumnMajor[1] = localLeft.Y;	out->ColumnMajor[5] = localUp.Y;	out->ColumnMajor[ 9] = direction.Z;		out->ColumnMajor[13] = -eye->Y;
+	out->ColumnMajor[2] = localLeft.Z;	out->ColumnMajor[6] = localUp.Y;	out->ColumnMajor[10] = direction.Z;		out->ColumnMajor[14] = -eye->Z;
 	out->ColumnMajor[3] = 0.0f;			out->ColumnMajor[7] = 0.0f;			out->ColumnMajor[11] = 0.0f;			out->ColumnMajor[15] = 1.0f;
 
 	return out;
@@ -284,89 +286,24 @@ Mat4* Mat4_Multiply( Mat4* const out, const Mat4* const a, const Mat4* const b)
 	// 02 06 10 14		08 09 10 11
 	// 03 07 11 15		12 13 14 15
 	
+	unsigned int i = 0;
+
 	assert( out && "Mat4_Mul out == NULL");
 	assert( a && "Mat4_Mul a == NULL");
 	assert( b && "Mat4_Mul b == NULL");
 
-	out->ColumnMajor[ 0] = a->ColumnMajor[ 0] * b->ColumnMajor[ 0] +
-						   a->ColumnMajor[ 1] * b->ColumnMajor[ 4] +
-						   a->ColumnMajor[ 2] * b->ColumnMajor[ 8] +
-						   a->ColumnMajor[ 3] * b->ColumnMajor[12];
-										  
-	out->ColumnMajor[ 1] = a->ColumnMajor[ 0] * b->ColumnMajor[ 1] +
-						   a->ColumnMajor[ 1] * b->ColumnMajor[ 5] +
-						   a->ColumnMajor[ 2] * b->ColumnMajor[ 9] +
-						   a->ColumnMajor[ 3] * b->ColumnMajor[13];
-										  
-	out->ColumnMajor[ 2] = a->ColumnMajor[ 0] * b->ColumnMajor[ 2] +
-						   a->ColumnMajor[ 1] * b->ColumnMajor[ 6] +
-						   a->ColumnMajor[ 2] * b->ColumnMajor[10] +
-						   a->ColumnMajor[ 3] * b->ColumnMajor[14];
-										  
-	out->ColumnMajor[ 3] = a->ColumnMajor[ 0] * b->ColumnMajor[ 3] +
-						   a->ColumnMajor[ 1] * b->ColumnMajor[ 7] +
-						   a->ColumnMajor[ 2] * b->ColumnMajor[11] +
-						   a->ColumnMajor[ 3] * b->ColumnMajor[15];
-										  
-	out->ColumnMajor[ 4] = a->ColumnMajor[ 4] * b->ColumnMajor[ 0] +
-						   a->ColumnMajor[ 5] * b->ColumnMajor[ 4] +
-						   a->ColumnMajor[ 6] * b->ColumnMajor[ 8] +
-						   a->ColumnMajor[ 7] * b->ColumnMajor[12];
-										  
-	out->ColumnMajor[ 5] = a->ColumnMajor[ 4] * b->ColumnMajor[ 1] +
-						   a->ColumnMajor[ 5] * b->ColumnMajor[ 5] +
-						   a->ColumnMajor[ 6] * b->ColumnMajor[ 9] +
-						   a->ColumnMajor[ 7] * b->ColumnMajor[13];
+	for (i; i < 16; i += 4)
+	{
+		unsigned int j = 0;
+		for (j; j < 4; ++j)
+		{
+			out->ColumnMajor[i + j] = (b->ColumnMajor[i + 0] * a->ColumnMajor[j +  0])
+									+ (b->ColumnMajor[i + 1] * a->ColumnMajor[j +  4])
+									+ (b->ColumnMajor[i + 2] * a->ColumnMajor[j +  8])
+									+ (b->ColumnMajor[i + 3] * a->ColumnMajor[j + 12]);
+		}
+	}
 	
-	out->ColumnMajor[ 6] = a->ColumnMajor[ 4] * b->ColumnMajor[ 2] +
-						   a->ColumnMajor[ 5] * b->ColumnMajor[ 6] +
-						   a->ColumnMajor[ 6] * b->ColumnMajor[10] +
-						   a->ColumnMajor[ 7] * b->ColumnMajor[14];
-
-	out->ColumnMajor[ 7] = a->ColumnMajor[ 4] * b->ColumnMajor[ 3] +
-						   a->ColumnMajor[ 5] * b->ColumnMajor[ 7] +
-						   a->ColumnMajor[ 6] * b->ColumnMajor[11] +
-						   a->ColumnMajor[ 7] * b->ColumnMajor[15];
-										   
-	out->ColumnMajor[ 8] = a->ColumnMajor[ 8] * b->ColumnMajor[ 0] +
-						   a->ColumnMajor[ 9] * b->ColumnMajor[ 4] +
-						   a->ColumnMajor[10] * b->ColumnMajor[ 8] +
-						   a->ColumnMajor[11] * b->ColumnMajor[12];
-										   
-	out->ColumnMajor[ 9] = a->ColumnMajor[ 8] * b->ColumnMajor[ 1] +
-						   a->ColumnMajor[ 9] * b->ColumnMajor[ 5] +
-						   a->ColumnMajor[10] * b->ColumnMajor[ 9] +
-						   a->ColumnMajor[11] * b->ColumnMajor[13];
-										   
-	out->ColumnMajor[10] = a->ColumnMajor[ 8] * b->ColumnMajor[ 2] +
-						   a->ColumnMajor[ 9] * b->ColumnMajor[ 6] +
-						   a->ColumnMajor[10] * b->ColumnMajor[10] +
-						   a->ColumnMajor[11] * b->ColumnMajor[14];
-										   
-	out->ColumnMajor[11] = a->ColumnMajor[ 8] * b->ColumnMajor[ 3] +
-						   a->ColumnMajor[ 9] * b->ColumnMajor[ 7] +
-						   a->ColumnMajor[10] * b->ColumnMajor[11] +
-						   a->ColumnMajor[11] * b->ColumnMajor[15];
-
-	out->ColumnMajor[12] = a->ColumnMajor[12] * b->ColumnMajor[ 0] +
-						   a->ColumnMajor[13] * b->ColumnMajor[ 4] +
-						   a->ColumnMajor[14] * b->ColumnMajor[ 8] +
-						   a->ColumnMajor[15] * b->ColumnMajor[12];
-										   
-	out->ColumnMajor[13] = a->ColumnMajor[12] * b->ColumnMajor[ 1] +
-						   a->ColumnMajor[13] * b->ColumnMajor[ 5] +
-						   a->ColumnMajor[14] * b->ColumnMajor[ 9] +
-						   a->ColumnMajor[15] * b->ColumnMajor[13];
-										   
-	out->ColumnMajor[14] = a->ColumnMajor[12] * b->ColumnMajor[ 2] +
-						   a->ColumnMajor[13] * b->ColumnMajor[ 6] +
-						   a->ColumnMajor[14] * b->ColumnMajor[10] +
-						   a->ColumnMajor[15] * b->ColumnMajor[14];
-										   
-	out->ColumnMajor[15] = a->ColumnMajor[12] * b->ColumnMajor[ 3] +
-						   a->ColumnMajor[13] * b->ColumnMajor[ 7] +
-						   a->ColumnMajor[14] * b->ColumnMajor[11] +
-						   a->ColumnMajor[15] * b->ColumnMajor[15];
 	return out;
 }
 
