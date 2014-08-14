@@ -38,6 +38,7 @@ Vec3* Vec3_Add( Vec3* const out, const Vec3* const a, const Vec3* const b);
 Vec3* Vec3_Sub( Vec3* const out, const Vec3* const a, const Vec3* const b);
 
 Vec3* Vec3_Mul( Vec3* const out, const Vec3* const a, const Vec3* const b);
+Vec3* Vec3_MulByFloat( Vec3* const out, const Vec3* const a, const float x);
 Vec3* Vec3_DivByFloat( Vec3* const out, const Vec3* const a, const float w);
 Vec3* Vec3_Scale( Vec3* const out, const Vec3* const a, const float b);
 

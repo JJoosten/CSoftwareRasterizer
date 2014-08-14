@@ -116,5 +116,6 @@ void Renderer_SetVertexShaderUniforms( Renderer* const renderer, VertexShaderUni
 {
 	assert( renderer && "Renderer_SetVertexShaderUniforms renderer is NULL");
 	assert( vertexShaderUniforms && "Renderer_SetVertexShaderUniforms vertexShaderUniforms is NULL");
+	
 	renderer->VertexShaderUniforms = vertexShaderUniforms;
 }

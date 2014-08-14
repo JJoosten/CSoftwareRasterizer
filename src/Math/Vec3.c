@@ -144,6 +144,19 @@ Vec3* Vec3_Mul( Vec3* const out, const Vec3* const a, const Vec3* const b)
 	return out;
 }
 
+
+Vec3* Vec3_MulByFloat( Vec3* const out, const Vec3* const a, const float x)
+{
+	assert( out && "Vec3_MulByFloat out == NULL");
+	assert( a && "Vec3_MulByFloat a == NULL");
+	
+	out->X = a->X * x;
+	out->Y = a->Y * x;
+	out->Z = a->Z * x;
+
+	return out;
+}
+
 Vec3* Vec3_DivByFloat( Vec3* const out, const Vec3* const a, const float w)
 {
 	assert( out && "Vec3_Div out == NULL");

@@ -50,7 +50,9 @@ Mat4* Mat4_LoadPerspective( Mat4* const out, const float fovInDegrees, const flo
 
 Mat4* Mat4_LoadLookAt( Mat4* const out, const Vec3* const target, const Vec3* const eye, const Vec3* const up)
 {
-	Vec3 direction, localLeft, localUp;
+	Vec3 direction, localLeft, localUp, negEye;
+	Mat4 transMat, lookAtMatCpy;
+	Mat4_LoadIdentity(&transMat);
 
 	assert( out && "Mat4_LoadLookAt out == NULL");
 	assert( target && "Mat4_LoadLookAt target == NULL");
@@ -65,12 +67,16 @@ Mat4* Mat4_LoadLookAt( Mat4* const out, const Vec3* const target, const Vec3* co
 	
 	Vec3_Cross( &localUp, &localLeft, &direction);
 
-	// TODO: Fix this matrix up!
-
-	out->ColumnMajor[0] = localLeft.X;	out->ColumnMajor[4] = localUp.Y;	out->ColumnMajor[ 8] = direction.Z;		out->ColumnMajor[12] = -eye->X;
-	out->ColumnMajor[1] = localLeft.Y;	out->ColumnMajor[5] = localUp.Y;	out->ColumnMajor[ 9] = direction.Z;		out->ColumnMajor[13] = -eye->Y;
-	out->ColumnMajor[2] = localLeft.Z;	out->ColumnMajor[6] = localUp.Y;	out->ColumnMajor[10] = direction.Z;		out->ColumnMajor[14] = -eye->Z;
+	out->ColumnMajor[0] = localLeft.X;	out->ColumnMajor[4] = localLeft.Y;	out->ColumnMajor[ 8] = localLeft.Z;		out->ColumnMajor[12] = 0.0f;
+	out->ColumnMajor[1] = localUp.Y;	out->ColumnMajor[5] = localUp.Y;	out->ColumnMajor[ 9] = localUp.Z;		out->ColumnMajor[13] = 0.0f;
+	out->ColumnMajor[2] = -direction.Z;	out->ColumnMajor[6] = -direction.Y;	out->ColumnMajor[10] = -direction.Z;	out->ColumnMajor[14] = 0.0f;
 	out->ColumnMajor[3] = 0.0f;			out->ColumnMajor[7] = 0.0f;			out->ColumnMajor[11] = 0.0f;			out->ColumnMajor[15] = 1.0f;
+
+	// translate
+	Vec3_MulByFloat( &negEye, eye, -1.0f);
+	Mat4_Translate(&transMat, &negEye);
+	Mat4_Copy(&lookAtMatCpy, out);
+	Mat4_Multiply( out, &lookAtMatCpy, &transMat);
 
 	return out;
 }
@@ -80,7 +86,9 @@ Mat4* Mat4_Copy( Mat4* const out, const Mat4* a)
 {
 	assert( out && "Mat4_Copy out == NULL");
 	assert( a && "Mat4_Copy a == NULL");
+
 	memcpy( out, a, sizeof(float) * 16);
+	
 	return out;
 }
 
@@ -291,6 +299,9 @@ Mat4* Mat4_Multiply( Mat4* const out, const Mat4* const a, const Mat4* const b)
 	assert( out && "Mat4_Mul out == NULL");
 	assert( a && "Mat4_Mul a == NULL");
 	assert( b && "Mat4_Mul b == NULL");
+	assert( a != out && "out cant be the same as a, as this will replace some of the input values during computation");
+	assert( b != out && "out cant be the same as b, as this will replace some of the input values during computation");
+
 
 	for (i; i < 16; i += 4)
 	{
