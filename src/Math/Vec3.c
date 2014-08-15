@@ -2,6 +2,7 @@
 #include "../Defines.h"
 #include <math.h>
 #include <assert.h>
+#include <stdio.h>
 
 
 Vec3* Vec3_LoadZero( Vec3* const out)
@@ -202,12 +203,12 @@ Vec3* Vec3_Cross( Vec3* const out, const Vec3* const a, const Vec3* const b)
 	assert( b && "Vec3_Cross b == NULL");
 	
 	x = a->Y * b->Z - b->Y * a->Z;
-	y = a->Y * b->X - b->Z * a->X;
-	z = a->Y * b->Y - b->X * a->Y;
+	y = a->Z * b->X - b->Z * a->X;
+	z = a->X * b->Y - b->X * a->Y;
 
 	out->X = x;
-	out->Z = y;
-	out->Y = z;
+	out->Y = y;
+	out->Z = z;
 
 	return out;
 }
@@ -238,4 +239,12 @@ float Vec3_LengthSqr( const Vec3* const a)
 {
 	assert( a && "Vec3_Normalize a == NULL");
 	return Vec3_Dot( a, a);
+}
+
+// printf extension
+void Printf_Vec3( const Vec3* const a)
+{
+	assert( a && "Printf_Vec3 a == NULL");
+
+	printf("Vec3 X: %f Y: %f Z: %f\n\n", a->X, a->Y, a->Z);
 }

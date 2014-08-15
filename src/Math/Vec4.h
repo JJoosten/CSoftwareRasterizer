@@ -48,4 +48,8 @@ Vec4* Vec4_Normalize( Vec4* const out, const Vec4* const a);
 float Vec4_Length( const Vec4* const a);
 float Vec4_LengthSqr( const Vec4* const a);
 
+
+// printf extension
+void Printf_Vec4( const Vec4* const a);
+
 #endif //CSR_VEC4_H

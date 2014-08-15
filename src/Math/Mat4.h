@@ -39,6 +39,7 @@ Vec3* Vec3_MulMat4( Vec3* const out, float* outW, const Vec3* inVec, const Mat4*
 // vec4 extension
 Vec4* Vec4_MulMat4( Vec4* const out, const Vec4* inVec, const Mat4* const a);
 
-
+// printf extension
+void Printf_Mat4( const Mat4* const a);
 
 #endif //CSR_MAT4_H

@@ -46,7 +46,7 @@ void Renderer_DrawMesh( Renderer* const renderer, const Mesh* const mesh)
 	assert( mesh && "Renderer_DrawMesh mesh is NULL");
 	assert( mesh->VertexBuffer && "Renderer_DrawMesh mesh vertexbuffer is NULL");
 	
-	for( i; i < mesh->NumTriangles; ++i)
+ 	for( i; i < mesh->NumTriangles; ++i)
 	{
 		const unsigned int triangleVerticesOffset = i * 3;
 

@@ -2,7 +2,7 @@
 #include <string.h>
 #include <math.h>
 #include <assert.h>
-
+#include <stdio.h>
 
 Mat4* Mat4_LoadMat4( Mat4* const out, const Mat4* const a)
 {
@@ -68,8 +68,8 @@ Mat4* Mat4_LoadLookAt( Mat4* const out, const Vec3* const target, const Vec3* co
 	Vec3_Cross( &localUp, &localLeft, &direction);
 
 	out->ColumnMajor[0] = localLeft.X;	out->ColumnMajor[4] = localLeft.Y;	out->ColumnMajor[ 8] = localLeft.Z;		out->ColumnMajor[12] = 0.0f;
-	out->ColumnMajor[1] = localUp.Y;	out->ColumnMajor[5] = localUp.Y;	out->ColumnMajor[ 9] = localUp.Z;		out->ColumnMajor[13] = 0.0f;
-	out->ColumnMajor[2] = -direction.Z;	out->ColumnMajor[6] = -direction.Y;	out->ColumnMajor[10] = -direction.Z;	out->ColumnMajor[14] = 0.0f;
+	out->ColumnMajor[1] = localUp.X;	out->ColumnMajor[5] = localUp.Y;	out->ColumnMajor[ 9] = localUp.Z;		out->ColumnMajor[13] = 0.0f;
+	out->ColumnMajor[2] = -direction.X;	out->ColumnMajor[6] = -direction.Y;	out->ColumnMajor[10] = -direction.Z;	out->ColumnMajor[14] = 0.0f;
 	out->ColumnMajor[3] = 0.0f;			out->ColumnMajor[7] = 0.0f;			out->ColumnMajor[11] = 0.0f;			out->ColumnMajor[15] = 1.0f;
 
 	// translate
@@ -288,12 +288,6 @@ Mat4* Mat4_Inverse( Mat4* const out, const Mat4* const a)
 
 Mat4* Mat4_Multiply( Mat4* const out, const Mat4* const a, const Mat4* const b)
 {
-	// column major		convinience view on storage in mem
-	// 00 04 08 12		00 01 02 03
-	// 01 05 09 13		04 05 06 07
-	// 02 06 10 14		08 09 10 11
-	// 03 07 11 15		12 13 14 15
-	
 	unsigned int i = 0;
 
 	assert( out && "Mat4_Mul out == NULL");
@@ -301,7 +295,6 @@ Mat4* Mat4_Multiply( Mat4* const out, const Mat4* const a, const Mat4* const b)
 	assert( b && "Mat4_Mul b == NULL");
 	assert( a != out && "out cant be the same as a, as this will replace some of the input values during computation");
 	assert( b != out && "out cant be the same as b, as this will replace some of the input values during computation");
-
 
 	for (i; i < 16; i += 4)
 	{
@@ -495,8 +488,21 @@ Vec4* Vec4_MulMat4( Vec4* const out, const Vec4* inVec, const Mat4* const a)
 	out->Y = a->ColumnMajor[1] * x + a->ColumnMajor[5] * y + a->ColumnMajor[ 9] * z + a->ColumnMajor[13] * w;
 	out->Z = a->ColumnMajor[2] * x + a->ColumnMajor[6] * y + a->ColumnMajor[10] * z + a->ColumnMajor[14] * w;
 	out->W = a->ColumnMajor[3] * x + a->ColumnMajor[7] * y + a->ColumnMajor[11] * z + a->ColumnMajor[15] * w;
-	
-	// TODO: note that this is not totally mathematically correct, but because we know that we dont store data in 3, 7 and 11 we can ignore those (they would add up to 0)
-	
+
 	return out;
+}
+
+
+// printf extension
+void Printf_Mat4( const Mat4* const a)
+{
+	assert( a && "Printf_Mat4 a == NULL");
+
+	printf("Mat4  Row1   Row2   Row3   Row4   \n");
+	printf("Col1  %4.2f  %4.2f  %4.2f  %4.2f  \n", a->ColumnMajor[0], a->ColumnMajor[4], a->ColumnMajor[ 8], a->ColumnMajor[12]);
+	printf("Col2  %4.2f  %4.2f  %4.2f  %4.2f  \n", a->ColumnMajor[1], a->ColumnMajor[5], a->ColumnMajor[ 9], a->ColumnMajor[13]);
+	printf("Col3  %4.2f  %4.2f  %4.2f  %4.2f  \n", a->ColumnMajor[2], a->ColumnMajor[6], a->ColumnMajor[10], a->ColumnMajor[14]);
+	printf("Col4  %4.2f  %4.2f  %4.2f  %4.2f  \n", a->ColumnMajor[3], a->ColumnMajor[7], a->ColumnMajor[11], a->ColumnMajor[15]);
+
+	printf("\n");
 }

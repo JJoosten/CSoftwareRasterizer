@@ -49,4 +49,7 @@ Vec3* Vec3_Normalize( Vec3* const out, const Vec3* const a);
 float Vec3_Length( const Vec3* const a);
 float Vec3_LengthSqr( const Vec3* const a);
 
+// printf extension
+void Printf_Vec3( const Vec3* const a);
+
 #endif //CSR_VEC3_H

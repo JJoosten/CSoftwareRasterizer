@@ -36,4 +36,7 @@ Vec2* Vec2_Normalize( Vec2* const out, const Vec2* const a);
 float Vec2_Length( const Vec2* const a);
 float Vec2_LengthSqr( const Vec2* const a);
 
+// printf extension
+void Printf_Vec2( const Vec2* const a);
+
 #endif //CSR_VEC2_H

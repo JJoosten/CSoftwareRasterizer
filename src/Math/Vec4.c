@@ -2,6 +2,7 @@
 #include "../Defines.h"
 #include <math.h>
 #include <assert.h>
+#include <stdio.h>
 
 
 Vec4* Vec4_LoadZero( Vec4* const out)
@@ -230,4 +231,13 @@ float Vec4_LengthSqr( const Vec4* const a)
 {
 	assert( a && "Vec4_Normalize a == NULL");
 	return Vec4_Dot( a, a);
+}
+
+
+// printf extension
+void Printf_Vec4( const Vec4* const a)
+{
+	assert( a && "Printf_Vec4 a == NULL");
+
+	printf("Vec4 X: %f Y: %f Z: %f W: %f\n\n", a->X, a->Y, a->Z, a->W);
 }

@@ -2,6 +2,7 @@
 #include "../Defines.h"
 #include <math.h>
 #include <assert.h>
+#include <stdio.h>
 
 
 Vec2* Vec2_LoadZero( Vec2* const out)
@@ -170,4 +171,12 @@ float Vec2_LengthSqr( const Vec2* const a)
 {
 	assert( a && "Vec2_Normalize a == NULL");
 	return Vec2_Dot( a, a);
+}
+
+// printf extension
+void Printf_Vec2( const Vec2* const a)
+{
+	assert( a && "Printf_Vec2 a == NULL");
+
+	printf("Vec2 X: %f Y: %f\n\n", a->X, a->Y);
 }
