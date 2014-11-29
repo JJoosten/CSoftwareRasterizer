@@ -1,3 +1,3 @@
 CSoftwareRasterizer
 ===================
-In the second year of IGAD students are required to write a software rasterizer. I wrote one a year ago but it was bloated due to the framework I used. I got excited again when I saw some of the work by fellow students and decided to write a simple software rasterizer in C89 (Visual Studio limits the use of C99). I started on Saturday around 0.00 AM and wrote for about 3.5 hours, Saturday around 11.00 I fired up again and wrote the basics of the framework, including math and some other important aspects.
+I small software rasterizer that I work on in the little free time that I have. The code is written in C89 (Visual Studio 2012 limits the use of C99).
