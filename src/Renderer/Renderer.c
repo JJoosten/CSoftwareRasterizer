@@ -5,7 +5,7 @@
 #include <assert.h>
 
 // global default settings
-VertexShaderUniforms g_defaultUniforms;
+DefaultVertexShaderUniforms g_defaultUniforms;
 
 
 Renderer* Renderer_Create( const unsigned int width, const unsigned int height)
@@ -102,7 +102,7 @@ void Renderer_DrawMesh( Renderer* const renderer, const Mesh* const mesh)
 }
 
 
-void Renderer_SetVertexShader( Renderer* const renderer, VertexShaderFunction const vertexShaderFunc, VertexShaderUniforms* const vertexShaderUniforms)
+void Renderer_SetVertexShader( Renderer* const renderer, VertexShaderFunction const vertexShaderFunc, void* const vertexShaderUniforms)
 {
 	assert( renderer && "Renderer_SetVertexShader renderer is NULL");
 	assert( vertexShaderFunc && "Renderer_SetVertexShader vertexShaderFunc is NULL");
@@ -112,7 +112,7 @@ void Renderer_SetVertexShader( Renderer* const renderer, VertexShaderFunction co
 	renderer->VertexShaderUniforms = vertexShaderUniforms;
 }
 
-void Renderer_SetVertexShaderUniforms( Renderer* const renderer, VertexShaderUniforms* const vertexShaderUniforms)
+void Renderer_SetVertexShaderUniforms( Renderer* const renderer, void* const vertexShaderUniforms)
 {
 	assert( renderer && "Renderer_SetVertexShaderUniforms renderer is NULL");
 	assert( vertexShaderUniforms && "Renderer_SetVertexShaderUniforms vertexShaderUniforms is NULL");

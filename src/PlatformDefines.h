@@ -1,0 +1,43 @@
+#ifndef CSR_PLATFORMDEFS_H
+#define CSR_PLATFORMDEFS_H
+
+// current platforms
+#define CSR_PLATFORM_UNDEFINED 0
+#define CSR_PLATFORM_WIN 1
+#define CSR_PLATFORM_OSX 2
+
+#ifdef _WIN32
+  #define CSR_CURRENT_PLATFORM CSR_PLATFORM_WIN
+  #define CSR_CURRENT_ENDIAN CSR_ENDIAN_BIG
+
+#ifdef _WIN64
+  #define CSR_CURRENT_PLATFORM_BIT CSR_PLATFORM_BIT_64
+#else
+  #define CSR_CURRENT_PLATFORM_BIT CSR_PLATFORM_BIT_32
+  #define CSR_DEBUG_BREAK __asm int 3;
+#endif
+
+#endif
+
+#ifdef OSX
+  #define CSR_CURRENT_PLATFORM CSR_PLATFORM_OSX
+#endif
+
+#ifndef CSR_CURRENT_PLATFORM
+  #define CSR_CURRENT_PLATFORM CSR_PLATFORM_UNDEFINED
+#endif
+
+// 32 or 64 bit
+#define CSR_PLATFORM_BIT_UNKNOWN 0
+#define CSR_PLATFORM_BIT_32 1
+#define CSR_PLATFORM_BIT_64 2
+
+// TODO: do checks for platform bit
+
+// endian
+#define CSR_PLATFORM_ENDIAN_UNKNOWN 0
+#define CSR_PLATFORM_ENDIAN_SMAL 1
+#define CSR_PLATFORM_ENDIAN_BIG 2
+
+
+#endif // CSR_PLATFORM_DEFS_H

@@ -37,7 +37,7 @@ Mat4* Mat4_LoadOrtho( Mat4* const out, const float left, const float right, cons
 
 Mat4* Mat4_LoadPerspective( Mat4* const out, const float fovInDegrees, const float aspectRatio, const float near, const float far)
 {
-	const float f = 1.0f / tanf( 0.0174532925 * fovInDegrees / 2.0f);
+	const float f = 1.0f / tanf( 0.0174532925f * fovInDegrees / 2.0f);
 	
 	assert( out && "Mat4_LoadPerspective out == NULL");
 

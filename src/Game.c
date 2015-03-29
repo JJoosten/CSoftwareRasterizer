@@ -72,7 +72,7 @@ void Game_Render( Game* const game, Renderer* const renderer, const double delta
 	
 	// draw mesh and setup shader state
 	{
-		VertexShaderUniforms vertexShaderUniforms;
+		DefaultVertexShaderUniforms vertexShaderUniforms;
 		Mat4_Multiply( &vertexShaderUniforms.WorldToViewToProjectionMatrix, &game->Camera->ProjectionMatrix, &game->Camera->ViewMatrix);
 		Renderer_SetVertexShaderUniforms( renderer, &vertexShaderUniforms);
 

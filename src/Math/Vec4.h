@@ -13,12 +13,14 @@ typedef struct
 		{
 			float X, Y, Z, W;
 		};
-		struct 
+		struct
 		{
 			float R, G, B, A;
 		};
 		Vec3 XYZ;
 		Vec3 RGB;
+		Vec2 XY;
+		Vec2 RG;
 	};
 } Vec4, RGBA;
 

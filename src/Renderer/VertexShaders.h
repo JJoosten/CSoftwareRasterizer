@@ -7,13 +7,13 @@
 typedef struct
 {
 	Mat4 WorldToViewToProjectionMatrix;
-} VertexShaderUniforms;
+} DefaultVertexShaderUniforms;
 
 
 // function description
-typedef void (*VertexShaderFunction)( RasterTriangle* const triangle_IN_OUT, const VertexShaderUniforms* const uniforms);
+typedef void (*VertexShaderFunction)( RasterTriangle* const triangle_IN_OUT, const void* const uniforms);
 
 
-void DefaultVertexShader( RasterTriangle* const triangle_IN_OUT, const VertexShaderUniforms* const uniforms);
+void DefaultVertexShader( RasterTriangle* const triangle_IN_OUT, const void* const uniforms);
 
 #endif // CSR_VERTEX_SHADER_H

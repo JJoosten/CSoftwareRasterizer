@@ -123,6 +123,9 @@
     <ClCompile Include="src\IO\MTLLoader.c">
       <Filter>src\IO</Filter>
     </ClCompile>
+    <ClCompile Include="src\Renderer\PixelShaders.c">
+      <Filter>src\Renderer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Texture\Texture.h">
@@ -217,6 +220,12 @@
     </ClInclude>
     <ClInclude Include="src\Renderer\Material.h">
       <Filter>src\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer\PixelShaders.h">
+      <Filter>src\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PlatformDefines.h">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
