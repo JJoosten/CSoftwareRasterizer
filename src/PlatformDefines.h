@@ -40,4 +40,11 @@
 #define CSR_PLATFORM_ENDIAN_BIG 2
 
 
+
+#if CSR_PLATFORM_WIN
+#define CODE_BREAKPOINT __debugbreak()
+#else
+#define CODE_BREAKPOINT
+#endif
+
 #endif // CSR_PLATFORM_DEFS_H

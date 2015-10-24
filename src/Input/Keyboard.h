@@ -5,7 +5,7 @@
 #include "../Typedefs.h"
 #include "KeyboardKeys.h"
 
-#define CSR_KEYBOARD_MAX_KEYS 100
+#define CSR_KEYBOARD_MAX_KEYS 256
 
 typedef struct
 {

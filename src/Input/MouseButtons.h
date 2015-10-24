@@ -1,8 +1,6 @@
 #ifndef CSR_MOUSE_KEYS_H
 #define CSR_MOUSE_KEYS_H
 
-#include <SFML/Window.h>
-
 typedef enum
 {
 	csrMouseButtonNone = 0,
