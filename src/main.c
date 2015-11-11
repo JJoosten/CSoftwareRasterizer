@@ -71,8 +71,8 @@ int main(int argc, char *argv[])
 		g_isWindowOpen = !Keyboard_IsKeyPressed( &keyboard, csrKeyEscape);
 	}
 	
-	Game_Destroy( game);
-	OGLSurface_Destroy( surface);
+	OGLSurface_Destroy(surface);
+	Game_Destroy(game);
 	Renderer_Destroy( renderer);
 	Window_Destroy( window);
 	

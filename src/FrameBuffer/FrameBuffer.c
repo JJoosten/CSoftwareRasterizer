@@ -14,15 +14,12 @@ FrameBuffer* FrameBuffer_Create( const unsigned int width, const unsigned int he
 	frameBuffer->Width = width;
 	frameBuffer->Height = height;
 
-	assert(frameBuffer->Pixels && "FrameBuffer_Create texture->Texels is NULL, probably not enough memory in RAM");
-
 	return frameBuffer;
 }
 
 void FrameBuffer_Destroy( FrameBuffer* const frameBuffer)
 {
 	assert( frameBuffer && "FrameBuffer_Destroy texture is NULL");
-	assert( frameBuffer->Pixels && "FrameBuffer_Destroy texture->Data is NULL");
 
 	free(frameBuffer);
 }

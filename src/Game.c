@@ -44,6 +44,9 @@ void Game_Destroy( Game* const game)
 	printf("Game_Destroy \n");
 
 	Camera_Destroy( game->Camera);
+	Mesh_Destroy(game->CubeModel);
+	Texture_Destroy(game->DiffuseTexture);
+
 	free(game);
 
 }

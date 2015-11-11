@@ -18,24 +18,14 @@ const GLchar vertexShaderSource[] =
 
 const GLchar fragmentShaderSource[] = {
 	"#version 330 core\n"
-	"uniform sampler2D tex;"
+	"uniform sampler2D texture;"
 	"in vec2 fragInUV;"
 	"out vec4 outColor;"
 	"void main()\n"
 	"{\n"
-	"outColor = texture2D(tex,fragInUV); \n"
+	"outColor = texture2D(texture,fragInUV); \n"
 	"}\n"
 };
-
-static void transferSurfaceToTexture( OGLSurface* surface)
-{
-	glUnmapBuffer( GL_PIXEL_UNPACK_BUFFER_ARB );
-	glBindTexture( GL_TEXTURE_2D, surface->TextureID[surface->CurrentBuffer] );
-	glBindBuffer( GL_PIXEL_UNPACK_BUFFER_ARB, surface->PixelBufferID[surface->CurrentBuffer] );
-	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, surface->Width, surface->Height, GL_RGBA, GL_UNSIGNED_BYTE, 0);
-	glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, 0);
-	glBindTexture(GL_TEXTURE_2D, 0);
-}
 
 bool OGL_Init( const unsigned int screenWidth, const unsigned int screenHeight)
 {
@@ -132,9 +122,9 @@ OGLSurface* OGLSurface_Create( const FrameBuffer* const framebuffer)
 	memset( surface, 0, sizeof(OGLSurface));
 	
 	// generate texture
-	glGenTextures( 2, surface->TextureID);
+	glGenTextures(NUM_BUFFERS, surface->TextureID);
 
-	for(numBuffer; numBuffer < 2; ++numBuffer)
+	for (numBuffer; numBuffer < NUM_BUFFERS; ++numBuffer)
 	{
 		glBindTexture( GL_TEXTURE_2D, surface->TextureID[numBuffer]);
 	
@@ -197,65 +187,85 @@ OGLSurface* OGLSurface_Create( const FrameBuffer* const framebuffer)
 		glGenVertexArrays(1, &surface->VaoDummy);
 	}
 
+	surface->SizeInBytes = sizeOfPixelBufferInBytes;
+
 	// generate pixel buffer
-	glGenBuffers( 2, surface->PixelBufferID);
-	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, surface->PixelBufferID[0]);
-	glBufferData(GL_PIXEL_UNPACK_BUFFER, sizeOfPixelBufferInBytes, NULL, GL_STREAM_DRAW);
-	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, surface->PixelBufferID[1]);
-	glBufferData(GL_PIXEL_UNPACK_BUFFER, sizeOfPixelBufferInBytes, NULL, GL_STREAM_DRAW);
+	glGenBuffers(NUM_BUFFERS, surface->PixelBufferID);
+	for (unsigned int i = 0; i < NUM_BUFFERS; ++i)
+	{
+		glBindBuffer(GL_PIXEL_UNPACK_BUFFER, surface->PixelBufferID[i]);
+		glBufferData(GL_PIXEL_UNPACK_BUFFER, surface->SizeInBytes, NULL, GL_STREAM_DRAW);
+	}
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
-	
-	glBindTexture( GL_TEXTURE_2D, surface->TextureID[0]);
+
+	// we start with mapping the first buffer to the pixel data address space
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, surface->PixelBufferID[0]);
-	surface->PixelData = (unsigned int*)glMapBuffer( GL_PIXEL_UNPACK_BUFFER_ARB, GL_WRITE_ONLY_ARB );
-	memset(surface->PixelData, 0, sizeOfPixelBufferInBytes);
+	surface->PixelData[0] = (unsigned int*)glMapBuffer( GL_PIXEL_UNPACK_BUFFER_ARB, GL_WRITE_ONLY_ARB );
+	memset(surface->PixelData[0], 0, surface->SizeInBytes);
 
 	return surface;
 }
 
 void OGLSurface_Destroy( OGLSurface* const surface)
 {
+	glUnmapBuffer(GL_PIXEL_UNPACK_BUFFER_ARB);
+	glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, 0);
+
 	glDeleteProgram(surface->ShaderProgram);
 
 	glDeleteVertexArrays(1, &surface->VaoDummy);
 
-	glDeleteTextures( 2, surface->TextureID);
-	glDeleteBuffers( 2, surface->PixelBufferID); 
+	glDeleteTextures( NUM_BUFFERS, surface->TextureID);
+	glDeleteBuffers(NUM_BUFFERS, surface->PixelBufferID);
 	free(surface);
 }
 
 void OGLSurface_MapToFrameBuffer( OGLSurface* const surface, FrameBuffer* const frameBuffer)
 {
-	frameBuffer->Pixels = surface->PixelData;
+	frameBuffer->Pixels = surface->PixelData[surface->CurrentBuffer];
 }
 
 void OGLSurface_Draw( OGLSurface* const surface)
 {
-	// also binds texture
-	transferSurfaceToTexture( surface);
-
-	glBindTexture(GL_TEXTURE_2D, surface->TextureID[surface->CurrentBuffer]);
-
 	GLuint currentTexture = surface->CurrentBuffer;
-	++surface->CurrentBuffer;
-	surface->CurrentBuffer &= 1;
 
-	CHECK_OGL_ERROR_IN_DEBUG;
-	glBindBuffer( GL_PIXEL_UNPACK_BUFFER_ARB, surface->PixelBufferID[surface->CurrentBuffer] );	
-	surface->PixelData = (unsigned int*)glMapBuffer( GL_PIXEL_UNPACK_BUFFER, GL_WRITE_ONLY );
+	// stop the mapping of the current PBO
+	glUnmapBuffer(GL_PIXEL_UNPACK_BUFFER_ARB);
+	glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, 0);
+
+	// bind the current PBO to a texture and copy the PBO data to the texture
+	glBindTexture(GL_TEXTURE_2D, surface->TextureID[surface->CurrentBuffer]);
+	glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, surface->PixelBufferID[surface->CurrentBuffer]);
+	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, surface->Width, surface->Height, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+	glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	// switch to a new PBO
+	++surface->CurrentBuffer;
+	surface->CurrentBuffer %= NUM_BUFFERS;
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, surface->TextureID[currentTexture]);
 
 	glBindVertexArray(surface->VaoDummy);
 
 	glUseProgram(surface->ShaderProgram);
 
-	glUniform1ui(glGetUniformLocation(surface->ShaderProgram, "tex"), surface->TextureID[currentTexture]);
+	glUniform1i(glGetUniformLocation(surface->ShaderProgram, "texture"), 0);
 
+	CHECK_OGL_ERROR_IN_DEBUG;
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
 	glUseProgram(0);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 
+	// setup the next PBO mapping
+	glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, surface->PixelBufferID[surface->CurrentBuffer]);
+	glBufferDataARB(GL_PIXEL_UNPACK_BUFFER_ARB, surface->SizeInBytes, 0, GL_STREAM_DRAW_ARB);
+	surface->PixelData[surface->CurrentBuffer] = (unsigned int*)glMapBuffer(GL_PIXEL_UNPACK_BUFFER, GL_WRITE_ONLY);
+
 	glFinish();
+
 
 }

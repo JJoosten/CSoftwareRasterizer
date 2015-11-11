@@ -161,7 +161,6 @@ void createWin32Window(Win32Window* const win32Window, Window* const window)
 
 void destroyWin32Window(Win32Window* const win32Window)
 {
-
 	// destroy the win32 rendering context
 	wglDeleteContext(win32Window->renderingContext);
 
@@ -265,7 +264,7 @@ void createGLContext(Win32Window* const win32Window, Window* const window)
 	{
 		const int contextAttribs[] =
 		{
-			WGL_CONTEXT_MAJOR_VERSION_ARB, 4,
+			WGL_CONTEXT_MAJOR_VERSION_ARB, 3,
 			WGL_CONTEXT_MINOR_VERSION_ARB, 2,
 			WGL_CONTEXT_FLAGS_ARB, WGL_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB,
 			0
@@ -315,11 +314,11 @@ Window* Window_Create(unsigned int x, unsigned int y, unsigned int width, unsign
 
 void Window_Destroy(Window* const window)
 {
-	free(window);
-
 	destroyWin32Window(g_win32Window);
+
 	free(g_win32Window);
-	g_win32Window = NULL;
+
+	free(window);
 }
 
 

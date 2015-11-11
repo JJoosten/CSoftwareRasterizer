@@ -14,16 +14,19 @@
 
 #define IF_OGL_BREAK if(OGL_HasError()) CODE_BREAKPOINT
 
+#define NUM_BUFFERS 2
+
 typedef struct
 {
-	GLuint TextureID[2];
-	GLuint PixelBufferID[2];
+	GLuint TextureID[NUM_BUFFERS];
+	GLuint PixelBufferID[NUM_BUFFERS];
 	GLuint Width;
 	GLuint Height;
 	GLuint ShaderProgram;
 	GLuint VaoDummy;
 	GLbyte CurrentBuffer;
-	unsigned int* PixelData;
+	unsigned int* PixelData[NUM_BUFFERS];
+	unsigned int SizeInBytes;
 } OGLSurface;
 
 bool OGL_Init( const unsigned int screenWidth, const unsigned int screenHeight);
