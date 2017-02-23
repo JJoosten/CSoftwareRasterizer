@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#define ERROR_LOG_BUFFER_SIZE_IN_BYTES 1024
+
 const GLchar vertexShaderSource[] =
 {
 	"#version 330 core\n"
@@ -18,12 +20,12 @@ const GLchar vertexShaderSource[] =
 
 const GLchar fragmentShaderSource[] = {
 	"#version 330 core\n"
-	"uniform sampler2D texture;"
+	"uniform sampler2D textureSampler;"
 	"in vec2 fragInUV;"
 	"out vec4 outColor;"
 	"void main()\n"
 	"{\n"
-	"outColor = texture2D(texture,fragInUV); \n"
+	"outColor = texture(textureSampler,fragInUV); \n"
 	"}\n"
 };
 
@@ -74,7 +76,7 @@ bool OGL_HasError()
 
 bool OGL_HasShaderCompilationError(GLuint shader)
 {
-	char infoLog[1024];
+	char infoLog[ERROR_LOG_BUFFER_SIZE_IN_BYTES];
 	GLint success = 0;
 	GLint logSize = 0;
 
@@ -85,8 +87,8 @@ bool OGL_HasShaderCompilationError(GLuint shader)
 
 	glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logSize);
 
-	memset(infoLog, 0, 1024);
-	glGetShaderInfoLog(shader, 1024, 0, infoLog);
+	memset(infoLog, 0, ERROR_LOG_BUFFER_SIZE_IN_BYTES);
+	glGetShaderInfoLog(shader, ERROR_LOG_BUFFER_SIZE_IN_BYTES, 0, infoLog);
 
 	printf("Shader Compilation Error Log: %s \n", infoLog);
 
@@ -96,7 +98,7 @@ bool OGL_HasShaderCompilationError(GLuint shader)
 
 bool OGL_HasShaderLinkError(GLuint shaderProgram)
 {
-	char infoLog[256];
+	char infoLog[ERROR_LOG_BUFFER_SIZE_IN_BYTES];
 	GLint success = 0;
 
 	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
@@ -104,9 +106,9 @@ bool OGL_HasShaderLinkError(GLuint shaderProgram)
 	if (success == GL_TRUE)
 		return false;
 
-	memset(infoLog, 0, 1024);
+	memset(infoLog, 0, ERROR_LOG_BUFFER_SIZE_IN_BYTES);
 	
-	glGetProgramInfoLog(shaderProgram, 1024, 0, infoLog);
+	glGetProgramInfoLog(shaderProgram, ERROR_LOG_BUFFER_SIZE_IN_BYTES, 0, infoLog);
 	
 	printf("Shader Linking Error Log: %s \n", infoLog);
 
@@ -127,18 +129,21 @@ OGLSurface* OGLSurface_Create( const FrameBuffer* const framebuffer)
 	for (numBuffer; numBuffer < NUM_BUFFERS; ++numBuffer)
 	{
 		glBindTexture( GL_TEXTURE_2D, surface->TextureID[numBuffer]);
-	
+
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+		
+		// TODO: fix invalid enum when wrap mode is set to GL_CLAMP (currently got the error inflight thus no internet to search for the possible causes)
+		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 
+		CHECK_OGL_ERROR_IN_DEBUG;
 		surface->Width = framebuffer->Width;
 		surface->Height = framebuffer->Height;
 
 		glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, surface->Width, surface->Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 
-		glBindTexture( GL_TEXTURE_2D, 0);
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 	// generate shader
@@ -180,6 +185,7 @@ OGLSurface* OGLSurface_Create( const FrameBuffer* const framebuffer)
 		glDeleteShader(fragmentShader);
 
 		surface->ShaderProgram = shaderProgram;
+		CHECK_OGL_ERROR_IN_DEBUG;
 	}
 
 	// generate dummy vao, is required to use glDrawArrays with no data
@@ -197,11 +203,13 @@ OGLSurface* OGLSurface_Create( const FrameBuffer* const framebuffer)
 		glBufferData(GL_PIXEL_UNPACK_BUFFER, surface->SizeInBytes, NULL, GL_STREAM_DRAW);
 	}
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
+	CHECK_OGL_ERROR_IN_DEBUG;
 
 	// we start with mapping the first buffer to the pixel data address space
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, surface->PixelBufferID[0]);
 	surface->PixelData[0] = (unsigned int*)glMapBuffer( GL_PIXEL_UNPACK_BUFFER_ARB, GL_WRITE_ONLY_ARB );
 	memset(surface->PixelData[0], 0, surface->SizeInBytes);
+	CHECK_OGL_ERROR_IN_DEBUG;
 
 	return surface;
 }
@@ -229,10 +237,12 @@ void OGLSurface_Draw( OGLSurface* const surface)
 {
 	GLuint currentTexture = surface->CurrentBuffer;
 
+	CHECK_OGL_ERROR_IN_DEBUG;
 	// stop the mapping of the current PBO
 	glUnmapBuffer(GL_PIXEL_UNPACK_BUFFER_ARB);
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, 0);
 
+	CHECK_OGL_ERROR_IN_DEBUG;
 	// bind the current PBO to a texture and copy the PBO data to the texture
 	glBindTexture(GL_TEXTURE_2D, surface->TextureID[surface->CurrentBuffer]);
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, surface->PixelBufferID[surface->CurrentBuffer]);
@@ -240,18 +250,26 @@ void OGLSurface_Draw( OGLSurface* const surface)
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, 0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
+	CHECK_OGL_ERROR_IN_DEBUG;
 	// switch to a new PBO
 	++surface->CurrentBuffer;
 	surface->CurrentBuffer %= NUM_BUFFERS;
 
+	CHECK_OGL_ERROR_IN_DEBUG;
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, surface->TextureID[currentTexture]);
 
+	CHECK_OGL_ERROR_IN_DEBUG;
 	glBindVertexArray(surface->VaoDummy);
 
+	CHECK_OGL_ERROR_IN_DEBUG;
 	glUseProgram(surface->ShaderProgram);
 
-	glUniform1i(glGetUniformLocation(surface->ShaderProgram, "texture"), 0);
+	// bind sampler to texture slot 0
+
+	CHECK_OGL_ERROR_IN_DEBUG;
+	GLint samplerUniformLocation = glGetUniformLocation(surface->ShaderProgram, "textureSampler");
+	glUniform1i(samplerUniformLocation, 0);
 
 	CHECK_OGL_ERROR_IN_DEBUG;
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);

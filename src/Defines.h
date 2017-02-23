@@ -6,6 +6,8 @@
 #define FALSE 0
 #define false FALSE
 
+#ifndef NULL
 #define NULL 0
+#endif
 
 #endif // DEFINES_H

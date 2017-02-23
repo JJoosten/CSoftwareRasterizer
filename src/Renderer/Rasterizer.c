@@ -11,7 +11,7 @@ void swap(RasterVertex** a, RasterVertex** b)
 
 void calculateScreenCoords( Renderer* const renderer, Vec4* const IN_OUT_screenCoordinates)
 {
-	// clip coordinates -> NDC -> screen coordinates
+	// NDC -> screen coordinates
 	IN_OUT_screenCoordinates->X = (1.0f + IN_OUT_screenCoordinates->X) * 0.5f * renderer->FrameBuffer->Width;
 	IN_OUT_screenCoordinates->Y = (1.0f + IN_OUT_screenCoordinates->Y) * 0.5f * renderer->FrameBuffer->Height;
 }

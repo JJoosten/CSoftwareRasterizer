@@ -19,24 +19,28 @@ int main(int argc, char *argv[])
 	bool openGLInit = OGL_Init( SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	Renderer* renderer = Renderer_Create( SCREEN_WIDTH, SCREEN_HEIGHT);
-	
+	CHECK_OGL_ERROR_IN_DEBUG;
+
 	Keyboard keyboard;
 	Mouse mouse;
 
 	Game* game = Game_Create( &keyboard, &mouse);
 	
 	OGLSurface* surface = OGLSurface_Create( renderer->FrameBuffer);
+	CHECK_OGL_ERROR_IN_DEBUG;
 
 	Stopwatch stopwatch;
-
 	Stopwatch_Init( &stopwatch);
-
+	
 	// set input to window
 	Window_SetKeyboard(window, &keyboard);
 	Window_SetMouse(window, &mouse);
 
+	CHECK_OGL_ERROR_IN_DEBUG;
+
 	// setup buffers
 	OGLSurface_MapToFrameBuffer( surface, renderer->FrameBuffer);
+	CHECK_OGL_ERROR_IN_DEBUG;
 
 	// start stopwatch for first frametime of < ammount
 	Stopwatch_Start( &stopwatch);
@@ -60,12 +64,14 @@ int main(int argc, char *argv[])
 		Game_Update( game, deltaTimeSec);
 
 		Game_Render( game, renderer, deltaTimeSec);
-		
-		OGLSurface_Draw( surface);
+
+		OGLSurface_Draw(surface);
+		CHECK_OGL_ERROR_IN_DEBUG;
+
 		OGLSurface_MapToFrameBuffer( surface, renderer->FrameBuffer);
+		CHECK_OGL_ERROR_IN_DEBUG;
 
 		Window_SwapBuffer( window);
-
 		CHECK_OGL_ERROR_IN_DEBUG;
 
 		g_isWindowOpen = !Keyboard_IsKeyPressed( &keyboard, csrKeyEscape);
